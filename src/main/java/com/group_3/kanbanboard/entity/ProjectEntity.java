@@ -38,10 +38,10 @@ public class ProjectEntity {
     public ProjectEntity() {
     }
 
-    public ProjectEntity(UUID id, String title, String description) {
-        this.id = id;
+    public ProjectEntity(String title, String description, UUID leadId) {
         this.title = title;
         this.description = description;
+        this.leadId = leadId;
     }
 
     public UUID getId() {
