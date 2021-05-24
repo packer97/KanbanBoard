@@ -7,6 +7,7 @@ import com.group_3.kanbanboard.exception.ProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
 import com.group_3.kanbanboard.mappers.ProjectMapperImpl;
 import com.group_3.kanbanboard.mappers.UserMapper;
+import com.group_3.kanbanboard.mappers.UserMapperImpl;
 import com.group_3.kanbanboard.repository.ProjectRepository;
 import com.group_3.kanbanboard.repository.UserRepository;
 import com.group_3.kanbanboard.rest.dto.ProjectRequestDto;
@@ -86,15 +87,15 @@ public class ProjectServiceImplTest {
 
     @Test
     public void addProject() {
-//        when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(expectedUser));
-//        when(userMapper.toResponseDto(Mockito.any(UserEntity.class)))
-//                .thenAnswer(invocation -> new UserMapperImpl().toResponseDto(invocation.<UserEntity>getArgument(0)));
-//        when(projectRepository.findById(Mockito.any())).thenReturn(Optional.of(project1));
-//        when(projectRepository.save(project1)).thenReturn(project1);
-//        reMapper();
-//        ProjectResponseDto actualProject = projectService.addProject(USER_ID, projectRequestDto);
-//        Assert.assertEquals(project1.getTitle(), actualProject.getTitle());
-//        Assert.assertEquals(project1.getDescription(), actualProject.getDescription());
+        when(userRepository.findById(Mockito.any())).thenReturn(Optional.of(expectedUser));
+        when(userMapper.toResponseDto(Mockito.any(UserEntity.class)))
+                .thenAnswer(invocation -> new UserMapperImpl().toResponseDto(invocation.<UserEntity>getArgument(0)));
+        when(projectRepository.findById(Mockito.any())).thenReturn(Optional.of(project1));
+        when(projectRepository.save(project1)).thenReturn(project1);
+        setUpMapper();
+        ProjectResponseDto actualProject = projectService.addProject(USER_ID, projectRequestDto);
+        Assert.assertEquals(project1.getTitle(), actualProject.getTitle());
+        Assert.assertEquals(project1.getDescription(), actualProject.getDescription());
     }
 
     @Test
@@ -128,7 +129,7 @@ public class ProjectServiceImplTest {
                 .thenAnswer(invocation -> new ProjectMapperImpl().toResponseDto(invocation.<ProjectEntity>getArgument(0)));
         when(projectMapper.toRequestDto(Mockito.any(ProjectEntity.class)))
                 .thenAnswer(invocation -> new ProjectMapperImpl().toRequestDto(invocation.<ProjectEntity>getArgument(0)));
-        when(projectMapper.toEntity(Mockito.any(ProjectResponseDto.class)))
-                .thenAnswer(invocation -> new ProjectMapperImpl().toEntity(invocation.<ProjectResponseDto>getArgument(0)));
+        when(projectMapper.toEntity(Mockito.any(ProjectRequestDto.class)))
+                .thenAnswer(invocation -> new ProjectMapperImpl().toEntity(invocation.<ProjectRequestDto>getArgument(0)));
     }
 }
