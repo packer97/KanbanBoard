@@ -46,7 +46,8 @@ public class ReleaseViewController {
   @GetMapping
   public ModelAndView getProjectReleasesPage(@PathVariable UUID projectId) {
 
-    boolean isLead = checkAccess(projectId);
+    boolean isLead = userProjectService
+        .isUserLeadInProject(principalService.getPrincipalId(), projectId);
 
     ProjectResponseDto projectResponseDto = projectService.getById(projectId);
     projectResponseDto.getReleases().sort(new Comparator<ReleaseEntity>() {
@@ -147,6 +148,5 @@ public class ReleaseViewController {
     }
     return true;
   }
-
 
 }
