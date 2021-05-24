@@ -53,12 +53,7 @@ public class ReleaseViewController {
         .isUserLeadInProject(principalService.getPrincipalId(), projectId);
 
     ProjectResponseDto projectResponseDto = projectService.getById(projectId);
-    projectResponseDto.getReleases().sort(new Comparator<ReleaseEntity>() {
-      @Override
-      public int compare(ReleaseEntity o1, ReleaseEntity o2) {
-        return o1.getStartDate().compareTo(o2.getStartDate());
-      }
-    });
+    projectResponseDto.getReleases().sort((o1, o2) -> o1.getStartDate().compareTo(o2.getStartDate()));
 
     ModelAndView modelAndView = new ModelAndView("releases/releaseListPage");
     modelAndView.addObject("projectDTO", projectResponseDto);

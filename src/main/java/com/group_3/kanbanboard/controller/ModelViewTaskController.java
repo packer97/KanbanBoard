@@ -1,25 +1,25 @@
 package com.group_3.kanbanboard.controller;
 
+import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
+import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.TaskService;
 import com.group_3.kanbanboard.service.impl.ModelViewTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/projects/{projectId}/releases/{releaseId}/tasks/")
+@RequestMapping("/projects/{projectId}/releases/{releaseId}/tasks")
 public class ModelViewTaskController {
 
     private final ModelViewTaskService modelViewTaskService;
@@ -41,14 +41,9 @@ public class ModelViewTaskController {
     public String getTasksFromProjectAndRelease(@PathVariable UUID projectId,
                                                 @PathVariable UUID releaseId,
                                                 Model model) {
-
-        UserResponseDto userAsPrincipal = principalService.getPrincipal();
-
         List<TaskResponseDto> taskResponseDtoList =
                 modelViewTaskService.getTasksFromProjectAndRelease(projectId, releaseId);
         model.addAttribute("tasksList", taskResponseDtoList);
-
-        model.addAttribute("userAsPrincipal", userAsPrincipal);
 
         ReleaseResponseDto releaseResponseDto = modelViewTaskService.getReleaseById(releaseId);
         model.addAttribute("release", releaseResponseDto);
@@ -70,9 +65,23 @@ public class ModelViewTaskController {
 
         return "taskDetail";
     }
+    @DeleteMapping("/{taskId}")
+    public String deleteTask(@PathVariable UUID taskId){
+        taskService.deleteTask(taskId);
+        return "redirect:/projects/{projectId}/releases/{releaseId}/tasks";
+    }
 
-    @PostMapping("/{taskId}")
-    public String addTask() {
-        return "/asdasd";
+    @PutMapping("/{taskId}")
+    public String updateTask(@PathVariable UUID taskId, @RequestParam(required = false) String save_task,
+                             @ModelAttribute TaskRequestDto taskRequestDto){
+        taskRequestDto.setDescription(save_task);
+        taskService.updateTask(taskId, taskRequestDto);
+        return "taskDetail";
+    }
+
+    @ModelAttribute("userAsPrincipal")
+    public UserResponseDto getUserAsPrincipal(){
+        return principalService.getPrincipal();
     }
 }
+

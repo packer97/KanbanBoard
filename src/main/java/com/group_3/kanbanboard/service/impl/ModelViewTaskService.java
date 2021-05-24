@@ -9,6 +9,7 @@ import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.EntityService;

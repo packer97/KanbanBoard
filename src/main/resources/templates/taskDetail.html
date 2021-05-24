@@ -7,27 +7,45 @@
 <body>
 <header>
     <nav>
-        <a href="/users">USERS</a>
-        |
-        <a href="/projects">PROJECTS</a>
-        |
-        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>
-        |
-        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
-        |
+        <a href="/users">USERS</a>|
+        <a href="/projects">PROJECTS</a>|
+        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>|
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>|
     </nav>
 </header>
-<h2 style="margin-left: 200px">Task:</h2>
-<h2 th:text="${distinctTask.title}">distinctTask.title</h2>
-<div>
+<hr>
+<h2 style="margin-left: 200px; display: inline-block;">Task title:</h2>
+<h2 th:text="${distinctTask.title}" style=" display: inline-block;">distinctTask.title</h2>
+<hr>
+<div id="textarea_div" style="display: inline-block;">
     <p><label for="description">Description:</label></p>
-    <textarea id="description" cols="100" rows="10" placeholder="Enter task description" style="resize: none">
-    </textarea>
-    
-    
+    <form method="get"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}">
+        <textarea id="description" cols="100" rows="10" style="resize: none;"
+                  placeholder="Enter description of task here ->"
+                  th:text="${distinctTask.description}"></textarea>
+        <button type="submit" name="save_task">Save changes</button>
+    </form>
 </div>
+<div id="inform_div" style="display: inline-block;">
+    <p><span>Task performer:</span><span th:text="${distinctTask.performer.username}"></span></p>
+    <p><span>Task end date:</span><span th:text="${distinctTask.endDate}"></span></p>
+    <p><span>Task status:</span><span th:text="${distinctTask.taskStatus}"></span></p>
+    <p><span>Task category:</span><span th:text="${distinctTask.taskCategory}"></span></p>
+    <p><span>Task release version:</span><span th:text="${distinctTask.release.version}"></span></p>
 
+    <form th:method="delete"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}"
+          style="display: inline-block">
+        <button type="submit" class="btn">Delete task</button>
+    </form>
+
+    <form method="get"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}"
+          style="display: inline-block">
+        <button type="submit" name="cancel">Cancel</button>
+    </form>
+</div>
 <p><span th:text="${distinctTask}"></span></p>
-
 </body>
 </html>
