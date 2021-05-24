@@ -60,8 +60,8 @@ public class ProjectServiceImpl implements ProjectService {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(
                 () -> new UserNotFoundException(String.format("User with ID = %s was not found", userId)));
         ProjectEntity project = projectMapper.toEntity(projectRequestDto);
-        UserProjectEntity userProjectEntity = new UserProjectEntity(userEntity, project);
         projectRepository.save(project);
+        UserProjectEntity userProjectEntity = new UserProjectEntity(userEntity, project);
         userProjectRepository.save(userProjectEntity);
         return projectMapper.toResponseDto(project);
     }

@@ -19,6 +19,7 @@
         <a href="/tasks"
            th:href="@{/users/{userName}/projects/{projectId}/releases/{releaseId}/tasks(userName=${userName}, projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>        |
     </nav>
+
 </header>
 <div style="text-align: right">
     <form method="post" action="/logout">
@@ -26,9 +27,12 @@
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
 </div>
+<div style="text-align: center">
 <form th:action="@{/projects/{projectId}/}" method="post">
     <button type="submit">Add new project</button>
 </form>
+</div>
+
 <table align="center">
 
     <thead>

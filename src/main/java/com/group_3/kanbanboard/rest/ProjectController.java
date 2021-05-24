@@ -18,8 +18,12 @@ import java.util.UUID;
 @RestController
 public class ProjectController {
 
+    private final ProjectServiceImpl projectService;
+
     @Autowired
-    private ProjectServiceImpl projectService;
+    public ProjectController(ProjectServiceImpl projectService) {
+        this.projectService = projectService;
+    }
 
     @Operation(summary = "Добавить проект")
     @PostMapping
