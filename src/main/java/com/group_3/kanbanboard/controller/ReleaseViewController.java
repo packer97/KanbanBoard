@@ -10,6 +10,7 @@ import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.ReleaseService;
 import com.group_3.kanbanboard.service.UserProjectService;
+import com.group_3.kanbanboard.service.UtilService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
@@ -32,15 +33,17 @@ public class ReleaseViewController {
   private final ReleaseService releaseService;
   private final ProjectService projectService;
   private final UserProjectService userProjectService;
+  private final UtilService utilService;
 
   @Autowired
   public ReleaseViewController(PrincipalService principalService,
       ReleaseService releaseService, ProjectService projectService,
-      UserProjectService userProjectService) {
+      UserProjectService userProjectService, UtilService utilService) {
     this.principalService = principalService;
     this.releaseService = releaseService;
     this.projectService = projectService;
     this.userProjectService = userProjectService;
+    this.utilService = utilService;
   }
 
   @GetMapping
@@ -76,7 +79,7 @@ public class ReleaseViewController {
 
   @GetMapping("/new")
   public ModelAndView getAddReleasePage(@PathVariable UUID projectId) {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     ModelAndView modelAndView = new ModelAndView("releases/newReleasePage");
     modelAndView.addObject("projectId", projectId);
@@ -86,7 +89,7 @@ public class ReleaseViewController {
   @PostMapping
   public String addReleaseToProject(String version, String formStartDate, String formEndDate,
       @PathVariable UUID projectId) throws ParseException {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -104,7 +107,7 @@ public class ReleaseViewController {
 
   @DeleteMapping("/{releaseId}")
   public String deleteRelease(@PathVariable UUID releaseId, @PathVariable UUID projectId) {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     releaseService.deleteReleaseById(releaseId);
     return "redirect:/projects/{projectId}/releases";
@@ -113,7 +116,7 @@ public class ReleaseViewController {
   @GetMapping("/{releaseId}/edit")
   public ModelAndView getEditReleasePage(@PathVariable UUID releaseId,
       @PathVariable UUID projectId) {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     ReleaseResponseDto releaseDto = releaseService.getById(releaseId);
     ModelAndView modelAndView = new ModelAndView("releases/editReleasePage");
@@ -127,7 +130,7 @@ public class ReleaseViewController {
       ReleaseRequestDto releaseRequestDto, String formStatus, String formStartDate,
       String formEndDate)
       throws ParseException {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -138,13 +141,5 @@ public class ReleaseViewController {
     releaseService.updateRelease(releaseId, releaseRequestDto);
 
     return "redirect:/projects/{projectId}/releases/{releaseId}";
-  }
-
-  private void checkAccess(UUID projectId) {
-    boolean isLead = userProjectService
-        .isUserLeadInProject(principalService.getPrincipalId(), projectId);
-    if (!isLead) {
-      throw new ForbiddenException("Error! You are not a lead to continue your actions!");
-    }
   }
 }
