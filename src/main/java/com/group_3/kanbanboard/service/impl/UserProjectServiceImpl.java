@@ -3,10 +3,12 @@ package com.group_3.kanbanboard.service.impl;
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.entity.UserProjectEntity;
-import com.group_3.kanbanboard.entity.UserProjectId;
+import com.group_3.kanbanboard.enums.InProjectUserRole;
+import com.group_3.kanbanboard.exception.UserProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.UserProjectMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
 import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
+import com.group_3.kanbanboard.service.EntityService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import java.util.List;
 import java.util.UUID;
@@ -70,8 +72,8 @@ public class UserProjectServiceImpl implements UserProjectService {
   @Transactional
   @Override
   public boolean isUserLeadInProject(UUID userId, UUID projectId) {
-    UserProjectId userProjectId = new UserProjectId(userId, projectId);
-    InProjectUserRole userRole = getById(userProjectId).getProjectUserRole();
+    InProjectUserRole userRole = getUserProjectByUserAndProject(userId, projectId)
+        .getProjectUserRole();
     return userRole == InProjectUserRole.LEAD;
   }
 }

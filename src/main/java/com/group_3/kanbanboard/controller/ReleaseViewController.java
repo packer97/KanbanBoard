@@ -140,13 +140,11 @@ public class ReleaseViewController {
     return "redirect:/projects/{projectId}/releases/{releaseId}";
   }
 
-  private boolean checkAccess(UUID projectId) {
+  private void checkAccess(UUID projectId) {
     boolean isLead = userProjectService
         .isUserLeadInProject(principalService.getPrincipalId(), projectId);
     if (!isLead) {
       throw new ForbiddenException("Error! You are not a lead to continue your actions!");
     }
-    return true;
   }
-
 }
