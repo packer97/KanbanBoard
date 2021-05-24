@@ -10,8 +10,7 @@ import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.TaskMapperImpl;
 import com.group_3.kanbanboard.repository.TaskRepository;
-import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
-import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
+import com.group_3.kanbanboard.rest.dto.*;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -47,12 +46,23 @@ public class TaskServiceImplTest {
     @Before
     public void setUp() {
 
-        expectedTask = new TaskEntity(TITLE, DESCRIPTION,
-                END_DATE, TASK_CATEGORY, TASK_STATUS,
-                new UserEntity(), new ProjectEntity(), new ReleaseEntity());
+        expectedTask = new TaskEntity(TITLE,
+                DESCRIPTION,
+                END_DATE,
+                TASK_CATEGORY,
+                TASK_STATUS,
+                new UserEntity(),
+                new ProjectEntity(),
+                new ReleaseEntity());
 
-        expectedTAskRequestDto = new TaskRequestDto(TITLE, TASK_CATEGORY.name(), DESCRIPTION,
-                TASK_STATUS.name(), Integer.MAX_VALUE);
+        expectedTAskRequestDto = new TaskRequestDto(TITLE,
+                DESCRIPTION,
+                END_DATE,
+                TASK_CATEGORY.name(),
+                TASK_STATUS.name(),
+                new UserResponseDto(),
+                new ProjectResponseDto(),
+                new ReleaseResponseDto());
 
     }
 
@@ -124,7 +134,7 @@ public class TaskServiceImplTest {
     }
 
     @Test(expected = TaskNotFoundException.class)
-    public void deleteTaskExc(){
+    public void deleteTaskExc() {
         taskService.deleteTask(ID);
     }
 

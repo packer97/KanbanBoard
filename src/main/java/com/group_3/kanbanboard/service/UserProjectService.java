@@ -9,13 +9,11 @@ import java.util.UUID;
 
 public interface UserProjectService {
 
-    UserProjectResponseDto getById(UserProjectId id);
+    List<UserProjectResponseDto> getUserProjectsFromUser(UUID userId);
 
-    UserProjectResponseDto addUserProject(UserProjectRequestDto userProjectRequestDto);
+    List<UserProjectResponseDto>  getUserProjectsFromProject(UUID projectId);
 
-    UserProjectResponseDto updateUserProject(UserProjectId id, UserProjectRequestDto userProjectRequestDto);
-
-    void deleteUserProject(UserProjectId id);
+    UserProjectResponseDto getUserProjectByUserAndProject(UUID userId, UUID projectId);
 
     boolean isUserLeadInProject(UUID userId, UUID projectId);
 }
