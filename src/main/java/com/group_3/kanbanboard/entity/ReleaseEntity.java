@@ -49,7 +49,7 @@ public class ReleaseEntity {
   private ProjectEntity project;
 
   @OneToMany(cascade = CascadeType.ALL,
-      orphanRemoval = true,
+      //orphanRemoval=true
       mappedBy = "release")
   private List<TaskEntity> tasks;
 

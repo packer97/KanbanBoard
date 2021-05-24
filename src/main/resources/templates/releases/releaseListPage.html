@@ -35,9 +35,11 @@
 
 <h1 style="text-align: center">RELEASES LIST</h1>
 
-<form th:action="@{/projects/{projectId}/releases/new (projectId = ${projectId})}" method="get">
-  <button type="submit">Add new release</button>
-</form>
+<div style="text-align: center">
+  <form th:action="@{/projects/{projectId}/releases/new (projectId = ${projectId})}" method="get">
+    <button type="submit">Add new release</button>
+  </form>
+</div>
 
 <hr>
 <table style="table-border-color-dark: black;" align="center">

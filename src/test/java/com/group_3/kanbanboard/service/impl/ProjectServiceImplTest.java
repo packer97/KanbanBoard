@@ -155,7 +155,8 @@ public class ProjectServiceImplTest {
                 .thenAnswer(invocation -> new ProjectMapperImpl().toResponseDto(invocation.<ProjectEntity>getArgument(0)));
         when(projectMapper.toRequestDto(Mockito.any(ProjectEntity.class)))
                 .thenAnswer(invocation -> new ProjectMapperImpl().toRequestDto(invocation.<ProjectEntity>getArgument(0)));
-        when(projectMapper.toEntity(Mockito.any(ProjectResponseDto.class)))
-                .thenAnswer(invocation -> new ProjectMapperImpl().toEntity(invocation.<ProjectResponseDto>getArgument(0)));
+        when(projectMapper.toEntity(Mockito.any(ProjectRequestDto.class)))
+            .thenAnswer(invocation -> new ProjectMapperImpl()
+                .toEntity(invocation.<ProjectRequestDto>getArgument(0)));
     }
 }

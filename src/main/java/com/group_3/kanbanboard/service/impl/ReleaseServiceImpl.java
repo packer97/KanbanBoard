@@ -78,6 +78,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     ReleaseEntity releaseEntityFromDb = releaseRepository.findById(id).orElseThrow(
         () -> new ReleaseNotFoundException(String.format("Release with ID = %s was not found", id)));
     ReleaseEntity releaseFromDto = releaseMapper.toEntity(releaseRequestDto);
+    releaseFromDto.setProject(releaseEntityFromDb.getProject());
     releaseFromDto.setId(releaseEntityFromDb.getId());
 
     releaseRepository.save(releaseFromDto);

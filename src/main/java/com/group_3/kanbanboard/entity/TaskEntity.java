@@ -47,11 +47,14 @@ public class TaskEntity {
     public TaskEntity() {
     }
 
-
-    public TaskEntity(String title, String description, Date endDate,
-                      TaskCategory taskCategory, TaskStatus taskStatus,
-                      UserEntity performer, ProjectEntity project, ReleaseEntity release) {
-
+    public TaskEntity(String title,
+                      String description,
+                      Date endDate,
+                      TaskCategory taskCategory,
+                      TaskStatus taskStatus,
+                      UserEntity performer,
+                      ProjectEntity project,
+                      ReleaseEntity release) {
         this.title = title;
         this.description = description;
         this.endDate = endDate;
@@ -67,14 +70,13 @@ public class TaskEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TaskEntity that = (TaskEntity) o;
-        return Objects.equals(title, that.title) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(endDate, that.endDate);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, endDate);
+        return Objects.hash(id, title);
     }
 
     public UUID getId() {

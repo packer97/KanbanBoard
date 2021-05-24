@@ -3,7 +3,6 @@ package com.group_3.kanbanboard.repository;
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.TaskEntity;
-import com.group_3.kanbanboard.entity.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
@@ -14,12 +13,11 @@ import java.util.UUID;
 @Repository
 public interface TaskRepository extends JpaRepository<TaskEntity, UUID> {
 
-    List<TaskEntity> findByPerformerAndProjectAndRelease(UserEntity performer, ProjectEntity project, ReleaseEntity release);
+    List<TaskEntity> findByProjectAndRelease(ProjectEntity project, ReleaseEntity release);
 
-    Optional<TaskEntity> findByPerformerAndProjectAndReleaseAndId(UserEntity performer,
-                                                                  ProjectEntity project,
-                                                                  ReleaseEntity release,
-                                                                  UUID id);
+    Optional<TaskEntity> findByIdAndProjectAndRelease(UUID id,
+                                                      ProjectEntity project,
+                                                      ReleaseEntity release);
 
 
 }
