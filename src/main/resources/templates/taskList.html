@@ -7,18 +7,21 @@
         H1, H2 {
             display: inline-block;
         }
+
         #owner_table {
             border: 1px solid black;
             margin: 3px;
             padding: 3px;
             border-collapse: collapse;
         }
+
         #column_table {
             border: 1px solid black;
             empty-cells: hide;
             width: 200px;
             border-collapse: collapse;
         }
+
         TD, TH {
             vertical-align: top;
             margin: 0px;
@@ -30,12 +33,13 @@
 <body>
 <header>
     <nav>
-        <a href="/users">USERS</a> |
-        <a href="/projects">PROJECTS</a> |
-        <a href="/projects/{projectId}/releases"
-           th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
-        <a href="/projects/{projectId}/releases/{releaseId}/tasks"
-           th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+        <a href="/users">USERS</a>
+        |
+        <a href="/projects">PROJECTS</a>
+        |
+        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>
+        |
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
         |
     </nav>
     <hr>
@@ -57,7 +61,7 @@
     <hr>
 </header>
 
-<form method="get" action="projects/{projectId}/releases/{releaseId}/tasks"
+<form method="get"
       th:action="@{/projects/{projectId}/releases/{releaseId}/tasks( projectId=${projectId}, releaseId=${releaseId})}">
     <input type="search" name="search" placeholder="Search tasks" value="">
     <button type="submit" class="btn">Search</button>
@@ -76,15 +80,18 @@
             <td th:each="status : ${statuses}">
                 <table id="column_table">
                     <tr th:each="task : ${tasksList}">
-                        <td >
-                            <div th:if="${task.taskStatus.equals(status.toString())}" style="border: 1px solid black;">
-                                <p><span th:text="${task.title}">task.title</span></p>
-                                <p><span th:text="${task.description}">task.description</span></p>
-                                <p><span th:text="${task.endDate}">task.endDate</span></p>
-                                <p><span th:text="${task.taskCategory}">task.taskCategory</span></p>
-                                <p>
-                                </p>
-                            </div>
+                        <td>
+                            <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${task.id})}">
+                                <div th:if="${task.taskStatus.equals(status.toString())}"
+                                     style="border: 1px solid black;">
+                                    <p><span th:text="${task.title}">task.title</span></p>
+                                    <p><span th:text="${task.description}">task.description</span></p>
+                                    <p><span th:text="${task.endDate}">task.endDate</span></p>
+                                    <p><span th:text="${task.taskCategory}">task.taskCategory</span></p>
+                                    <p>
+                                    </p>
+                                </div>
+                            </a>
                         </td>
                     </tr>
                 </table>

@@ -1,10 +1,31 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta content="text/html; charset=utf-8">
     <title>Title</title>
 </head>
 <body>
+<header>
+    <nav>
+        <a href="/users">USERS</a>
+        |
+        <a href="/projects">PROJECTS</a>
+        |
+        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>
+        |
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+        |
+    </nav>
+</header>
+<h2 style="margin-left: 200px">Task:</h2>
+<h2 th:text="${distinctTask.title}">distinctTask.title</h2>
+<div>
+    <p><label for="description">Description:</label></p>
+    <textarea id="description" cols="100" rows="10" placeholder="Enter task description" style="resize: none">
+    </textarea>
+    
+    
+</div>
 
 <p><span th:text="${distinctTask}"></span></p>
 
