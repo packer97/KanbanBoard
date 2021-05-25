@@ -72,4 +72,6 @@ public class ModelViewTaskService {
     public ReleaseResponseDto getReleaseById(UUID id) {
         return releaseMapper.toResponseDto(entityService.getReleaseEntity(id));
     }
+
+
 }

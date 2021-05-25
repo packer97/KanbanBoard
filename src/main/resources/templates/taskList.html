@@ -9,7 +9,7 @@
     <nav>
         <a href="/users">USERS</a>|
         <a href="/projects">PROJECTS</a>|
-        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>|
+        <a C="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>|
         <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>|
     </nav>
     <hr>
@@ -20,23 +20,26 @@
     <div>
         <span th:text="${userAsPrincipal.firstName}">userAsPrincipal.firstName</span>
         <span th:text="${userAsPrincipal.secondName}">userAsPrincipal.secondName</span>
-        <form method="get"
+        <form th:method="get"
+              id="profile_form"
               action="/users/profile/"
               style="display: inline-block">
-            <button type="submit" name="profile">Profile</button>
+            <button type="submit" name="profile_btn">Profile</button>
         </form>
-        <form method="post"
+        <form th:method="post"
+              id="logout_form"
               action="/logout"
               style="display: inline-block">
-            <button type="submit" name="logout">Logout</button>
+            <button type="submit" name="logout_btn">Logout</button>
         </form>
     </div>
     <hr>
 </header>
-<form method="get"
+<form th:method="get"
+      id="search_form"
       th:action="@{/projects/{projectId}/releases/{releaseId}/tasks( projectId=${projectId}, releaseId=${releaseId})}">
     <input type="search" name="search" placeholder="Search tasks" value="">
-    <button type="submit" name="search_task">Search</button>
+    <button type="submit" name="search_task_btn">Search</button>
 </form>
 <div>
     <table id="owner_table" style=" border: 1px solid black;margin: 3px; padding: 3px; border-collapse: collapse;">

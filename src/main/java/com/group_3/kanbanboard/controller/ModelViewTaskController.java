@@ -1,14 +1,13 @@
 package com.group_3.kanbanboard.controller;
 
-import com.fasterxml.jackson.databind.deser.std.UUIDDeserializer;
 import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
 import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
-import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.TaskService;
+import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.ModelViewTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,15 +22,17 @@ import java.util.UUID;
 public class ModelViewTaskController {
 
     private final ModelViewTaskService modelViewTaskService;
+    private final ModelViewProjectService modelViewProjectService;
     private final PrincipalService principalService;
     private final TaskService taskService;
 
 
     @Autowired
     public ModelViewTaskController(ModelViewTaskService modelViewTaskService,
-                                   PrincipalService principalService,
+                                   ModelViewProjectService modelViewProjectService, PrincipalService principalService,
                                    TaskService taskService) {
         this.modelViewTaskService = modelViewTaskService;
+        this.modelViewProjectService = modelViewProjectService;
         this.principalService = principalService;
         this.taskService = taskService;
     }
@@ -63,24 +64,28 @@ public class ModelViewTaskController {
 
         model.addAttribute("distinctTask", distinctTask);
 
+        List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
+        model.addAttribute("projectUsers", projectUsers);
+
         return "taskDetail";
     }
+
     @DeleteMapping("/{taskId}")
-    public String deleteTask(@PathVariable UUID taskId){
+    public String deleteTask(@PathVariable UUID taskId) {
         taskService.deleteTask(taskId);
         return "redirect:/projects/{projectId}/releases/{releaseId}/tasks";
     }
 
     @PutMapping("/{taskId}")
-    public String updateTask(@PathVariable UUID taskId, @RequestParam(required = false) String save_task,
-                             @ModelAttribute TaskRequestDto taskRequestDto){
-        taskRequestDto.setDescription(save_task);
-        taskService.updateTask(taskId, taskRequestDto);
+    public String updateTask(@PathVariable UUID taskId,
+                             Model model) {
+        TaskResponseDto previousTask = taskService.getById(taskId);
+        model.addAttribute("distinctTask", previousTask);
         return "taskDetail";
     }
 
     @ModelAttribute("userAsPrincipal")
-    public UserResponseDto getUserAsPrincipal(){
+    public UserResponseDto getUserAsPrincipal() {
         return principalService.getPrincipal();
     }
 }
