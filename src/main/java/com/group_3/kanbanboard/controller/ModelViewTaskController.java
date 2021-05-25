@@ -81,12 +81,15 @@ public class ModelViewTaskController {
 
     @PutMapping("/{taskId}")
     public String updateTask(@PathVariable UUID taskId,
-                             @RequestParam String description_textarea;
-
+                             @PathVariable UUID projectId,
+                             @PathVariable UUID releaseId,
+                             @RequestParam String descriptionTextarea,
+                             @RequestParam String projectUserSelect,
+                             @ModelAttribute TaskRequestDto taskRequestDto,
                              Model model) {
-        TaskResponseDto previousTask = taskService.getById(taskId);
+        
 
-        model.addAttribute("distinctTask", previousTask);
+
 
 
         return "taskDetail";
