@@ -140,9 +140,16 @@ public class ReleaseViewController {
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
+    Date startDate = simpleDateFormat.parse(formStartDate);
+    Date endDate = simpleDateFormat.parse(formEndDate);
+
+    if(endDate.compareTo(startDate) < 0){
+      throw new FormInputException("Start date of release should be earlier than end date");
+    }
+
     releaseRequestDto.setStatus(ReleaseStatus.valueOf(formStatus));
-    releaseRequestDto.setStartDate(simpleDateFormat.parse(formStartDate));
-    releaseRequestDto.setEndDate(simpleDateFormat.parse(formEndDate));
+    releaseRequestDto.setStartDate(startDate);
+    releaseRequestDto.setEndDate(endDate);
 
     releaseService.updateRelease(releaseId, releaseRequestDto);
 
