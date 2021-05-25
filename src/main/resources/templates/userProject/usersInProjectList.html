@@ -4,8 +4,7 @@
   <meta charset="UTF-8">
   <title>project users list</title>
   <nav>
-    <a href="/projects/{projectId}/releases/{releaseId}/users"
-       th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">USERS</a> |
+    <a th:href="@{/projects/{projectId}/users(projectId=${projectId})}">USERS</a> |
     <a href="/projects">PROJECTS</a> |
     <a href="/projects/{projectId}/releases"
        th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
@@ -19,6 +18,7 @@
 
 
 </head>
+
 <body>
 <table>
   <thead>

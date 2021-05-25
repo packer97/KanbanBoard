@@ -19,7 +19,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Controller
-@RequestMapping("/projects/{projectId}/releases/{releaseId}/tasks/")
+@RequestMapping("/projects/{projectId}/releases/{releaseId}/tasks")
 public class ModelViewTaskController {
 
     private final ModelViewTaskService modelViewTaskService;
