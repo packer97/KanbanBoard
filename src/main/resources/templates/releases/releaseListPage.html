@@ -35,7 +35,7 @@
 
 <h1 style="text-align: center">RELEASES LIST</h1>
 
-<div style="text-align: center">
+<div style="text-align: center" th:if="${isLead}">
   <form th:action="@{/projects/{projectId}/releases/new (projectId = ${projectId})}" method="get">
     <button type="submit">Add new release</button>
   </form>

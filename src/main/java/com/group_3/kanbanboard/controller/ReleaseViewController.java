@@ -3,6 +3,7 @@ package com.group_3.kanbanboard.controller;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.enums.ReleaseStatus;
 import com.group_3.kanbanboard.exception.ForbiddenException;
+import com.group_3.kanbanboard.exception.FormInputException;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
@@ -10,9 +11,11 @@ import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.ReleaseService;
 import com.group_3.kanbanboard.service.UserProjectService;
+import com.group_3.kanbanboard.service.UtilService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -32,15 +35,17 @@ public class ReleaseViewController {
   private final ReleaseService releaseService;
   private final ProjectService projectService;
   private final UserProjectService userProjectService;
+  private final UtilService utilService;
 
   @Autowired
   public ReleaseViewController(PrincipalService principalService,
       ReleaseService releaseService, ProjectService projectService,
-      UserProjectService userProjectService) {
+      UserProjectService userProjectService, UtilService utilService) {
     this.principalService = principalService;
     this.releaseService = releaseService;
     this.projectService = projectService;
     this.userProjectService = userProjectService;
+    this.utilService = utilService;
   }
 
   @GetMapping
@@ -50,12 +55,7 @@ public class ReleaseViewController {
         .isUserLeadInProject(principalService.getPrincipalId(), projectId);
 
     ProjectResponseDto projectResponseDto = projectService.getById(projectId);
-    projectResponseDto.getReleases().sort(new Comparator<ReleaseEntity>() {
-      @Override
-      public int compare(ReleaseEntity o1, ReleaseEntity o2) {
-        return o1.getStartDate().compareTo(o2.getStartDate());
-      }
-    });
+    projectResponseDto.getReleases().sort((o1, o2) -> o1.getStartDate().compareTo(o2.getEndDate()));
 
     ModelAndView modelAndView = new ModelAndView("releases/releaseListPage");
     modelAndView.addObject("projectDTO", projectResponseDto);
@@ -67,16 +67,18 @@ public class ReleaseViewController {
 
   @GetMapping("/{releaseId}")
   public ModelAndView getReleasePage(@PathVariable UUID releaseId, @PathVariable UUID projectId) {
+    boolean isLead = userProjectService.isUserLeadInProject(principalService.getPrincipalId(), projectId);
     ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);
 
     ModelAndView modelAndView = new ModelAndView("releases/releasePage");
     modelAndView.addObject("releaseDto", releaseResponseDto);
+    modelAndView.addObject("isLead", isLead);
     return modelAndView;
   }
 
   @GetMapping("/new")
   public ModelAndView getAddReleasePage(@PathVariable UUID projectId) {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     ModelAndView modelAndView = new ModelAndView("releases/newReleasePage");
     modelAndView.addObject("projectId", projectId);
@@ -86,7 +88,7 @@ public class ReleaseViewController {
   @PostMapping
   public String addReleaseToProject(String version, String formStartDate, String formEndDate,
       @PathVariable UUID projectId) throws ParseException {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -94,8 +96,15 @@ public class ReleaseViewController {
     releaseRequestDto.setProjectId(projectId);
     releaseRequestDto.setVersion(version);
 
-    releaseRequestDto.setStartDate(simpleDateFormat.parse(formStartDate));
-    releaseRequestDto.setEndDate(simpleDateFormat.parse(formEndDate));
+    Date startDate = simpleDateFormat.parse(formStartDate);
+    Date endDate = simpleDateFormat.parse(formEndDate);
+
+    if(endDate.compareTo(startDate) < 0){
+      throw new FormInputException("Start date of release should be earlier than end date");
+    }
+
+    releaseRequestDto.setStartDate(startDate);
+    releaseRequestDto.setEndDate(endDate);
 
     releaseService.addRelease(releaseRequestDto);
 
@@ -104,7 +113,7 @@ public class ReleaseViewController {
 
   @DeleteMapping("/{releaseId}")
   public String deleteRelease(@PathVariable UUID releaseId, @PathVariable UUID projectId) {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     releaseService.deleteReleaseById(releaseId);
     return "redirect:/projects/{projectId}/releases";
@@ -113,7 +122,7 @@ public class ReleaseViewController {
   @GetMapping("/{releaseId}/edit")
   public ModelAndView getEditReleasePage(@PathVariable UUID releaseId,
       @PathVariable UUID projectId) {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     ReleaseResponseDto releaseDto = releaseService.getById(releaseId);
     ModelAndView modelAndView = new ModelAndView("releases/editReleasePage");
@@ -127,7 +136,7 @@ public class ReleaseViewController {
       ReleaseRequestDto releaseRequestDto, String formStatus, String formStartDate,
       String formEndDate)
       throws ParseException {
-    checkAccess(projectId);
+    utilService.checkLeadAccess(projectId);
 
     SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -138,13 +147,5 @@ public class ReleaseViewController {
     releaseService.updateRelease(releaseId, releaseRequestDto);
 
     return "redirect:/projects/{projectId}/releases/{releaseId}";
-  }
-
-  private void checkAccess(UUID projectId) {
-    boolean isLead = userProjectService
-        .isUserLeadInProject(principalService.getPrincipalId(), projectId);
-    if (!isLead) {
-      throw new ForbiddenException("Error! You are not a lead to continue your actions!");
-    }
   }
 }
