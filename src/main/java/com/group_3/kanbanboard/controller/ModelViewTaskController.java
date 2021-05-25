@@ -1,11 +1,10 @@
 package com.group_3.kanbanboard.controller;
 
 import com.group_3.kanbanboard.enums.TaskStatus;
-import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
-import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
-import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
-import com.group_3.kanbanboard.rest.dto.UserResponseDto;
+import com.group_3.kanbanboard.rest.dto.*;
 import com.group_3.kanbanboard.service.PrincipalService;
+import com.group_3.kanbanboard.service.ProjectService;
+import com.group_3.kanbanboard.service.ReleaseService;
 import com.group_3.kanbanboard.service.TaskService;
 import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.ModelViewTaskService;
@@ -25,16 +24,20 @@ public class ModelViewTaskController {
     private final ModelViewProjectService modelViewProjectService;
     private final PrincipalService principalService;
     private final TaskService taskService;
+    private final ProjectService projectService;
+    private final ReleaseService releaseService;
 
 
     @Autowired
     public ModelViewTaskController(ModelViewTaskService modelViewTaskService,
                                    ModelViewProjectService modelViewProjectService, PrincipalService principalService,
-                                   TaskService taskService) {
+                                   TaskService taskService, ProjectService projectService, ReleaseService releaseService) {
         this.modelViewTaskService = modelViewTaskService;
         this.modelViewProjectService = modelViewProjectService;
         this.principalService = principalService;
         this.taskService = taskService;
+        this.projectService = projectService;
+        this.releaseService = releaseService;
     }
 
 
@@ -78,9 +81,14 @@ public class ModelViewTaskController {
 
     @PutMapping("/{taskId}")
     public String updateTask(@PathVariable UUID taskId,
+                             @RequestParam String description_textarea;
+
                              Model model) {
         TaskResponseDto previousTask = taskService.getById(taskId);
+
         model.addAttribute("distinctTask", previousTask);
+
+
         return "taskDetail";
     }
 

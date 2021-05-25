@@ -62,17 +62,10 @@ public class TaskServiceImpl implements TaskService {
                 () -> new TaskNotFoundException(String.format("Task with ID = %s not found", id)));
 
         TaskEntity taskFromDto = taskMapper.toEntity(taskRequestDto);
-        taskFromDb.setTitle(taskFromDto.getTitle());
-        taskFromDb.setDescription(taskFromDto.getDescription());
-        taskFromDb.setTaskCategory(taskFromDto.getTaskCategory());
-        taskFromDb.setTaskStatus(taskFromDto.getTaskStatus());
-        taskFromDb.setEndDate(taskFromDto.getEndDate());
-        taskFromDb.setPerformer(taskFromDto.getPerformer());
-        taskFromDb.setProject(taskFromDto.getProject());
-        taskFromDb.setRelease(taskFromDto.getRelease());
-        taskRepository.save(taskFromDb);
+        taskFromDto.setId(taskFromDb.getId());
+        taskRepository.save(taskFromDto);
 
-        return taskMapper.toResponseDto(taskFromDb);
+        return taskMapper.toResponseDto(taskFromDto);
 
     }
 

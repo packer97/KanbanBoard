@@ -15,24 +15,24 @@
 </header>
 <hr>
 <h2 style="margin-left: 200px; display: inline-block;">Task title:</h2>
-<h2 th:text="${distinctTask.title}" style=" display: inline-block;">distinctTask.title</h2>
+<h2 th:text="${distinctTask.title}" style="display: inline-block;">distinctTask.title</h2>
 <hr>
-<div id="textarea_div" style="display: inline-block;">
+<div id="textareaDiv" style="display: inline-block;">
     <label>
-<textarea form="save_task_form"  name="description_textarea" cols="100" rows="10" style="resize: none;"
+<textarea form="saveTaskForm"  name="descriptionTextarea" cols="100" rows="10" style="resize: none;"
           placeholder="Enter description of task here ->"
           th:text="${distinctTask.description}"></textarea>
     </label>
-    <form th:method="put"
-          id="save_task_form"
+    <form th:method="get"
+          id="saveTaskForm"
           th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}">
-        <button type="submit" name="save_btn">Save changes</button>
+        <button type="submit">Save changes</button>
     </form>
 </div>
-<div id="inform_div" style="display: inline-block;">
+<div id="informDiv" style="display: inline-block;">
     <p><span>Task performer:</span><span th:text="${distinctTask.performer.username}"></span>
         <label>
-            <select name="project_user_select" form="save_task_form">
+            <select name="projectUserSelect" form="saveTaskForm">
             <option th:each="projetcUser : ${projectUsers}" th:text="${projetcUser.username}"></option>
         </select></label>
     </p>
@@ -44,13 +44,13 @@
     <form th:method="delete"
           th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}"
           style="display: inline-block">
-        <button type="submit" name="delete_btn">Delete task</button>
+        <button type="submit">Delete task</button>
     </form>
 
     <form method="get"
           th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}"
           style="display: inline-block">
-        <button type="submit" name="cancel_btn">Cancel</button>
+        <button type="submit">Cancel</button>
     </form>
 </div>
 <p><span th:text="${distinctTask}"></span></p>

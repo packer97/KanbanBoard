@@ -21,25 +21,25 @@
         <span th:text="${userAsPrincipal.firstName}">userAsPrincipal.firstName</span>
         <span th:text="${userAsPrincipal.secondName}">userAsPrincipal.secondName</span>
         <form th:method="get"
-              id="profile_form"
-              action="/users/profile/"
+              id="profileForm"
+              action="/profile"
               style="display: inline-block">
-            <button type="submit" name="profile_btn">Profile</button>
+            <button type="submit">Profile</button>
         </form>
         <form th:method="post"
-              id="logout_form"
+              id="logoutForm"
               action="/logout"
               style="display: inline-block">
-            <button type="submit" name="logout_btn">Logout</button>
+            <button type="submit">Logout</button>
         </form>
     </div>
     <hr>
 </header>
 <form th:method="get"
-      id="search_form"
+      id="searchForm"
       th:action="@{/projects/{projectId}/releases/{releaseId}/tasks( projectId=${projectId}, releaseId=${releaseId})}">
     <input type="search" name="search" placeholder="Search tasks" value="">
-    <button type="submit" name="search_task_btn">Search</button>
+    <button type="submit">Search</button>
 </form>
 <div>
     <table id="owner_table" style=" border: 1px solid black;margin: 3px; padding: 3px; border-collapse: collapse;">
@@ -48,7 +48,7 @@
         <tr>
             <th th:each="status : ${statuses}"
                 style="vertical-align: top; margin: 0px; padding: 0px; background: #b0e0e6;">
-                <span th:text="${status}" style=""></span>
+                <span th:text="${status}"></span>
             </th>
         </tr>
         </thead>
