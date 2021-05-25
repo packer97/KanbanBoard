@@ -8,8 +8,6 @@ import com.group_3.kanbanboard.mappers.ReleaseMapper;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.TaskRepository;
-import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
-import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.EntityService;
@@ -67,11 +65,4 @@ public class ModelViewTaskService {
     public UserResponseDto getUserByUserName(String userName) {
         return userMapper.toResponseDto(entityService.getUserEntity(userName));
     }
-
-    @Transactional
-    public ReleaseResponseDto getReleaseById(UUID id) {
-        return releaseMapper.toResponseDto(entityService.getReleaseEntity(id));
-    }
-
-
 }

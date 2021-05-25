@@ -49,7 +49,7 @@ public class ModelViewTaskController {
                 modelViewTaskService.getTasksFromProjectAndRelease(projectId, releaseId);
         model.addAttribute("tasksList", taskResponseDtoList);
 
-        ReleaseResponseDto releaseResponseDto = modelViewTaskService.getReleaseById(releaseId);
+        ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);
         model.addAttribute("release", releaseResponseDto);
 
         model.addAttribute("statuses", TaskStatus.values());
@@ -87,7 +87,7 @@ public class ModelViewTaskController {
                              @RequestParam String projectUserSelect,
                              @ModelAttribute TaskRequestDto taskRequestDto,
                              Model model) {
-        
+
 
 
 
