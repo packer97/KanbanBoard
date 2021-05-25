@@ -1,6 +1,5 @@
 package com.group_3.kanbanboard.controller;
 
-
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.UserProjectService;

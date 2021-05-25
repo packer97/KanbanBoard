@@ -30,7 +30,13 @@
   </thead>
   <tbody>
   <tr th:each="user : ${usersInProjectList}">
-    <td><span th:text="${user.username }"> </span></td>
+    <td>
+      <span>
+      <a th:href="@{/projects/{projectId}/users/{userId}(projectId = ${projectId}, userId = ${user.getUsername()})}"
+       th:text="${user.username }">
+      </a>
+      </span>
+    </td>
     <td><span th:text="${user.mail}"> </span></td>
     <td><span th:text="${user.roles}"> </span></td>
   </tr>
