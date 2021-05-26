@@ -49,8 +49,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto addTask(TaskRequestDto taskRequestDto) {
         TaskEntity task = taskMapper.toEntity(taskRequestDto);
-        taskRepository.save(task);
-        return taskMapper.toResponseDto(task);
+        TaskEntity savedTask = taskRepository.save(task);
+        return taskMapper.toResponseDto(savedTask);
 
 
     }
@@ -63,7 +63,7 @@ public class TaskServiceImpl implements TaskService {
 
         TaskEntity taskFromDto = taskMapper.toEntity(taskRequestDto);
         taskFromDto.setId(taskFromDb.getId());
-        taskRepository.save(taskFromDto);
+        TaskEntity savedTask = taskRepository.save(taskFromDto);
 
         return taskMapper.toResponseDto(taskFromDto);
 
