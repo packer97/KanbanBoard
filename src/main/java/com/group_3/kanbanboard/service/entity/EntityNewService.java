@@ -5,6 +5,8 @@ import java.util.UUID;
 
 public interface EntityNewService<T, ID> {
 
+    //когда все перейдем нужно будет переименовать в EntityService<T, ID>
+
     T saveEntity(T entity);
 
     T getEntity(ID id);

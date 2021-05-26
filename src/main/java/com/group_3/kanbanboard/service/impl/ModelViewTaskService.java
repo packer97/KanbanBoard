@@ -27,7 +27,6 @@ public class ModelViewTaskService {
     private final EntityService entityService;
     private final TaskMapper taskMapper;
     private final UserMapper userMapper;
-    private final ReleaseMapper releaseMapper;
 
     @Autowired
     public ModelViewTaskService(TaskRepository taskRepository, EntityService entityService, TaskMapper taskMapper, UserMapper userMapper, ReleaseMapper releaseMapper) {
@@ -35,7 +34,6 @@ public class ModelViewTaskService {
         this.entityService = entityService;
         this.taskMapper = taskMapper;
         this.userMapper = userMapper;
-        this.releaseMapper = releaseMapper;
     }
 
     @Transactional

@@ -24,7 +24,6 @@ public class ModelViewTaskController {
     private final ModelViewProjectService modelViewProjectService;
     private final PrincipalService principalService;
     private final TaskService taskService;
-    private final ProjectService projectService;
     private final ReleaseService releaseService;
 
 
@@ -36,7 +35,6 @@ public class ModelViewTaskController {
         this.modelViewProjectService = modelViewProjectService;
         this.principalService = principalService;
         this.taskService = taskService;
-        this.projectService = projectService;
         this.releaseService = releaseService;
     }
 

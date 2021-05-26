@@ -6,6 +6,7 @@ import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.service.TaskService;
+import com.group_3.kanbanboard.service.entity.EntityNewService;
 import com.group_3.kanbanboard.service.entity.TaskEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,12 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskEntityServiceImpl taskEntityService;
+    private final EntityNewService<TaskEntity, UUID> taskEntityService;
     private final TaskMapper taskMapper;
 
 
     @Autowired
-    public TaskServiceImpl(TaskEntityServiceImpl taskEntityService, TaskMapper taskMapper) {
+    public TaskServiceImpl(EntityNewService<TaskEntity, UUID> taskEntityService, TaskMapper taskMapper) {
         this.taskEntityService = taskEntityService;
         this.taskMapper = taskMapper;
     }
@@ -54,7 +55,7 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskResponseDto updateTask(UUID id, TaskRequestDto taskRequestDto) {
-        TaskEntity taskFromDb = taskEntityService.getTaskEntity(id);
+        TaskEntity taskFromDb = taskEntityService.getEntity(id);
         TaskEntity taskFromDto = taskMapper.toEntity(taskRequestDto);
         taskFromDto.setId(taskFromDb.getId());
         TaskEntity savedTask = taskEntityService.saveEntity(taskFromDto);

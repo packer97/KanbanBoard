@@ -19,13 +19,6 @@ public class TaskEntityServiceImpl implements EntityNewService<TaskEntity, UUID>
         this.taskRepository = taskRepository;
     }
 
-
-    public TaskEntity getTaskEntity(UUID taskId) {
-        return taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(String.format("Task with id = %s not found", taskId)));
-    }
-
-
     @Override
     public TaskEntity saveEntity(TaskEntity entity) {
         return taskRepository.save(entity);
