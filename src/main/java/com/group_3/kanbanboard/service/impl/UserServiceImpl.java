@@ -40,6 +40,13 @@ public class UserServiceImpl implements UserService {
         () -> new UserNotFoundException("User not found"));
     return userMapper.toResponseDto(user);
   }
+  @Transactional
+  @Override
+  public UserResponseDto getUserByUsername(String username) {
+    UserEntity user = userRepository.findByUsername(username).orElseThrow(
+            () -> new UserNotFoundException("User not found"));
+    return userMapper.toResponseDto(user);
+  }
 
   @Transactional
   @Override
