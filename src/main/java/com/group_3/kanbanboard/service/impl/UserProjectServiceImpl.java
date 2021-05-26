@@ -67,7 +67,11 @@ public class UserProjectServiceImpl implements UserProjectService {
                 userId, projectId)));
     return userProjectMapper.toResponseDto(userWithProject);
   }
-
+  @Transactional
+  @Override
+  public void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role) {
+    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+  }
 
   @Transactional
   @Override

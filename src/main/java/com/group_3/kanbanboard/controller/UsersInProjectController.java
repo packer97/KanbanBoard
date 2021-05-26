@@ -35,7 +35,6 @@ public class UsersInProjectController {
     @GetMapping
     public String getUsers(@PathVariable UUID projectId,
     Model model) {
-
         UserResponseDto userAsPrincipal = principalService.getPrincipal();
         List<UserResponseDto> userResponseDtoList = modelViewProjectService.getUsersForProject(projectId);
         model.addAttribute("usersInProjectList", userResponseDtoList);
