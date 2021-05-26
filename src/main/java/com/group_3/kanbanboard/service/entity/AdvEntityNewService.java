@@ -1,5 +1,5 @@
 package com.group_3.kanbanboard.service.entity;
 
-public interface AdvEntityNewService<S, T> extends EntityNewService <S,T>  {
+public interface AdvEntityNewService<T, ID> extends EntityNewService <T, ID>  {
 
 }
