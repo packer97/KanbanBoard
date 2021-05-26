@@ -23,8 +23,15 @@
     </thead>
     <tbody>
     <div style="margin-top: 40px;">
+        <label>Role
+            <select name="formStatus">
+                <option>DEVELOPER</option>
+                <option>LEAD</option>
+            </select>
+        </label>
+    </div>
         <b>Role: </b>
-        <b th:text="${user.username}"></b>
+        <b th:text="${user.roles}"></b>
     </div>
     <div style="margin-top: 10px;">
         <b>First name: </b>

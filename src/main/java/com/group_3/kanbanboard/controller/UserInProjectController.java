@@ -1,20 +1,28 @@
 package com.group_3.kanbanboard.controller;
 
 import com.group_3.kanbanboard.entity.UserEntity;
+import com.group_3.kanbanboard.enums.InProjectUserRole;
+import com.group_3.kanbanboard.enums.ReleaseStatus;
+import com.group_3.kanbanboard.exception.FormInputException;
+import com.group_3.kanbanboard.repository.UserProjectRepository;
+import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
+import com.group_3.kanbanboard.rest.dto.UserProjectRequestDto;
+import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
+import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UserService;
 import liquibase.pro.packaged.S;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.UUID;
 
 @Controller
@@ -24,9 +32,11 @@ public class UserInProjectController {
     private final PrincipalService principalService;
     private final UserDetailsService userDetailsService;
     private final UserService userService;
+    private final UserProjectService userProjectService;
 
-    public UserInProjectController(@Qualifier("userDetailsServiceImpl") UserDetailsService userDetailsService, UserService userService, PrincipalService principalService) {
+    public UserInProjectController(UserDetailsService userDetailsService,  UserProjectService userProjectService, UserService userService, PrincipalService principalService) {
         this.userDetailsService = userDetailsService;
+        this.userProjectService = userProjectService;
         this.userService = userService;
         this.principalService = principalService;
     }
@@ -44,6 +54,16 @@ public class UserInProjectController {
         model.addAttribute("user", user);
         return "userProject/setUserRoleInProject";
 
+    }
+    @PatchMapping("/{username}")
+    public String updateUserProject(@PathVariable UUID projectId, @PathVariable String username,
+                                    UserProjectRepository userProjectRepository,
+                                    UserProjectRequestDto userProjectRequestDto, UserProjectResponseDto userProjectResponseDto, String formStatus){
+        UUID userId = userProjectResponseDto.getUser().getId();
+        userProjectRequestDto.setProjectUserRole(InProjectUserRole.valueOf(formStatus));
+        userProjectService.setUserProjectRole(userId,projectId,InProjectUserRole.valueOf(formStatus));
+        userProjectRepository.save();
+        return "userProject/setUserRoleInProject";
     }
 
 

@@ -1,9 +1,11 @@
 package com.group_3.kanbanboard.service.impl;
 
 import com.group_3.kanbanboard.entity.ProjectEntity;
+import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.entity.UserProjectEntity;
 import com.group_3.kanbanboard.enums.InProjectUserRole;
+import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.exception.UserProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.UserProjectMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
@@ -71,6 +73,7 @@ public class UserProjectServiceImpl implements UserProjectService {
   @Override
   public void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role) {
     getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+
   }
 
   @Transactional
