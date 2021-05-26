@@ -22,6 +22,9 @@
     </div>
     </thead>
     <tbody>
+    <form th:action="@{/projects/{projectId}/users/{username}(projectId = ${projectId}, releaseId = ${user.getUsername()})}" method="get">
+            <button type="submit">Edit release</button>
+    </form>
     <div style="margin-top: 40px;">
         <label>Role
             <select name="formStatus">
@@ -29,6 +32,7 @@
                 <option>LEAD</option>
             </select>
         </label>
+        <button type="submit" style="margin-top: 10px;">Update</button>
     </div>
         <b>Role: </b>
         <b th:text="${user.roles}"></b>

@@ -1,14 +1,12 @@
 package com.group_3.kanbanboard.service.impl;
 
-import com.group_3.kanbanboard.entity.ProjectEntity;
-import com.group_3.kanbanboard.entity.ReleaseEntity;
-import com.group_3.kanbanboard.entity.UserEntity;
-import com.group_3.kanbanboard.entity.UserProjectEntity;
+import com.group_3.kanbanboard.entity.*;
 import com.group_3.kanbanboard.enums.InProjectUserRole;
 import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.exception.UserProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.UserProjectMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
+import com.group_3.kanbanboard.rest.dto.UserProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.service.EntityService;
 import com.group_3.kanbanboard.service.UserProjectService;
@@ -71,8 +69,17 @@ public class UserProjectServiceImpl implements UserProjectService {
   }
   @Transactional
   @Override
-  public void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role) {
-    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+  public UserProjectResponseDto setUserProjectRole(UUID userId, UUID projectId, UserProjectRequestDto userProjectRequestDto) {
+//    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+    UserProjectEntity userProjectFromDb = userProjectRepository.findByUserAndProject(entityService.getUserEntity(userId), entityService.getProjectEntity(projectId))
+            .orElseThrow(() -> new UserProjectNotFoundException(
+                    String.format(
+                            "Relation entity UserProject with User (id = %s) and Project(id = %s) not found",
+                            userId, projectId)));
+    UserProjectEntity userProjectFromDto = userProjectMapper.toEntity( userProjectRequestDto);
+    userProjectFromDto.setProjectUserRole(userProjectFromDb.getProjectUserRole());
+    userProjectRepository.save(userProjectFromDto);
+    return userProjectMapper.toResponseDto(userProjectFromDto);
 
   }
 

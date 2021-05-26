@@ -16,7 +16,7 @@ public interface UserProjectService {
 
     UserProjectResponseDto getUserProjectByUserAndProject(UUID userId, UUID projectId);
 
-    void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role);
+    UserProjectResponseDto setUserProjectRole( UUID userId, UUID projectId, UserProjectRequestDto userProjectRequestDto);
 
     boolean isUserLeadInProject(UUID userId, UUID projectId);
 }
