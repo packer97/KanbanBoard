@@ -1,9 +1,9 @@
-package com.group_3.kanbanboard.service.impl;
+package com.group_3.kanbanboard.service.entity;
 
 import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.repository.TaskRepository;
-import com.group_3.kanbanboard.service.EntityNewService;
+import com.group_3.kanbanboard.service.entity.EntityNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

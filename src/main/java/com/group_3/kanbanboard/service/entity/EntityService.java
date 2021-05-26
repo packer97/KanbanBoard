@@ -1,4 +1,4 @@
-package com.group_3.kanbanboard.service;
+package com.group_3.kanbanboard.service.entity;
 
 import com.group_3.kanbanboard.entity.*;
 

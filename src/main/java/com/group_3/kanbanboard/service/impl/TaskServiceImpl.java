@@ -6,6 +6,7 @@ import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.service.TaskService;
+import com.group_3.kanbanboard.service.entity.TaskEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

@@ -6,7 +6,7 @@ import com.group_3.kanbanboard.entity.UserProjectEntity;
 import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
-import com.group_3.kanbanboard.service.EntityService;
+import com.group_3.kanbanboard.service.entity.EntityService;
 import com.group_3.kanbanboard.service.PrincipalService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

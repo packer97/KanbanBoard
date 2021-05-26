@@ -10,7 +10,7 @@ import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
-import com.group_3.kanbanboard.service.EntityService;
+import com.group_3.kanbanboard.service.entity.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
