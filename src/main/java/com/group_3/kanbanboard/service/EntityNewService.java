@@ -11,7 +11,7 @@ public interface EntityNewService<T, ID> {
 
     List<T> getAllEntity();
 
-    boolean exist(ID id);
+    boolean exists(ID id);
 
     void deleteById(ID id);
 

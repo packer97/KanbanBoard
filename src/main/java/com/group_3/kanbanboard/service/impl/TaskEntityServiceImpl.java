@@ -43,7 +43,7 @@ public class TaskEntityServiceImpl implements EntityNewService<TaskEntity, UUID>
     }
 
     @Override
-    public boolean exist(UUID taskId) {
+    public boolean exists(UUID taskId) {
         return taskRepository.existsById(taskId);
     }
 
