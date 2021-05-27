@@ -23,6 +23,8 @@ public class ProjectRequestDto {
         this.leadId = leadId;
     }
 
+    public ProjectRequestDto() {}
+
     public String getTitle() {
         return title;
     }

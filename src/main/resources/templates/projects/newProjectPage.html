@@ -5,14 +5,6 @@
     <title>Title</title>
 </head>
 <body>
-<header>
-    <nav>
-        <a href="/users" th:href="@{/users}">USERS</a> |
-        <a href="/projects" th:href="@{/users/{userName}/projects(userName=${userName})}">PROJECTS</a> |
-        <a href="/tasks"
-           th:href="@{/users/{userName}/projects/{projectId}/releases/{releaseId}/tasks(userName=${userName}, projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>        |
-    </nav>
-</header>
 <div style="text-align: right">
     <form method="post" action="/logout">
         <button type="submit">Log out</button>
@@ -28,12 +20,6 @@
         <label>Title
             <input name="title" type="text">
         </label>
-    </div>
-    <div style="margin-top: 10px">
-        <label>Release</label>
-        <form method="post" action="/projects/{projectId}/releases(projectId = ${projectId})">
-            <button type="submit">Add new release</button>
-        </form>
     </div>
     <div style="margin-top: 10px">
         <label>Description

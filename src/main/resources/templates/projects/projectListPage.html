@@ -12,15 +12,6 @@
     </style>
 </head>
 <body>
-<header>
-    <nav>
-        <a href="/users" th:href="@{/users}">USERS</a> |
-        <a href="/projects" th:href="@{/users/{userName}/projects(userName=${userName})}">PROJECTS</a> |
-        <a href="/tasks"
-           th:href="@{/users/{userName}/projects/{projectId}/releases/{releaseId}/tasks(userName=${userName}, projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>        |
-    </nav>
-
-</header>
 <div style="text-align: right">
     <form method="post" action="/logout">
         <button type="submit">Log out</button>
@@ -34,18 +25,19 @@
 </div>
 
 <table align="center">
-
     <thead>
     <tr>
         <th>Project name</th>
         <th>Version release</th>
     </tr>
     </thead>
-    <tbody th:each="project : ${userDto.projects}">
-    <tr>
-        <td th:text="${project.getTitle()}"></td>
-        <td th:text="${project.getRelease()}"></td>
-    </tr>
+    <tbody th:each="project : ${projectList}">
+        <a th:href="@{/projects}">
+                <p><span th:text="${project.getProject().getTitle()}"></span></p>
+                <p>
+                </p>
+        </a>
+    </td>
     </tbody>
 </table>
 </body>
