@@ -9,6 +9,7 @@ import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.TaskMapperImpl;
+import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import com.group_3.kanbanboard.rest.dto.*;
 import org.junit.After;

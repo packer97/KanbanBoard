@@ -35,13 +35,13 @@ public class TaskEntity {
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private UserEntity performer;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private ProjectEntity project;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     private ReleaseEntity release;
 
     public TaskEntity() {

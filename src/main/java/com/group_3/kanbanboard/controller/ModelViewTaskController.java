@@ -2,7 +2,10 @@ package com.group_3.kanbanboard.controller;
 
 import com.group_3.kanbanboard.enums.TaskCategory;
 import com.group_3.kanbanboard.enums.TaskStatus;
-import com.group_3.kanbanboard.rest.dto.*;
+import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
+import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
+import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.ReleaseService;
@@ -10,10 +13,15 @@ import com.group_3.kanbanboard.service.TaskService;
 import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.ModelViewTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.propertyeditors.CustomDateEditor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -51,8 +59,6 @@ public class ModelViewTaskController {
         ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);
         model.addAttribute("release", releaseResponseDto);
 
-        model.addAttribute("statuses", TaskStatus.values());
-
         return "taskList";
     }
 
@@ -69,9 +75,6 @@ public class ModelViewTaskController {
         List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
         model.addAttribute("projectUsers", projectUsers);
 
-        model.addAttribute("categories", TaskCategory.values());
-        model.addAttribute("statuses", TaskStatus.values());
-
         return "taskDetail";
     }
 
@@ -85,20 +88,16 @@ public class ModelViewTaskController {
     public String updateTask(@PathVariable UUID taskId,
                              @PathVariable UUID projectId,
                              @PathVariable UUID releaseId,
-                             @RequestParam String descriptionTextarea,
                              @RequestParam String projectUserSelect,
                              @ModelAttribute TaskRequestDto taskRequestDto,
                              Model model) {
 
-        model.addAttribute("categories", TaskCategory.values());
-        model.addAttribute("statuses", TaskStatus.values());
+        TaskResponseDto distinctTask = modelViewTaskService
+                .getTaskByIdFromProjectAndRelease(taskId, projectId, releaseId);
+        model.addAttribute("distinctTask", distinctTask);
 
-
-
-
-
-
-
+        List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
+        model.addAttribute("projectUsers", projectUsers);
 
         return "taskDetail";
     }
@@ -107,5 +106,21 @@ public class ModelViewTaskController {
     public UserResponseDto getUserAsPrincipal() {
         return principalService.getPrincipal();
     }
-}
 
+    @ModelAttribute("categories")
+    public TaskCategory[] getTaskCategories() {
+        return TaskCategory.values();
+    }
+
+    @ModelAttribute("statuses")
+    public TaskStatus[] getTaskStatuses() {
+        return TaskStatus.values();
+    }
+
+    @InitBinder
+    public void bindingDate(WebDataBinder binder) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        CustomDateEditor dateEditor = new CustomDateEditor(dateFormat, true);
+        binder.registerCustomEditor(Date.class, dateEditor);
+    }
+}

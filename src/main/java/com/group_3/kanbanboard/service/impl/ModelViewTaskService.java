@@ -3,11 +3,14 @@ package com.group_3.kanbanboard.service.impl;
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.TaskEntity;
+import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.mappers.ReleaseMapper;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.UserMapper;
+import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.repository.TaskRepository;
+import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.entity.EntityService;
@@ -47,6 +50,25 @@ public class ModelViewTaskService {
 
         return taskResponseDtos;
     }
+
+    public void setDependenciesAndSave(UUID taskId,
+                                       String username,
+                                       UUID projectId,
+                                       UUID releaseId,
+                                       TaskRequestDto taskRequestDto) {
+        TaskEntity taskFromRequest = taskMapper.toEntity(taskRequestDto);
+        UserEntity performer = entityService.getUserEntity(username);
+        ProjectEntity project = entityService.getProjectEntity(projectId);
+        ReleaseEntity release = entityService.getReleaseEntity(releaseId);
+        taskFromRequest.setPerformer(performer);
+        taskFromRequest.setProject(project);
+        taskFromRequest.setRelease(release);
+
+
+
+
+    }
+
 
     @Transactional
     public TaskResponseDto getTaskByIdFromProjectAndRelease(UUID taskId, UUID projectId, UUID releaseId) {
