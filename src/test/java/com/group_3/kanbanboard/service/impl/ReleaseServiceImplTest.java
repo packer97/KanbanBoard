@@ -18,6 +18,7 @@ import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.service.entity.ReleaseEntityServiceImpl;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -84,6 +85,7 @@ public class ReleaseServiceImplTest {
   @InjectMocks
   private ReleaseServiceImpl releaseService;
 
+  private ReleaseEntityServiceImpl releaseEntityService = new ReleaseEntityServiceImpl(releaseRepository);
 
   @Before
   public void setUp() {
@@ -154,7 +156,7 @@ public class ReleaseServiceImplTest {
     setUpReleaseMappers();
     setUpProjectMappers();
 
-    releaseService = new ReleaseServiceImpl(releaseRepository, projectService, releaseMapper,
+    releaseService = new ReleaseServiceImpl(releaseEntityService, projectService, releaseMapper,
         projectMapper);
 
     project.setReleases(new ArrayList<>());
@@ -178,7 +180,7 @@ public class ReleaseServiceImplTest {
   public void addRelease_NULL_PROJECT_ID() {
     setUpReleaseMappers();
     setUpProjectMappers();
-    releaseService = new ReleaseServiceImpl(releaseRepository, projectService, releaseMapper,
+    releaseService = new ReleaseServiceImpl(releaseEntityService, projectService, releaseMapper,
         projectMapper);
 
     requestDto = new ReleaseRequestDto(null, releaseVersion1, startDate, endDate, releaseStatus1);
