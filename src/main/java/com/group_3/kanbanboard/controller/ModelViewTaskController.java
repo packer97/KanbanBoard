@@ -70,6 +70,9 @@ public class ModelViewTaskController {
         TaskResponseDto distinctTask = modelViewTaskService
                 .getTaskByIdFromProjectAndRelease(taskId, projectId, releaseId);
 
+        Date date = distinctTask.getEndDate();
+
+
         model.addAttribute("distinctTask", distinctTask);
 
         List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
@@ -92,6 +95,8 @@ public class ModelViewTaskController {
                              @ModelAttribute TaskRequestDto taskRequestDto,
                              Model model) {
 
+        modelViewTaskService.setDependenciesAndSave(taskId, projectUserSelect, projectId, releaseId, taskRequestDto);
+
         TaskResponseDto distinctTask = modelViewTaskService
                 .getTaskByIdFromProjectAndRelease(taskId, projectId, releaseId);
         model.addAttribute("distinctTask", distinctTask);
@@ -106,6 +111,7 @@ public class ModelViewTaskController {
     public UserResponseDto getUserAsPrincipal() {
         return principalService.getPrincipal();
     }
+
 
     @ModelAttribute("categories")
     public TaskCategory[] getTaskCategories() {

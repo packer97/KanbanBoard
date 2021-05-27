@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class ProjectEntityServiceImpl implements EntityNewService<ProjectEntity, UUID> {
+public class ProjectEntityServiceImpl implements ProjectEntityService {
     private final ProjectRepository projectRepository;
 
     @Autowired

@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Service
-public class UserEntityServiceImpl implements EntityNewService<UserEntity, UUID> {
+public class UserEntityServiceImpl implements UserEntityService {
     private final UserRepository userRepository;
 
     @Autowired
@@ -42,6 +42,12 @@ public class UserEntityServiceImpl implements EntityNewService<UserEntity, UUID>
     @Override
     public void deleteById(UUID userId) {
         userRepository.deleteById(userId);
+    }
+
+    @Override
+    public UserEntity getEntity(String username) {
+        return userRepository.findByUsername(username)
+                .orElseThrow(() -> new UserNotFoundException(String.format("User with username = %s not found", username)));
     }
 }
 
