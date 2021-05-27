@@ -28,9 +28,10 @@ public class UserProjectServiceImpl implements UserProjectService {
   private final UserProjectMapper userProjectMapper;
 
 
+
   @Autowired
   public UserProjectServiceImpl(UserProjectRepository userProjectRepository,
-      EntityService entityService, UserProjectMapper userProjectMapper) {
+       UserProjectMapper userProjectMapper,EntityService entityService) {
     this.userProjectRepository = userProjectRepository;
     this.entityService = entityService;
     this.userProjectMapper = userProjectMapper;
@@ -72,18 +73,37 @@ public class UserProjectServiceImpl implements UserProjectService {
 
   @Transactional
   @Override
-  public UserProjectResponseDto setUserProjectRole(UUID userId, UUID projectId, UserProjectRequestDto userProjectRequestDto) {
+  public UserProjectResponseDto setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole inProjectUserRole) {
 //    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
     UserProjectEntity userProjectFromDb = userProjectRepository.findByUserAndProject(entityService.getUserEntity(userId), entityService.getProjectEntity(projectId))
             .orElseThrow(() -> new UserProjectNotFoundException(
                     String.format(
                             "Relation entity UserProject with User (id = %s) and Project(id = %s) not found",
                             userId, projectId)));
-    UserProjectEntity userProjectFromDto = userProjectMapper.toEntity( userProjectRequestDto);
-    userProjectFromDto.setProjectUserRole(userProjectFromDb.getProjectUserRole());
-    userProjectRepository.save(userProjectFromDto);
-    return userProjectMapper.toResponseDto(userProjectFromDto);
+    userProjectFromDb.setProjectUserRole(inProjectUserRole);
+    userProjectRepository.save(userProjectFromDb);
+    return userProjectMapper.toResponseDto(userProjectFromDb);
 
+  }
+  @Transactional
+  @Override
+  public UserProjectResponseDto setUserInProject(UUID userId, UUID projectId,String projectRole) {
+    UserEntity userEntity = entityService.getUserEntity(userId);
+    ProjectEntity projectEntity = entityService.getProjectEntity(projectId);
+    UserProjectEntity userProjectEntity = new UserProjectEntity (userEntity, projectEntity);
+
+    userProjectEntity.setProjectUserRole( InProjectUserRole.valueOf(projectRole));
+    userProjectRepository.save(userProjectEntity);
+    return userProjectMapper.toResponseDto(userProjectEntity);
+  }
+  @Transactional
+  @Override
+  public UserProjectResponseDto deleteUserInProject(UUID projectId, String userName) {
+    UserEntity userEntity = entityService.getUserEntity(userName);
+    ProjectEntity projectEntity = entityService.getProjectEntity(projectId);
+    UserProjectEntity userProjectEntity = new UserProjectEntity (userEntity, projectEntity);
+    userProjectRepository.delete(userProjectEntity);
+    return userProjectMapper.toResponseDto(userProjectEntity);
   }
 
   @Transactional

@@ -6,14 +6,17 @@ import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UserService;
+import com.group_3.kanbanboard.service.impl.EntityServiceImpl;
 import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.UserProjectServiceImpl;
+import liquibase.pro.packaged.S;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
+import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -23,17 +26,20 @@ public class UsersInProjectController {
     private final UserProjectService userProjectService;
     private final UserService userService;
     private final UserProjectServiceImpl userProjectServiceImpl;
+    private final EntityServiceImpl entityService;
 
 
 
     public UsersInProjectController(ModelViewProjectService modelViewProjectService,
                                     UserProjectService userProjectService,
                                     UserService userService,
-                                    UserProjectServiceImpl userProjectServiceImpl) {
+                                    UserProjectServiceImpl userProjectServiceImpl,
+                                    EntityServiceImpl entityService) {
 
         this.modelViewProjectService = modelViewProjectService;
         this.userProjectService = userProjectService;
         this.userService = userService;
+        this.entityService = entityService;
         this.userProjectServiceImpl = userProjectServiceImpl;
 
 
@@ -46,40 +52,42 @@ public class UsersInProjectController {
         modelAndView.addObject("userProjectResponseDto", userProjectResponseDto);
         return modelAndView;
     }
-//    public ModelAndView getUsersRoleByProject(@PathVariable UUID projectId,
-//                                              UserProjectResponseDto userProjectResponseDto){
-//
-//    }
-    @PostMapping("/{addUser}")
-    public String addUser() {
 
-        return toString();
-    }
+
 
     @GetMapping("/{username}")
-    public String UserDetail(@PathVariable UUID projectId,@PathVariable String username, Model model,
-                                UserProjectResponseDto userProjectResponseDto) {
+    public String UserDetail(@PathVariable UUID projectId,@PathVariable String username, Model model) {
         UserResponseDto user = userService.getUserByUsername(username);
-//        UUID userId = userProjectResponseDto.getUser().getId();
         model.addAttribute("user", user);
-//        List<UserProjectResponseDto> userProjectResponseDto = userProjectServiceImpl.getUserProjectsFromProject(projectId);
-
-//        model.addAttribute("role", userProjectService.getUserProjectByUserAndProject(userId,projectId));
         return "userProject/setUserRoleInProject";
 
     }
 
-    @PostMapping("/{username}")
-    public ModelAndView updateUserProject(@PathVariable UUID projectId, @PathVariable String username,
-                                          UserProjectServiceImpl userProjectServiceImpl,
-                                          UserProjectResponseDto userProjectResponseDto,
-                                          UserProjectRequestDto userProjectRequestDto,
-                                          String formStatus) {
-        userProjectRequestDto.setProjectUserRole(InProjectUserRole.valueOf(formStatus));
-        userProjectServiceImpl.setUserProjectRole(userProjectResponseDto.getUser().getId(),projectId,userProjectRequestDto);
-        ModelAndView modelAndView = new ModelAndView("userProject/setUserRoleInProject");
-        modelAndView.addObject("userProjectResponseDto", userProjectRequestDto);
+    @PatchMapping ("/{username}")
+    public String updateUserProject(@PathVariable UUID projectId, @PathVariable String username,
+                               UserProjectRequestDto userProjectRequestDto,
+                               String formStatus) {
+        InProjectUserRole newRole = InProjectUserRole.valueOf(formStatus);
+        userProjectServiceImpl.setUserProjectRole(entityService.getUserEntity(username).getId(),projectId,newRole);
+
+        return "redirect:/projects/{projectId}/users";
+    }
+    @GetMapping("/addUser")
+    public ModelAndView getAdd(@PathVariable UUID projectId) {
+        ModelAndView modelAndView = new ModelAndView("userProject/addUser");
+        modelAndView.addObject("projectId", projectId);
         return modelAndView;
+    }
+        @PostMapping
+    public String addUser(@PathVariable UUID projectId, String userName, String formStatus, Model model) {
+
+        userProjectServiceImpl.setUserInProject(entityService.getUserEntity(userName).getId(),projectId,formStatus);
+        return "redirect:/projects/{projectId}/users";
+    }
+    @DeleteMapping("/{userName}")
+    public String deleteUser(@PathVariable UUID projectId, @PathVariable String userName) {
+        userProjectServiceImpl.deleteUserInProject(projectId,userName);
+        return "redirect:/projects/{projectId}/users";
     }
 
 }
