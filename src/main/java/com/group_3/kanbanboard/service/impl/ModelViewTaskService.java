@@ -8,10 +8,9 @@ import com.group_3.kanbanboard.mappers.ReleaseMapper;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.TaskRepository;
-import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
-import com.group_3.kanbanboard.service.EntityService;
+import com.group_3.kanbanboard.service.entity.EntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,7 +27,6 @@ public class ModelViewTaskService {
     private final EntityService entityService;
     private final TaskMapper taskMapper;
     private final UserMapper userMapper;
-    private final ReleaseMapper releaseMapper;
 
     @Autowired
     public ModelViewTaskService(TaskRepository taskRepository, EntityService entityService, TaskMapper taskMapper, UserMapper userMapper, ReleaseMapper releaseMapper) {
@@ -36,7 +34,6 @@ public class ModelViewTaskService {
         this.entityService = entityService;
         this.taskMapper = taskMapper;
         this.userMapper = userMapper;
-        this.releaseMapper = releaseMapper;
     }
 
     @Transactional
@@ -65,10 +62,5 @@ public class ModelViewTaskService {
     @Transactional
     public UserResponseDto getUserByUserName(String userName) {
         return userMapper.toResponseDto(entityService.getUserEntity(userName));
-    }
-
-    @Transactional
-    public ReleaseResponseDto getReleaseById(UUID id) {
-        return releaseMapper.toResponseDto(entityService.getReleaseEntity(id));
     }
 }

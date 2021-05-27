@@ -18,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/registration")

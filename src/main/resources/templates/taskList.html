@@ -3,88 +3,74 @@
 <head>
     <meta content="text/html; charset=utf-8">
     <title>Tasks list</title>
-    <style type="text/css">
-        H1, H2 {
-            display: inline-block;
-        }
-        #owner_table {
-            border: 1px solid black;
-            margin: 3px;
-            padding: 3px;
-            border-collapse: collapse;
-        }
-        #column_table {
-            border: 1px solid black;
-            empty-cells: hide;
-            width: 200px;
-            border-collapse: collapse;
-        }
-        TD, TH {
-            vertical-align: top;
-            margin: 0px;
-            padding: 0px;
-            background: #b0e0e6;
-        }
-    </style>
 </head>
 <body>
 <header>
     <nav>
-        <a href="/users">USERS</a> |
-        <a href="/projects">PROJECTS</a> |
-        <a href="/projects/{projectId}/releases"
-           th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
-        <a href="/projects/{projectId}/releases/{releaseId}/tasks"
-           th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
-        |
+        <a href="/users">USERS</a>|
+        <a href="/projects">PROJECTS</a>|
+        <a C="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>|
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>|
     </nav>
     <hr>
-    <h1>Tasks list</h1>
-    <h2 style="margin-left: 200px">Release:</h2>
-    <h2 th:text="${release.version}">release.version</h2>
+    <h1 style=" display: inline-block;">Tasks list</h1>
+    <h2 style="margin-left: 200px; display: inline-block;">Release:</h2>
+    <h2 th:text="${release.version}" style=" display: inline-block;">release.version</h2>
     <p><span th:text="${userAsPrincipal.username}">userAsPrincipal.username</span></p>
     <div>
         <span th:text="${userAsPrincipal.firstName}">userAsPrincipal.firstName</span>
         <span th:text="${userAsPrincipal.secondName}">userAsPrincipal.secondName</span>
-        <form method="get" action="/users/profile/"
+        <form th:method="get"
+              id="profileForm"
+              action="/profile"
               style="display: inline-block">
-            <button type="submit" class="btn">Profile</button>
+            <button type="submit">Profile</button>
         </form>
-        <form method="post" action="/logout" style="display: inline-block">
-            <button type="submit" class="btn">Logout</button>
+        <form th:method="post"
+              id="logoutForm"
+              action="/logout"
+              style="display: inline-block">
+            <button type="submit">Logout</button>
         </form>
     </div>
     <hr>
 </header>
-
-<form method="get" action="projects/{projectId}/releases/{releaseId}/tasks"
+<form th:method="get"
+      id="searchForm"
       th:action="@{/projects/{projectId}/releases/{releaseId}/tasks( projectId=${projectId}, releaseId=${releaseId})}">
     <input type="search" name="search" placeholder="Search tasks" value="">
-    <button type="submit" class="btn">Search</button>
+    <button type="submit">Search</button>
 </form>
-
 <div>
-    <table id="owner_table">
+    <table id="owner_table" style=" border: 1px solid black;margin: 3px; padding: 3px; border-collapse: collapse;">
         <caption>Cards of Task by status</caption>
         <thead>
         <tr>
-            <th th:each="status : ${statuses}"><span th:text="${status}"></span></th>
+            <th th:each="status : ${statuses}"
+                style="vertical-align: top; margin: 0px; padding: 0px; background: #b0e0e6;">
+                <span th:text="${status}"></span>
+            </th>
         </tr>
         </thead>
         <tbody>
         <tr>
-            <td th:each="status : ${statuses}">
-                <table id="column_table">
+            <td th:each="status : ${statuses}"
+                style="vertical-align: top; margin: 0px; padding: 0px; background: #b0e0e6;">
+                <table id="column_table"
+                       style="border: 1px solid black; empty-cells: hide; width: 200px; border-collapse: collapse;">
                     <tr th:each="task : ${tasksList}">
-                        <td >
-                            <div th:if="${task.taskStatus.equals(status.toString())}" style="border: 1px solid black;">
-                                <p><span th:text="${task.title}">task.title</span></p>
-                                <p><span th:text="${task.description}">task.description</span></p>
-                                <p><span th:text="${task.endDate}">task.endDate</span></p>
-                                <p><span th:text="${task.taskCategory}">task.taskCategory</span></p>
-                                <p>
-                                </p>
-                            </div>
+                        <td style="vertical-align: top; margin: 0px; padding: 0px; background: #b0e0e6;">
+                            <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${task.id})}">
+                                <div th:if="${task.taskStatus.equals(status.toString())}"
+                                     style="border: 1px solid black;">
+                                    <p><span th:text="${task.title}">task.title</span></p>
+                                    <p><span th:text="${task.description}">task.description</span></p>
+                                    <p><span th:text="${task.endDate}">task.endDate</span></p>
+                                    <p><span th:text="${task.taskCategory}">task.taskCategory</span></p>
+                                    <p>
+                                    </p>
+                                </div>
+                            </a>
                         </td>
                     </tr>
                 </table>

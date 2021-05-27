@@ -8,7 +8,7 @@ import com.group_3.kanbanboard.exception.UserProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.UserProjectMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
 import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
-import com.group_3.kanbanboard.service.EntityService;
+import com.group_3.kanbanboard.service.entity.EntityService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import java.util.List;
 import java.util.UUID;
@@ -67,7 +67,11 @@ public class UserProjectServiceImpl implements UserProjectService {
                 userId, projectId)));
     return userProjectMapper.toResponseDto(userWithProject);
   }
-
+  @Transactional
+  @Override
+  public void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role) {
+    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+  }
 
   @Transactional
   @Override

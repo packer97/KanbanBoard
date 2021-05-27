@@ -1,9 +1,9 @@
-package com.group_3.kanbanboard.service.impl;
+package com.group_3.kanbanboard.service.entity;
 
 import com.group_3.kanbanboard.entity.*;
 import com.group_3.kanbanboard.exception.*;
 import com.group_3.kanbanboard.repository.*;
-import com.group_3.kanbanboard.service.EntityService;
+import com.group_3.kanbanboard.service.entity.EntityService;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;

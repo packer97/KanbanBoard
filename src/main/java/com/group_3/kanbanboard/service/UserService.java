@@ -10,6 +10,8 @@ public interface UserService {
 
     UserResponseDto getUserById(UUID id);
 
+    UserResponseDto getUserByUsername(String username);
+
     List<UserResponseDto> getAllUsers();
 
     UserResponseDto addUser(UserRequestDto userRequestDto);

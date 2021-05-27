@@ -3,12 +3,12 @@ package com.group_3.kanbanboard.service.impl;
 import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.mappers.TaskMapper;
-import com.group_3.kanbanboard.repository.TaskRepository;
 import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.service.TaskService;
+import com.group_3.kanbanboard.service.entity.EntityNewService;
+import com.group_3.kanbanboard.service.entity.TaskEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,29 +19,26 @@ import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private final TaskRepository taskRepository;
+    private final EntityNewService<TaskEntity, UUID> taskEntityService;
     private final TaskMapper taskMapper;
 
 
     @Autowired
-    public TaskServiceImpl(TaskRepository taskRepository, TaskMapper taskMapper) {
-        this.taskRepository = taskRepository;
+    public TaskServiceImpl(EntityNewService<TaskEntity, UUID> taskEntityService, TaskMapper taskMapper) {
+        this.taskEntityService = taskEntityService;
         this.taskMapper = taskMapper;
     }
 
     @Transactional
     @Override
     public TaskResponseDto getById(UUID id) {
-        TaskEntity task = taskRepository.findById(id).orElseThrow(
-                () -> new TaskNotFoundException(String.format("Task with ID = %s not found", id)));
-
-        return taskMapper.toResponseDto(task);
+        return taskMapper.toResponseDto(taskEntityService.getEntity(id));
     }
 
     @Transactional
     @Override
     public List<TaskResponseDto> getAllTasks() {
-        List<TaskEntity> tasks = taskRepository.findAll();
+        List<TaskEntity> tasks = taskEntityService.getAllEntity();
         return tasks.stream().map(taskMapper::toResponseDto).collect(Collectors.toList());
     }
 
@@ -49,8 +46,8 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponseDto addTask(TaskRequestDto taskRequestDto) {
         TaskEntity task = taskMapper.toEntity(taskRequestDto);
-        taskRepository.save(task);
-        return taskMapper.toResponseDto(task);
+        TaskEntity savedTask = taskEntityService.saveEntity(task);
+        return taskMapper.toResponseDto(savedTask);
 
 
     }
@@ -58,12 +55,10 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public TaskResponseDto updateTask(UUID id, TaskRequestDto taskRequestDto) {
-        TaskEntity taskFromDb = taskRepository.findById(id).orElseThrow(
-                () -> new TaskNotFoundException(String.format("Task with ID = %s not found", id)));
-
+        TaskEntity taskFromDb = taskEntityService.getEntity(id);
         TaskEntity taskFromDto = taskMapper.toEntity(taskRequestDto);
         taskFromDto.setId(taskFromDb.getId());
-        taskRepository.save(taskFromDto);
+        TaskEntity savedTask = taskEntityService.saveEntity(taskFromDto);
 
         return taskMapper.toResponseDto(taskFromDto);
 
@@ -72,8 +67,8 @@ public class TaskServiceImpl implements TaskService {
     @Transactional
     @Override
     public void deleteTask(UUID id) {
-        if (!taskRepository.existsById(id)) throw new TaskNotFoundException(String.format("Task with ID = %s not found", id));
-
-        taskRepository.deleteById(id);
+        if (!taskEntityService.exists(id))
+            throw new TaskNotFoundException(String.format("Task with ID = %s not found", id));
+        taskEntityService.deleteById(id);
     }
 }

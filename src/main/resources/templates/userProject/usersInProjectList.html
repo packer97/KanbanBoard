@@ -3,16 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <title>project users list</title>
-
-  <form th:action="@{/logout}" method="post">
-    <a href="/projects">Projects</a>
-    <a href="/tasks">Tasks</a>
-    <a href="/users">Users</a>
-    <a href="/profile">Profile</a>
+  <nav>
+    <a th:href="@{/projects/{projectId}/users(projectId=${projectId})}">USERS</a> |
+    <a href="/projects">PROJECTS</a> |
+    <a href="/projects/{projectId}/releases"
+       th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
+    <a href="/projects/{projectId}/releases/{releaseId}/tasks"
+       th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+    |  <form th:action="@{/logout}" method="post">
     <button type="submit">Sign Out</button>
-</form>
-  <a href="/invitePage">Invite User</a>
+  </form>
+    <a href="/invitePage">Invite User</a>
+  </nav>
+
+
 </head>
+
 <body>
 <table>
   <thead>
@@ -23,10 +29,16 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="user : ${projectUsers}">
-    <td><span th:text="${user.username }"> </span></td>
+  <tr th:each="user : ${usersInProjectList}">
+    <td>
+      <span>
+      <a th:href="@{/projects/{projectId}/users/{userId}(projectId = ${projectId}, userId = ${user.getUsername()})}"
+       th:text="${user.username }">
+      </a>
+      </span>
+    </td>
     <td><span th:text="${user.mail}"> </span></td>
-    <td><span th:text="${user.getRoles()}"> </span></td>
+    <td><span th:text="${user.roles}"> </span></td>
   </tr>
   </tbody>
 </table>
