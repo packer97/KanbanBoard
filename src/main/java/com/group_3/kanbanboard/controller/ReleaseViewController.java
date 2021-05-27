@@ -1,8 +1,6 @@
 package com.group_3.kanbanboard.controller;
 
-import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.enums.ReleaseStatus;
-import com.group_3.kanbanboard.exception.ForbiddenException;
 import com.group_3.kanbanboard.exception.FormInputException;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
@@ -14,7 +12,6 @@ import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UtilService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,7 +64,8 @@ public class ReleaseViewController {
 
   @GetMapping("/{releaseId}")
   public ModelAndView getReleasePage(@PathVariable UUID releaseId, @PathVariable UUID projectId) {
-    boolean isLead = userProjectService.isUserLeadInProject(principalService.getPrincipalId(), projectId);
+    boolean isLead = userProjectService
+        .isUserLeadInProject(principalService.getPrincipalId(), projectId);
     ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);
 
     ModelAndView modelAndView = new ModelAndView("releases/releasePage");
@@ -99,7 +97,7 @@ public class ReleaseViewController {
     Date startDate = simpleDateFormat.parse(formStartDate);
     Date endDate = simpleDateFormat.parse(formEndDate);
 
-    if(endDate.compareTo(startDate) < 0){
+    if (endDate.compareTo(startDate) < 0) {
       throw new FormInputException("Start date of release should be earlier than end date");
     }
 
@@ -143,7 +141,7 @@ public class ReleaseViewController {
     Date startDate = simpleDateFormat.parse(formStartDate);
     Date endDate = simpleDateFormat.parse(formEndDate);
 
-    if(endDate.compareTo(startDate) < 0){
+    if (endDate.compareTo(startDate) < 0) {
       throw new FormInputException("Start date of release should be earlier than end date");
     }
 

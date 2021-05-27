@@ -11,6 +11,7 @@ import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
 import com.group_3.kanbanboard.service.ReleaseService;
+import com.group_3.kanbanboard.service.entity.ReleaseEntityServiceImpl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -22,15 +23,17 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
 
-  private final ReleaseRepository releaseRepository;
+  private final ReleaseEntityServiceImpl releaseEntityService;
   private final ProjectServiceImpl projectService;
   private final ReleaseMapper releaseMapper;
   private final ProjectMapper projectMapper;
 
   @Autowired
-  public ReleaseServiceImpl(ReleaseRepository releaseRepository,
-      ProjectServiceImpl projectService, ReleaseMapper releaseMapper, ProjectMapper projectMapper) {
-    this.releaseRepository = releaseRepository;
+  public ReleaseServiceImpl(
+      ReleaseEntityServiceImpl releaseEntityService,
+      ProjectServiceImpl projectService, ReleaseMapper releaseMapper,
+      ProjectMapper projectMapper) {
+    this.releaseEntityService = releaseEntityService;
     this.projectService = projectService;
     this.releaseMapper = releaseMapper;
     this.projectMapper = projectMapper;
@@ -39,15 +42,14 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Transactional
   @Override
   public ReleaseResponseDto getById(UUID id) {
-    ReleaseEntity release = releaseRepository.findById(id).orElseThrow(
-        () -> new ReleaseNotFoundException(String.format("Release with ID = %s was not found", id)));
+    ReleaseEntity release = releaseEntityService.getEntity(id);
     return releaseMapper.toResponseDto(release);
   }
 
   @Transactional
   @Override
   public List<ReleaseResponseDto> getAllReleases() {
-    List<ReleaseEntity> releases = releaseRepository.findAll();
+    List<ReleaseEntity> releases = releaseEntityService.getAllEntity();
     return releases.stream().map(releaseMapper::toResponseDto).collect(Collectors.toList());
   }
 
@@ -67,7 +69,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     release.setProject(project);
-    releaseRepository.save(release);
+    releaseEntityService.saveEntity(release);
 
     return releaseMapper.toResponseDto(release);
   }
@@ -75,13 +77,12 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Transactional
   @Override
   public ReleaseResponseDto updateRelease(UUID id, ReleaseRequestDto releaseRequestDto) {
-    ReleaseEntity releaseEntityFromDb = releaseRepository.findById(id).orElseThrow(
-        () -> new ReleaseNotFoundException(String.format("Release with ID = %s was not found", id)));
+    ReleaseEntity releaseEntityFromDb = releaseEntityService.getEntity(id);
     ReleaseEntity releaseFromDto = releaseMapper.toEntity(releaseRequestDto);
     releaseFromDto.setProject(releaseEntityFromDb.getProject());
     releaseFromDto.setId(releaseEntityFromDb.getId());
 
-    releaseRepository.save(releaseFromDto);
+    releaseEntityService.saveEntity(releaseFromDto);
 
     return releaseMapper.toResponseDto(releaseFromDto);
   }
@@ -89,9 +90,9 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Transactional
   @Override
   public void deleteReleaseById(UUID id) {
-    if (!releaseRepository.existsById(id)){
+    if (!releaseEntityService.exists(id)){
       throw new ReleaseNotFoundException(String.format("Release with ID = %s was not found", id));
     }
-    releaseRepository.deleteById(id);
+    releaseEntityService.deleteById(id);
   }
 }
