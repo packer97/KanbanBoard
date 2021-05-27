@@ -8,12 +8,11 @@ import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.mappers.ReleaseMapper;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.UserMapper;
-import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
-import com.group_3.kanbanboard.service.entity.EntityService;
+import com.group_3.kanbanboard.service.entity.EntityNewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,21 +26,25 @@ import java.util.stream.Collectors;
 public class ModelViewTaskService {
 
     private final TaskRepository taskRepository;
-    private final EntityService entityService;
+    private final EntityNewService<ProjectEntity, UUID> entityProjectService;
     private final TaskMapper taskMapper;
     private final UserMapper userMapper;
 
     @Autowired
-    public ModelViewTaskService(TaskRepository taskRepository, EntityService entityService, TaskMapper taskMapper, UserMapper userMapper, ReleaseMapper releaseMapper) {
+    public ModelViewTaskService(TaskRepository taskRepository,
+                                TaskMapper taskMapper,
+                                UserMapper userMapper,
+                                ReleaseMapper releaseMapper,
+                                EntityNewService<ProjectEntity, UUID> entityProjectService) {
         this.taskRepository = taskRepository;
-        this.entityService = entityService;
+        this.entityProjectService = entityProjectService;
         this.taskMapper = taskMapper;
         this.userMapper = userMapper;
     }
 
     @Transactional
     public List<TaskResponseDto> getTasksFromProjectAndRelease(UUID projectId, UUID releaseId) {
-        ProjectEntity project = entityService.getProjectEntity(projectId);
+        ProjectEntity project = .getProjectEntity(projectId);
         ReleaseEntity release = entityService.getReleaseEntity(releaseId);
 
         List<TaskResponseDto> taskResponseDtos = taskRepository.findByProjectAndRelease(project, release).stream()
@@ -63,8 +66,6 @@ public class ModelViewTaskService {
         taskFromRequest.setPerformer(performer);
         taskFromRequest.setProject(project);
         taskFromRequest.setRelease(release);
-
-
 
 
     }
