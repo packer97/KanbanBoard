@@ -59,8 +59,8 @@ public class TaskServiceImplTest {
         expectedTAskRequestDto = new TaskRequestDto(TITLE,
                 DESCRIPTION,
                 END_DATE,
-                TASK_CATEGORY.name(),
-                TASK_STATUS.name(),
+                TASK_CATEGORY,
+                TASK_STATUS,
                 new UserResponseDto(),
                 new ProjectResponseDto(),
                 new ReleaseResponseDto());

@@ -14,6 +14,7 @@ import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.ModelViewTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -69,11 +70,10 @@ public class ModelViewTaskController {
                                       Model model) {
         TaskResponseDto distinctTask = modelViewTaskService
                 .getTaskByIdFromProjectAndRelease(taskId, projectId, releaseId);
-
-        Date date = distinctTask.getEndDate();
-
-
         model.addAttribute("distinctTask", distinctTask);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("formattedEndDate", dateFormat.format(distinctTask.getEndDate()));
 
         List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
         model.addAttribute("projectUsers", projectUsers);
@@ -95,11 +95,12 @@ public class ModelViewTaskController {
                              @ModelAttribute TaskRequestDto taskRequestDto,
                              Model model) {
 
-        modelViewTaskService.setDependenciesAndSave(taskId, projectUserSelect, projectId, releaseId, taskRequestDto);
-
-        TaskResponseDto distinctTask = modelViewTaskService
-                .getTaskByIdFromProjectAndRelease(taskId, projectId, releaseId);
+        TaskResponseDto distinctTask =
+                modelViewTaskService.setDependenciesAndSave(taskId, projectUserSelect, projectId, releaseId, taskRequestDto);
         model.addAttribute("distinctTask", distinctTask);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("formattedEndDate", dateFormat.format(distinctTask.getEndDate()));
 
         List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
         model.addAttribute("projectUsers", projectUsers);
@@ -122,6 +123,8 @@ public class ModelViewTaskController {
     public TaskStatus[] getTaskStatuses() {
         return TaskStatus.values();
     }
+
+
 
     @InitBinder
     public void bindingDate(WebDataBinder binder) {

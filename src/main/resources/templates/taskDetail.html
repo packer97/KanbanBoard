@@ -31,7 +31,8 @@
 </div>
 <div id="informDiv" style="display: inline-block;">
 
-    <p><span>Task performer:</span><span th:text="${distinctTask.performer.username}"></span>
+    <p><span>Task performer:</span><span
+            th:text="${distinctTask.performer} ? ${distinctTask.performer.username} : 'not selected'"></span>
         <label>
             <select name="projectUserSelect" form="saveTaskForm">
                 <option th:each="projetcUser : ${projectUsers}" th:text="${projetcUser.username}"
@@ -44,26 +45,26 @@
             <input name="title" form="saveTaskForm" type="text" th:value="${distinctTask.title}">
         </label></p>
 
-    <p><span>Task end date:</span><span th:text="${distinctTask.endDate}"></span>
+    <p><span>Task end date:</span><span th:text="${formattedEndDate}"></span>
         <label>
-            <input name="endDate" form="saveTaskForm" type="date" th:value="${distinctTask.endDate}">
+            <input name="endDate" form="saveTaskForm" type="date" th:value="${formattedEndDate}">
         </label></p>
 
     <p><span>Task status:</span><span th:text="${distinctTask.taskStatus}"></span>
         <label>
             <select name="taskStatus" form="saveTaskForm">
-                <option th:each="status : ${statuses}" th:text="${status}" th:value="${distinctTask.taskStatus}"></option>
+                <option th:each="status : ${statuses}" th:text="${status}" th:value="${status}"></option>
             </select>
         </label></p>
 
     <p><span>Task category:</span><span th:text="${distinctTask.taskCategory}"></span>
         <label>
             <select name="taskCategory" form="saveTaskForm">
-                <option th:each="category : ${categories}" th:text="${category}" th:value="${distinctTask.taskCategory}"></option>
+                <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
             </select>
         </label></p>
 
-    <p><span>Task project title:</span><span th:text="${distinctTask.project.title}"></span> </p>
+    <p><span>Task project title:</span><span th:text="${distinctTask.project.title}"></span></p>
 
     <p><span>Task release version:</span><span th:text="${distinctTask.release.version}"></span></p>
 
