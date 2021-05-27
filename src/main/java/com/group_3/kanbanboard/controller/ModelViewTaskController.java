@@ -1,5 +1,6 @@
 package com.group_3.kanbanboard.controller;
 
+import com.group_3.kanbanboard.enums.TaskCategory;
 import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.rest.dto.*;
 import com.group_3.kanbanboard.service.PrincipalService;
@@ -68,6 +69,9 @@ public class ModelViewTaskController {
         List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
         model.addAttribute("projectUsers", projectUsers);
 
+        model.addAttribute("categories", TaskCategory.values());
+        model.addAttribute("statuses", TaskStatus.values());
+
         return "taskDetail";
     }
 
@@ -85,6 +89,12 @@ public class ModelViewTaskController {
                              @RequestParam String projectUserSelect,
                              @ModelAttribute TaskRequestDto taskRequestDto,
                              Model model) {
+
+        model.addAttribute("categories", TaskCategory.values());
+        model.addAttribute("statuses", TaskStatus.values());
+
+
+
 
 
 
