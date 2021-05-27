@@ -29,16 +29,16 @@
   </tr>
   </thead>
   <tbody>
-  <tr th:each="user : ${usersInProjectList}">
+  <tr th:each="userPrd : ${userProjectResponseDto}">
     <td>
       <span>
-      <a th:href="@{/projects/{projectId}/users/{userId}(projectId = ${projectId}, userId = ${user.getUsername()})}"
-       th:text="${user.username }">
+      <a th:href="@{/projects/{projectId}/users/{username}(projectId = ${projectId}, username = ${userPrd.getUser().getUsername()})}"
+       th:text="${userPrd.getUser().getUsername()}">
       </a>
       </span>
     </td>
-    <td><span th:text="${user.mail}"> </span></td>
-    <td><span th:text="${user.roles}"> </span></td>
+    <td><span th:text="${userPrd.getUser().getMail()}"> </span></td>
+    <td><span th:text="${userPrd.getProjectUserRole().toString()}"> </span></td>
   </tr>
   </tbody>
 </table>

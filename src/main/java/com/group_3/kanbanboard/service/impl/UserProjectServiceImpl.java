@@ -13,6 +13,8 @@ import com.group_3.kanbanboard.service.UserProjectService;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import liquibase.pro.packaged.S;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -67,6 +69,7 @@ public class UserProjectServiceImpl implements UserProjectService {
                 userId, projectId)));
     return userProjectMapper.toResponseDto(userWithProject);
   }
+
   @Transactional
   @Override
   public UserProjectResponseDto setUserProjectRole(UUID userId, UUID projectId, UserProjectRequestDto userProjectRequestDto) {
