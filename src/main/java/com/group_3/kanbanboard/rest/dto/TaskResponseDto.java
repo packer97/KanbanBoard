@@ -1,7 +1,10 @@
 package com.group_3.kanbanboard.rest.dto;
 
 
+import com.group_3.kanbanboard.enums.TaskCategory;
+import com.group_3.kanbanboard.enums.TaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 import java.util.UUID;
@@ -18,13 +21,14 @@ public class TaskResponseDto {
     private String description;
 
     @Schema(description = "Дата окончания")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date endDate;
 
     @Schema(description = "Категория задачи")
-    private String taskCategory;
+    private TaskCategory taskCategory;
 
     @Schema(description = "Статус задачи")
-    private String taskStatus;
+    private TaskStatus taskStatus;
 
     @Schema(description = "Исполнитель задачи")
     private UserResponseDto performer;
@@ -39,8 +43,8 @@ public class TaskResponseDto {
                            String title,
                            String description,
                            Date endDate,
-                           String taskCategory,
-                           String taskStatus,
+                           TaskCategory taskCategory,
+                           TaskStatus taskStatus,
                            UserResponseDto performer,
                            ProjectResponseDto project,
                            ReleaseResponseDto release) {
@@ -105,14 +109,6 @@ public class TaskResponseDto {
         this.title = title;
     }
 
-    public String getTaskCategory() {
-        return taskCategory;
-    }
-
-    public void setTaskCategory(String taskCategory) {
-        this.taskCategory = taskCategory;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -121,11 +117,19 @@ public class TaskResponseDto {
         this.description = description;
     }
 
-    public String getTaskStatus() {
+    public TaskCategory getTaskCategory() {
+        return taskCategory;
+    }
+
+    public void setTaskCategory(TaskCategory taskCategory) {
+        this.taskCategory = taskCategory;
+    }
+
+    public TaskStatus getTaskStatus() {
         return taskStatus;
     }
 
-    public void setTaskStatus(String taskStatus) {
+    public void setTaskStatus(TaskStatus taskStatus) {
         this.taskStatus = taskStatus;
     }
 }

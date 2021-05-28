@@ -11,6 +11,7 @@ import com.group_3.kanbanboard.mappers.UserMapperImpl;
 import com.group_3.kanbanboard.repository.UserRepository;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserRequestDto;
+import com.group_3.kanbanboard.service.entity.UserEntityServiceImpl;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -51,11 +52,14 @@ public class UserServiceImplWithMockTest {
     private UserRequestDto expectedUserRequestDto;
     @Mock
     private ProjectMapper expectedProjectMapper;
+    private UserEntityServiceImpl userEntityService;
 
     @Before
     public void setUp() {
         expectedUser = new UserEntity(ID, firstName, secondName, userName, password, mail, role);
         expectedUserRequestDto = new UserRequestDto(firstName, secondName, password, userName, mail, role);
+        userEntityService = new UserEntityServiceImpl(userRepository);
+        userService = new UserServiceImpl(userRepository, userMapper, passwordEncoder, userEntityService);
     }
 
     @After
@@ -79,19 +83,19 @@ public class UserServiceImplWithMockTest {
         List<UserEntity> expectedListUsers = Collections.singletonList(expectedUser);
         Mockito.when(userMapper.toResponseDto(Mockito.any(UserEntity.class)))
                 .thenAnswer(invocation -> new UserMapperImpl().toResponseDto(invocation.<UserEntity>getArgument(0)));
-        Mockito.when(userRepository.findAll()).thenReturn(expectedListUsers);
+        Mockito.when(userEntityService.getAllEntity()).thenReturn(expectedListUsers);
         List<UserResponseDto> actualListUsers = userService.getAllUsers();
         Assert.assertEquals(expectedListUsers.get(0).getFirstName(), actualListUsers.get(0).getFirstName());
     }
 
     @Test
     public void addUser() {
-        userService = new UserServiceImpl(userRepository, userMapper, passwordEncoder);
+
         Mockito.when(userMapper.toResponseDto(Mockito.any(UserEntity.class)))
                 .thenAnswer(invocation -> new UserMapperImpl().toResponseDto(invocation.<UserEntity>getArgument(0)));
         Mockito.when(userMapper.toEntity(Mockito.any(UserRequestDto.class)))
                 .thenAnswer(invocation -> new UserMapperImpl().toEntity(invocation.<UserRequestDto>getArgument(0)));
-        Mockito.when(userRepository.save(Mockito.any())).thenReturn(expectedUser);
+        Mockito.when(userEntityService.saveEntity(Mockito.any())).thenReturn(expectedUser);
 
         UserResponseDto actualUser = userService.addUser(expectedUserRequestDto);
         System.out.println(actualUser.getRoles());
@@ -101,8 +105,8 @@ public class UserServiceImplWithMockTest {
 
     @Test
     public void deleteUserById() {
-        UUID id = Mockito.any();
-        Mockito.when(userRepository.existsById(id)).thenReturn(Boolean.TRUE);
+        UUID id = ID;
+        Mockito.when(userEntityService.exists(id)).thenReturn(Boolean.TRUE);
     }
 
 }

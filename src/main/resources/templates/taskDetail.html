@@ -3,14 +3,20 @@
 <head>
     <meta content="text/html; charset=utf-8">
     <title>Title</title>
+
 </head>
 <body>
 <header>
     <nav>
-        <a href="/users">USERS</a>|
-        <a href="/projects">PROJECTS</a>|
-        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>|
-        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>|
+        <a href="/profile">PROFILE</a> |
+        <a href="/users">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <div style="margin: -1% 0 0 93%; display: block;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign Out</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
     </nav>
 </header>
 <hr>
@@ -19,11 +25,11 @@
 <hr>
 <div id="textareaDiv" style="display: inline-block;">
     <label>
-<textarea form="saveTaskForm" name="descriptionTextarea" cols="100" rows="10" style="resize: none;"
+<textarea form="saveTaskForm" name="description" cols="100" rows="10" style="resize: none;"
           placeholder="Enter description of task here ->"
           th:text="${distinctTask.description}"></textarea>
     </label>
-    <form th:method="get"
+    <form th:method="put"
           id="saveTaskForm"
           th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}">
         <button type="submit">Save changes</button>
@@ -31,7 +37,8 @@
 </div>
 <div id="informDiv" style="display: inline-block;">
 
-    <p><span>Task performer:</span><span th:text="${distinctTask.performer.username}"></span>
+    <p><span>Task performer:</span><span
+            th:text="${distinctTask.performer} ? ${distinctTask.performer.username} : 'not selected'"></span>
         <label>
             <select name="projectUserSelect" form="saveTaskForm">
                 <option th:each="projetcUser : ${projectUsers}" th:text="${projetcUser.username}"
@@ -39,26 +46,31 @@
             </select>
         </label></p>
 
-    <p><span>Task end date:</span><span th:text="${distinctTask.endDate}"></span>
+    <p><span>Title:</span><span th:text="${distinctTask.title}"></span>
         <label>
-            <input name="endDateSelect" type="date" th:value="${distinctTask.endDate}">
+            <input name="title" form="saveTaskForm" type="text" th:value="${distinctTask.title}">
+        </label></p>
+
+    <p><span>Task end date:</span><span th:text="${formattedEndDate}"></span>
+        <label>
+            <input name="endDate" form="saveTaskForm" type="date" th:value="${formattedEndDate}">
         </label></p>
 
     <p><span>Task status:</span><span th:text="${distinctTask.taskStatus}"></span>
         <label>
-            <select name="statusSelect" form="saveTaskForm">
+            <select name="taskStatus" form="saveTaskForm">
                 <option th:each="status : ${statuses}" th:text="${status}" th:value="${status}"></option>
             </select>
         </label></p>
 
     <p><span>Task category:</span><span th:text="${distinctTask.taskCategory}"></span>
         <label>
-            <select name="categorySelect" form="saveTaskForm">
+            <select name="taskCategory" form="saveTaskForm">
                 <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
             </select>
         </label></p>
 
-    <p><span>Task project title:</span><span th:text="${distinctTask.project.title}"></span> </p>
+    <p><span>Task project title:</span><span th:text="${distinctTask.project.title}"></span></p>
 
     <p><span>Task release version:</span><span th:text="${distinctTask.release.version}"></span></p>
 
@@ -74,6 +86,6 @@
         <button type="submit">Cancel</button>
     </form>
 </div>
-<p><span th:text="${distinctTask}"></span></p>
+<!--<p><span th:text="${distinctTask}"></span></p>-->
 </body>
 </html>

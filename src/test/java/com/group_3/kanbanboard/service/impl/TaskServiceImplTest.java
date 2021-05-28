@@ -9,6 +9,7 @@ import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.TaskMapperImpl;
+import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import com.group_3.kanbanboard.rest.dto.*;
 import org.junit.After;
@@ -58,8 +59,8 @@ public class TaskServiceImplTest {
         expectedTAskRequestDto = new TaskRequestDto(TITLE,
                 DESCRIPTION,
                 END_DATE,
-                TASK_CATEGORY.name(),
-                TASK_STATUS.name(),
+                TASK_CATEGORY,
+                TASK_STATUS,
                 new UserResponseDto(),
                 new ProjectResponseDto(),
                 new ReleaseResponseDto());

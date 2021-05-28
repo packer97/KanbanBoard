@@ -3,6 +3,7 @@ package com.group_3.kanbanboard.entity;
 
 import com.group_3.kanbanboard.enums.TaskCategory;
 import com.group_3.kanbanboard.enums.TaskStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class TaskEntity {
     @Column
     private String description;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
@@ -35,13 +37,13 @@ public class TaskEntity {
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
-    @ManyToOne
+    @ManyToOne()
     private UserEntity performer;
 
-    @ManyToOne
+    @ManyToOne()
     private ProjectEntity project;
 
-    @ManyToOne
+    @ManyToOne()
     private ReleaseEntity release;
 
     public TaskEntity() {
