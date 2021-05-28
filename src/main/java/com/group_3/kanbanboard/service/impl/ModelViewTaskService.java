@@ -3,14 +3,15 @@ package com.group_3.kanbanboard.service.impl;
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.TaskEntity;
-import com.group_3.kanbanboard.exception.TaskNotFoundException;
-import com.group_3.kanbanboard.mappers.ReleaseMapper;
 import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.mappers.UserMapper;
-import com.group_3.kanbanboard.repository.TaskRepository;
+import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
-import com.group_3.kanbanboard.service.entity.EntityService;
+import com.group_3.kanbanboard.service.entity.ProjectEntityService;
+import com.group_3.kanbanboard.service.entity.ReleaseEntityService;
+import com.group_3.kanbanboard.service.entity.TaskEntityService;
+import com.group_3.kanbanboard.service.entity.UserEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,44 +24,67 @@ import java.util.stream.Collectors;
 @Service
 public class ModelViewTaskService {
 
-    private final TaskRepository taskRepository;
-    private final EntityService entityService;
+    private final TaskEntityService taskEntityService;
+    private final UserEntityService userEntityService;
+    private final ProjectEntityService projectEntityService;
+    private final ReleaseEntityService releaseEntityService;
     private final TaskMapper taskMapper;
     private final UserMapper userMapper;
 
     @Autowired
-    public ModelViewTaskService(TaskRepository taskRepository, EntityService entityService, TaskMapper taskMapper, UserMapper userMapper, ReleaseMapper releaseMapper) {
-        this.taskRepository = taskRepository;
-        this.entityService = entityService;
+    public ModelViewTaskService(TaskEntityService taskEntityService,
+                                UserEntityService userEntityService,
+                                ProjectEntityService projectEntityService,
+                                ReleaseEntityService releaseEntityService,
+                                TaskMapper taskMapper,
+                                UserMapper userMapper) {
+        this.taskEntityService = taskEntityService;
+        this.userEntityService = userEntityService;
+        this.projectEntityService = projectEntityService;
+        this.releaseEntityService = releaseEntityService;
         this.taskMapper = taskMapper;
         this.userMapper = userMapper;
     }
 
     @Transactional
     public List<TaskResponseDto> getTasksFromProjectAndRelease(UUID projectId, UUID releaseId) {
-        ProjectEntity project = entityService.getProjectEntity(projectId);
-        ReleaseEntity release = entityService.getReleaseEntity(releaseId);
+        ProjectEntity project = projectEntityService.getEntity(projectId);
+        ReleaseEntity release = releaseEntityService.getEntity(releaseId);
 
-        List<TaskResponseDto> taskResponseDtos = taskRepository.findByProjectAndRelease(project, release).stream()
+        List<TaskResponseDto> taskResponseDtos = taskEntityService.getFromDependencies(project, release).stream()
                 .map(taskMapper::toResponseDto)
                 .collect(Collectors.toList());
 
         return taskResponseDtos;
     }
 
+    public TaskResponseDto setDependenciesAndSave(UUID taskId,
+                                       String username,
+                                       UUID projectId,
+                                       UUID releaseId,
+                                       TaskRequestDto taskRequestDto) {
+        TaskEntity taskFromRequest = taskMapper.toEntity(taskRequestDto);
+
+        taskFromRequest.setId(taskId);
+
+        taskFromRequest.setPerformer(userEntityService.getEntity(username));
+        taskFromRequest.setProject(projectEntityService.getEntity(projectId));
+        taskFromRequest.setRelease(releaseEntityService.getEntity(releaseId));
+
+        TaskEntity savedTask = taskEntityService.saveEntity(taskFromRequest);
+        return  taskMapper.toResponseDto(savedTask);
+    }
+
     @Transactional
     public TaskResponseDto getTaskByIdFromProjectAndRelease(UUID taskId, UUID projectId, UUID releaseId) {
-
-        TaskEntity taskEntity = taskRepository.findByIdAndProjectAndRelease(
-                taskId, entityService.getProjectEntity(projectId), entityService.getReleaseEntity(releaseId))
-                .orElseThrow(() -> new TaskNotFoundException(
-                        String.format("Task with id = %s in release with id = %s and project with id = %s, not found in principal",
-                                taskId, releaseId, projectId)));
+        ProjectEntity project = projectEntityService.getEntity(projectId);
+        ReleaseEntity release = releaseEntityService.getEntity(releaseId);
+        TaskEntity taskEntity = taskEntityService.getByIdFromDependencies(taskId, project, release);
         return taskMapper.toResponseDto(taskEntity);
     }
 
     @Transactional
-    public UserResponseDto getUserByUserName(String userName) {
-        return userMapper.toResponseDto(entityService.getUserEntity(userName));
+    public UserResponseDto getUserByUserName(String username) {
+        return userMapper.toResponseDto(userEntityService.getEntity(username));
     }
 }

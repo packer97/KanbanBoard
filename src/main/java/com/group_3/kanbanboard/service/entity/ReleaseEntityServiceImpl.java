@@ -8,7 +8,7 @@ import java.util.UUID;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ReleaseEntityServiceImpl implements EntityNewService<ReleaseEntity, UUID> {
+public class ReleaseEntityServiceImpl implements ReleaseEntityService {
 
   private final ReleaseRepository releaseRepository;
 

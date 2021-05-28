@@ -23,7 +23,7 @@ public class UserEntity implements UserDetails {
     private String firstName;
     @Column(name = "second_name")
     private String secondName;
-    @Column(name = "username")
+    @Column(name = "username", unique = true)
     private String username;
     @Column(name = "password")
     private String password;
