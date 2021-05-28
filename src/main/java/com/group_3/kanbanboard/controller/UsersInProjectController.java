@@ -6,7 +6,7 @@ import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UserService;
-import com.group_3.kanbanboard.service.impl.EntityServiceImpl;
+import com.group_3.kanbanboard.service.entity.EntityServiceImpl;
 import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.UserProjectServiceImpl;
 import liquibase.pro.packaged.S;
