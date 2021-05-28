@@ -69,6 +69,7 @@ public class ReleaseServiceImpl implements ReleaseService {
     }
 
     release.setProject(project);
+    project.getReleases().add(release);
     releaseEntityService.saveEntity(release);
 
     return releaseMapper.toResponseDto(release);
