@@ -69,9 +69,8 @@ public class UserServiceImpl implements UserService {
         }
         UserEntity user = userMapper.toEntity(userRequestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        userEntityService.saveEntity(user);
-
-        return userMapper.toResponseDto(user);
+        UserEntity savedUser = userEntityService.saveEntity(user);
+        return userMapper.toResponseDto(savedUser);
     }
 
     @Transactional
@@ -82,9 +81,8 @@ public class UserServiceImpl implements UserService {
         userEntity.setFirstName(userRequestDto.getFirstName());
         userEntity.setSecondName(userRequestDto.getSecondName());
         userEntity.setMail(userRequestDto.getMail());
-
-        userEntityService.saveEntity(userEntity);
-        return userMapper.toResponseDto(userEntity);
+        UserEntity savedUser = userEntityService.saveEntity(userEntity);
+        return userMapper.toResponseDto(savedUser);
     }
 
     @Transactional
