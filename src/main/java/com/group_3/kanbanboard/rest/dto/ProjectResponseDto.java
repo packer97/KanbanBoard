@@ -8,6 +8,8 @@ import java.util.UUID;
 
 @Schema(description = "Проект")
 public class ProjectResponseDto {
+    @Schema(description = "Идентификатор проекта")
+    private UUID id;
     @Schema(description = "Название проекта")
     private String title;
     @Schema(description = "Описание проекта")
@@ -22,13 +24,22 @@ public class ProjectResponseDto {
     public ProjectResponseDto() {
     }
 
-    public ProjectResponseDto(String title, String description, UUID leadId,
-        Boolean startProject, List<ReleaseEntity> releases) {
+    public ProjectResponseDto(UUID id, String title, String description, UUID leadId,
+                              Boolean startProject, List<ReleaseEntity> releases) {
+        this.id = id;
         this.title = title;
         this.description = description;
         this.leadId = leadId;
         this.startProject = startProject;
         this.releases = releases;
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
     }
 
     public String getTitle() {

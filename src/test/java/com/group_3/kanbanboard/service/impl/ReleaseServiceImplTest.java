@@ -153,7 +153,7 @@ public class ReleaseServiceImplTest {
   @Test
   public void addRelease() {
     when(projectRepository.findById(projectId)).thenReturn(Optional.of(project));
-    when(projectRepository.save(project)).thenReturn(project);
+
 
     setUpReleaseMappers();
     setUpProjectMappers();
@@ -210,10 +210,6 @@ public class ReleaseServiceImplTest {
     when(projectMapper.toResponseDto(Mockito.any(ProjectEntity.class)))
         .thenAnswer(invocation -> new ProjectMapperImpl()
             .toResponseDto(invocation.<ProjectEntity>getArgument(0)));
-
-    when(projectMapper.toRequestDto(Mockito.any(ProjectEntity.class)))
-        .thenAnswer(invocation -> new ProjectMapperImpl()
-            .toRequestDto(invocation.<ProjectEntity>getArgument(0)));
 
     when(projectMapper.toEntity(Mockito.any(ProjectResponseDto.class)))
         .thenAnswer(invocation -> new ProjectMapperImpl()
