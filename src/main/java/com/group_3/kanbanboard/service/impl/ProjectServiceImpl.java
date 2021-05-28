@@ -1,10 +1,8 @@
 package com.group_3.kanbanboard.service.impl;
 
 import com.group_3.kanbanboard.entity.ProjectEntity;
-import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.entity.UserProjectEntity;
-import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.exception.ProjectNotFoundException;
 import com.group_3.kanbanboard.exception.UserNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
@@ -25,10 +23,10 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    private ProjectRepository projectRepository;
-    private ProjectMapper projectMapper;
-    private UserProjectRepository userProjectRepository;
-    private UserRepository userRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
+    private final UserProjectRepository userProjectRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper,

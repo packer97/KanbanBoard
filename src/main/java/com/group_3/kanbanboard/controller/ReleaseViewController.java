@@ -131,7 +131,7 @@ public class ReleaseViewController {
 
   @PatchMapping("/{releaseId}")
   public String updateRelease(@PathVariable UUID projectId, @PathVariable UUID releaseId,
-      ReleaseRequestDto releaseRequestDto, String formStatus, String formStartDate,
+      ReleaseRequestDto releaseRequestDto, String formStartDate,
       String formEndDate)
       throws ParseException {
     utilService.checkLeadAccess(projectId);
@@ -145,7 +145,6 @@ public class ReleaseViewController {
       throw new FormInputException("Start date of release should be earlier than end date");
     }
 
-    releaseRequestDto.setStatus(ReleaseStatus.valueOf(formStatus));
     releaseRequestDto.setStartDate(startDate);
     releaseRequestDto.setEndDate(endDate);
 

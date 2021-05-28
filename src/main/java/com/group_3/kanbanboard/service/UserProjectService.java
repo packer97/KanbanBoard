@@ -16,7 +16,13 @@ public interface UserProjectService {
 
     UserProjectResponseDto getUserProjectByUserAndProject(UUID userId, UUID projectId);
 
-    void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role);
+    UserProjectResponseDto setUserProjectRole( UUID userId, UUID projectId,InProjectUserRole inProjectUserRole );
+
+    UserProjectResponseDto setUserInProject(UUID userId, UUID projectId,String projectRole);
+
+    UserProjectResponseDto deleteUserInProject(UUID projectId, String userName);
 
     boolean isUserLeadInProject(UUID userId, UUID projectId);
+
+    boolean isUserProjectCreator(String username, UUID projectId);
 }

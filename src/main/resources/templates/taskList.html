@@ -7,10 +7,15 @@
 <body>
 <header>
     <nav>
-        <a href="/users">USERS</a>|
-        <a href="/projects">PROJECTS</a>|
-        <a th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a>|
-        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>|
+        <a href="/profile">PROFILE</a> |
+        <a href="/users">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <div style="margin: -1% 0 0 93%; display: block;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign Out</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
     </nav>
     <hr>
     <h1 style=" display: inline-block;">Tasks list</h1>
@@ -61,7 +66,7 @@
                     <tr th:each="task : ${tasksList}">
                         <td style="vertical-align: top; margin: 0px; padding: 0px; background: #b0e0e6;">
                             <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${task.id})}">
-                                <div th:if="${task.taskStatus.equals(status)}"
+                                <div th:if="${task.taskStatus.equals(status.toString())}"
                                      style="border: 1px solid black;">
                                     <p><span th:text="${task.title}">task.title</span></p>
                                     <p><span th:text="${task.description}">task.description</span></p>

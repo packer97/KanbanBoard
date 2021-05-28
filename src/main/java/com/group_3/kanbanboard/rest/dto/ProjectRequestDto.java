@@ -1,9 +1,7 @@
 package com.group_3.kanbanboard.rest.dto;
 
-import com.group_3.kanbanboard.entity.ReleaseEntity;
 import io.swagger.v3.oas.annotations.media.Schema;
 
-import java.util.List;
 import java.util.UUID;
 
 @Schema(description = "Проект")
@@ -22,6 +20,8 @@ public class ProjectRequestDto {
         this.description = description;
         this.leadId = leadId;
     }
+
+    public ProjectRequestDto() {}
 
     public String getTitle() {
         return title;
