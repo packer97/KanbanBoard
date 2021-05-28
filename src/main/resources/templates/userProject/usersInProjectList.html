@@ -1,46 +1,51 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>project users list</title>
-  <nav>
-    <a th:href="@{/projects/{projectId}/users(projectId=${projectId})}">USERS</a> |
-    <a href="/projects">PROJECTS</a> |
-    <a href="/projects/{projectId}/releases"
-       th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
-    <a href="/projects/{projectId}/releases/{releaseId}/tasks"
-       th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
-    |  <form th:action="@{/logout}" method="post">
-    <button type="submit">Sign Out</button>
-  </form>
-    <a href="/invitePage">Invite User</a>
-  </nav>
+    <meta charset="UTF-8">
+    <title>project users list</title>
+    <nav>
+        <a th:href="@{/projects/{projectId}/users(projectId=${projectId})}">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <a href="/projects/{projectId}/releases"
+           th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
+        <a href="/projects/{projectId}/releases/{releaseId}/tasks"
+           th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+        |
+        <form th:action="@{/logout}" method="post">
+            <button type="submit">Sign Out</button>
+        </form>
+        <form th:action="@{/projects/{projectId}/users/addUser(projectId=${projectId})}">
+            <div style="margin-top: 40px;">
+                <button type="submit" style="margin-top: 10px;">Add User</button>
+            </div>
+        </form>
+    </nav>
 
 
 </head>
 
 <body>
 <table>
-  <thead>
-  <tr>
-    <th>Username</th>
-    <th>E-mail</th>
-    <th>Role</th>
-  </tr>
-  </thead>
-  <tbody>
-  <tr th:each="user : ${usersInProjectList}">
-    <td>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>E-mail</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="userPrd : ${userProjectResponseDto}">
+        <td>
       <span>
-      <a th:href="@{/projects/{projectId}/users/{userId}(projectId = ${projectId}, userId = ${user.getUsername()})}"
-       th:text="${user.username }">
+      <a th:href="@{/projects/{projectId}/users/{username}(projectId = ${projectId}, username = ${userPrd.getUser().getUsername()})}"
+         th:text="${userPrd.getUser().getUsername()}">
       </a>
       </span>
-    </td>
-    <td><span th:text="${user.mail}"> </span></td>
-    <td><span th:text="${user.roles}"> </span></td>
-  </tr>
-  </tbody>
+        </td>
+        <td><span th:text="${userPrd.getUser().getMail()}"> </span></td>
+        <td><span th:text="${userPrd.getProjectUserRole().toString()}"> </span></td>
+    </tr>
+    </tbody>
 </table>
 </body>
 </html>

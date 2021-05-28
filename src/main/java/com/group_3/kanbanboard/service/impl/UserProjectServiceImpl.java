@@ -1,18 +1,20 @@
 package com.group_3.kanbanboard.service.impl;
 
-import com.group_3.kanbanboard.entity.ProjectEntity;
-import com.group_3.kanbanboard.entity.UserEntity;
-import com.group_3.kanbanboard.entity.UserProjectEntity;
+import com.group_3.kanbanboard.entity.*;
 import com.group_3.kanbanboard.enums.InProjectUserRole;
+import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.exception.UserProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.UserProjectMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
+import com.group_3.kanbanboard.rest.dto.UserProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.service.entity.EntityService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
+
+import liquibase.pro.packaged.S;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,9 +28,10 @@ public class UserProjectServiceImpl implements UserProjectService {
   private final UserProjectMapper userProjectMapper;
 
 
+
   @Autowired
   public UserProjectServiceImpl(UserProjectRepository userProjectRepository,
-      EntityService entityService, UserProjectMapper userProjectMapper) {
+       UserProjectMapper userProjectMapper,EntityService entityService) {
     this.userProjectRepository = userProjectRepository;
     this.entityService = entityService;
     this.userProjectMapper = userProjectMapper;
@@ -67,10 +70,40 @@ public class UserProjectServiceImpl implements UserProjectService {
                 userId, projectId)));
     return userProjectMapper.toResponseDto(userWithProject);
   }
+
   @Transactional
   @Override
-  public void setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole role) {
-    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+  public UserProjectResponseDto setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole inProjectUserRole) {
+//    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
+    UserProjectEntity userProjectFromDb = userProjectRepository.findByUserAndProject(entityService.getUserEntity(userId), entityService.getProjectEntity(projectId))
+            .orElseThrow(() -> new UserProjectNotFoundException(
+                    String.format(
+                            "Relation entity UserProject with User (id = %s) and Project(id = %s) not found",
+                            userId, projectId)));
+    userProjectFromDb.setProjectUserRole(inProjectUserRole);
+    userProjectRepository.save(userProjectFromDb);
+    return userProjectMapper.toResponseDto(userProjectFromDb);
+
+  }
+  @Transactional
+  @Override
+  public UserProjectResponseDto setUserInProject(UUID userId, UUID projectId,String projectRole) {
+    UserEntity userEntity = entityService.getUserEntity(userId);
+    ProjectEntity projectEntity = entityService.getProjectEntity(projectId);
+    UserProjectEntity userProjectEntity = new UserProjectEntity (userEntity, projectEntity);
+
+    userProjectEntity.setProjectUserRole( InProjectUserRole.valueOf(projectRole));
+    userProjectRepository.save(userProjectEntity);
+    return userProjectMapper.toResponseDto(userProjectEntity);
+  }
+  @Transactional
+  @Override
+  public UserProjectResponseDto deleteUserInProject(UUID projectId, String userName) {
+    UserEntity userEntity = entityService.getUserEntity(userName);
+    ProjectEntity projectEntity = entityService.getProjectEntity(projectId);
+    UserProjectEntity userProjectEntity = new UserProjectEntity (userEntity, projectEntity);
+    userProjectRepository.delete(userProjectEntity);
+    return userProjectMapper.toResponseDto(userProjectEntity);
   }
 
   @Transactional
