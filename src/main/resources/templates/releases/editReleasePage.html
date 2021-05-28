@@ -43,11 +43,11 @@
 
   <div style="margin-top: 10px;">
     <label>Status
-      <select name="formStatus">
-        <option>BACKLOG</option>
-        <option>IN_PROGRESS</option>
-        <option>EXPIRED</option>
-        <option>FINISHED</option>
+      <select th:field="*{releaseDto.status}">
+        <option value="BACKLOG">BACKLOG</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="EXPIRED">EXPIRED</option>
+        <option value="FINISHED">FINISHED</option>
       </select>
     </label>
   </div>
