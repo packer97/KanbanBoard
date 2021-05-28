@@ -46,7 +46,7 @@
     <input type="search" name="search" placeholder="Search tasks" value="">
     <button type="submit">Search</button>
 </form>
-<form th:method="get" th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/newTask( projectId=${projectId}, releaseId=${releaseId})}">
+<form th:method="get" th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/addTask (projectId=${projectId}, releaseId=${releaseId})}">
     <button type="submit">AddTask</button>
 </form>
 <div>
