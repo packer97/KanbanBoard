@@ -19,7 +19,8 @@
         </div>
     </nav>
 </header>
-<form th:method="post" th:action="@{/projects/{projectId}/users/(projectId = ${projectId})}">
+<!--th:if="${!isCreator}"-->
+<form  th:method="post" th:action="@{/projects/{projectId}/users/(projectId = ${projectId})}">
     <div style="margin-top: 10px">
         <label>
             Username: <input type="text" name="userName"/> </label></div>
