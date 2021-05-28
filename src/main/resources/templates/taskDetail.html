@@ -44,8 +44,8 @@
             th:text="${distinctTask.performer} ? ${distinctTask.performer.username} : 'not selected'"></span>
         <label>
             <select name="projectUserSelect" form="saveTaskForm">
-                <option th:each="projetcUser : ${projectUsers}" th:text="${projetcUser.username}"
-                        th:value="${projetcUser.username}"></option>
+                <option th:each="projectUser : ${projectUsers}" th:text="${projectUser.username}"
+                        th:value="${projectUser.username}" th:selected="${distinctTask.performer.getUsername().equals(projectUser.getUsername())}"></option>
             </select>
         </label></p>
 
