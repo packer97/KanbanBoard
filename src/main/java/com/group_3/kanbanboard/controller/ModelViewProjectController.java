@@ -52,7 +52,6 @@ public class ModelViewProjectController {
         model.addAttribute("projectDto", projectService.getById(projectId));
         model.addAttribute("leadName", projectDetailsService.getLeadNameFromProject(projectId));
         model.addAttribute("isLead", isLead);
-        model.addAttribute("releases", releases);
         return "projects/projectPage";
     }
 
