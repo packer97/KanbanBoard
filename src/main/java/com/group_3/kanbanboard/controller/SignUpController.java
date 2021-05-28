@@ -32,20 +32,20 @@ public class SignUpController {
 
     @GetMapping
     public String getSignUpPage(@ModelAttribute("user") UserSignUpRequest userSignUpRequest) {
-        return "signUp";
+        return "profile/signUp";
     }
 
     @PostMapping
     public String saveUser(@ModelAttribute("user") @Valid UserSignUpRequest userSignUpRequest,
                                  BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            return "signUp";
+            return "profile/signUp";
         }
         if (!userSignUpRequest.getPassword().equals(userSignUpRequest.getConfirmPassword())) {
-            return "signUp";
+            return "profile/signUp";
         }
         userService.addUser(new UserRequestDto(userSignUpRequest.getFirstName(), userSignUpRequest.getLastName(),
                 userSignUpRequest.getPassword(), userSignUpRequest.getUserName(), userSignUpRequest.getEmail(), Collections.singleton(UserRole.USER)));
-        return "login";
+        return "profile/login";
     }
 }
