@@ -1,6 +1,5 @@
 package com.group_3.kanbanboard.rest;
 
-import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.rest.dto.ProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.service.impl.ProjectServiceImpl;
@@ -18,8 +17,12 @@ import java.util.UUID;
 @RestController
 public class ProjectController {
 
+    private final ProjectServiceImpl projectService;
+
     @Autowired
-    private ProjectServiceImpl projectService;
+    public ProjectController(ProjectServiceImpl projectService) {
+        this.projectService = projectService;
+    }
 
     @Operation(summary = "Добавить проект")
     @PostMapping

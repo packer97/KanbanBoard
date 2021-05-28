@@ -5,6 +5,7 @@ import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.enums.InProjectUserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
 
+@Schema(description = "Пользователь и Проект")
 public class UserProjectRequestDto {
     @Schema(description = "Пользователь")
     private UserEntity user;
