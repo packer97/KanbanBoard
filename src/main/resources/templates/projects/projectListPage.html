@@ -12,33 +12,47 @@
     </style>
 </head>
 <body>
+<h1 style="text-align: center">
+    <a href="/" style="color: blue; ">KanbanBoard</a>
+</h1>
 <div style="text-align: right">
     <form method="post" action="/logout">
         <button type="submit">Log out</button>
         <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
     </form>
 </div>
-<div style="text-align: center">
-<form th:action="@{/projects/{projectId}/}" method="post">
+<h3>
+    <a th:href="@{/profile}">
+        Back to profile
+    </a>
+</h3>
+<div style="text-align: center": >
+<form th:action="@{/projects/new}" method="get">
     <button type="submit">Add new project</button>
 </form>
 </div>
+</br>
 
-<table align="center">
+<table style="table-border-color-dark: black;" align="center">
     <thead>
     <tr>
-        <th>Project name</th>
-        <th>Version release</th>
+        <th>Title</th>
+        <th>Description</th>
     </tr>
     </thead>
-    <tbody th:each="project : ${projectList}">
-        <a th:href="@{/projects}">
-                <p><span th:text="${project.getProject().getTitle()}"></span></p>
-                <p>
-                </p>
-        </a>
-    </td>
+    <tbody th:each="project : ${listProject}">
+    <tr>
+        <td>
+            <a th:href="@{/projects/{projectId}(projectId = ${project.getProject().getId()})}"
+               th:text="${project.getProject().getTitle()}"></a>
+        </td>
+        <td th:text="${project.getProject().getDescription()}"></td>
+        <td>
+        </td>
+    </tr>
     </tbody>
 </table>
+
+
 </body>
 </html>
