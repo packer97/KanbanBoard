@@ -31,30 +31,21 @@ public class SignUpController {
     }
 
     @GetMapping
-    public ModelAndView getSignUpPage() {
-        ModelAndView model = new ModelAndView("signUp");
-        model.addObject("userSignUpRequest", new UserSignUpRequest());
-        return model;
+    public String getSignUpPage(@ModelAttribute("user") UserSignUpRequest userSignUpRequest) {
+        return "signUp";
     }
 
     @PostMapping
-    public ModelAndView saveUser(@Valid @ModelAttribute UserSignUpRequest userSignUpRequest,
-                                 BindingResult bindingResult, ModelAndView model) {
+    public String saveUser(@ModelAttribute("user") @Valid UserSignUpRequest userSignUpRequest,
+                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.setViewName("signUp");
-            bindingResult.addError(Objects.requireNonNull(validatePassword(userSignUpRequest)));
-            return model;
+            return "signUp";
+        }
+        if (!userSignUpRequest.getPassword().equals(userSignUpRequest.getConfirmPassword())) {
+            return "signUp";
         }
         userService.addUser(new UserRequestDto(userSignUpRequest.getFirstName(), userSignUpRequest.getLastName(),
                 userSignUpRequest.getPassword(), userSignUpRequest.getUserName(), userSignUpRequest.getEmail(), Collections.singleton(UserRole.USER)));
-        model.setViewName("login");
-        return model;
-    }
-
-    private ObjectError validatePassword(UserSignUpRequest request) {
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            return new ObjectError("UserSignUpRequest", "Confirm password doesn't match");
-        }
-        return null;
+        return "login";
     }
 }
