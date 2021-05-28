@@ -20,6 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class UserProjectServiceImpl implements UserProjectService {
 
+    //Надо будет перевести на новый EntityService;
+
     private final UserProjectRepository userProjectRepository;
     private final EntityService entityService;
     private final UserProjectMapper userProjectMapper;
