@@ -23,4 +23,6 @@ public interface UserProjectService {
     UserProjectResponseDto deleteUserInProject(UUID projectId, String userName);
 
     boolean isUserLeadInProject(UUID userId, UUID projectId);
+
+    boolean isUserProjectCreator(String username, UUID projectId);
 }

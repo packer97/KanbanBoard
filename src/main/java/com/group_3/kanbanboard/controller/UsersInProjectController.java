@@ -29,7 +29,6 @@ public class UsersInProjectController {
     private final EntityServiceImpl entityService;
 
 
-
     public UsersInProjectController(ModelViewProjectService modelViewProjectService,
                                     UserProjectService userProjectService,
                                     UserService userService,
@@ -54,40 +53,43 @@ public class UsersInProjectController {
     }
 
 
-
     @GetMapping("/{username}")
-    public String UserDetail(@PathVariable UUID projectId,@PathVariable String username, Model model) {
+    public String UserDetail(@PathVariable UUID projectId, @PathVariable String username, Model model) {
+        boolean isCreator = userProjectService.isUserProjectCreator(username,projectId);
         UserResponseDto user = userService.getUserByUsername(username);
+        model.addAttribute("isCreator", isCreator);
         model.addAttribute("user", user);
         return "userProject/setUserRoleInProject";
 
     }
 
-    @PatchMapping ("/{username}")
+    @PatchMapping("/{username}")
     public String updateUserProject(@PathVariable UUID projectId, @PathVariable String username,
-                               UserProjectRequestDto userProjectRequestDto,
-                               String formStatus) {
+                                    UserProjectRequestDto userProjectRequestDto,
+                                    String formStatus) {
         InProjectUserRole newRole = InProjectUserRole.valueOf(formStatus);
-        userProjectServiceImpl.setUserProjectRole(entityService.getUserEntity(username).getId(),projectId,newRole);
+        userProjectServiceImpl.setUserProjectRole(entityService.getUserEntity(username).getId(), projectId, newRole);
 
         return "redirect:/projects/{projectId}/users";
     }
+
     @GetMapping("/addUser")
     public ModelAndView getAdd(@PathVariable UUID projectId) {
         ModelAndView modelAndView = new ModelAndView("userProject/addUser");
         modelAndView.addObject("projectId", projectId);
         return modelAndView;
     }
-        @PostMapping
+
+    @PostMapping
     public String addUser(@PathVariable UUID projectId, String userName, String formStatus, Model model) {
 
-        userProjectServiceImpl.setUserInProject(entityService.getUserEntity(userName).getId(),projectId,formStatus);
-        return "redirect:/projects/{projectId}/users";
-    }
-    @DeleteMapping("/{userName}")
-    public String deleteUser(@PathVariable UUID projectId, @PathVariable String userName) {
-        userProjectServiceImpl.deleteUserInProject(projectId,userName);
+        userProjectServiceImpl.setUserInProject(entityService.getUserEntity(userName).getId(), projectId, formStatus);
         return "redirect:/projects/{projectId}/users";
     }
 
+    @DeleteMapping("/{userName}")
+    public String deleteUser(@PathVariable UUID projectId, @PathVariable String userName) {
+        userProjectServiceImpl.deleteUserInProject(projectId, userName);
+        return "redirect:/projects/{projectId}/users";
+    }
 }

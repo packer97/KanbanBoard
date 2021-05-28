@@ -6,7 +6,6 @@ import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.exception.UserProjectNotFoundException;
 import com.group_3.kanbanboard.mappers.UserProjectMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
-import com.group_3.kanbanboard.rest.dto.UserProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.service.entity.EntityService;
 import com.group_3.kanbanboard.service.UserProjectService;
@@ -74,7 +73,6 @@ public class UserProjectServiceImpl implements UserProjectService {
   @Transactional
   @Override
   public UserProjectResponseDto setUserProjectRole(UUID userId, UUID projectId, InProjectUserRole inProjectUserRole) {
-//    getUserProjectByUserAndProject(userId, projectId).setProjectUserRole(role);
     UserProjectEntity userProjectFromDb = userProjectRepository.findByUserAndProject(entityService.getUserEntity(userId), entityService.getProjectEntity(projectId))
             .orElseThrow(() -> new UserProjectNotFoundException(
                     String.format(
@@ -112,5 +110,14 @@ public class UserProjectServiceImpl implements UserProjectService {
     InProjectUserRole userRole = getUserProjectByUserAndProject(userId, projectId)
         .getProjectUserRole();
     return userRole == InProjectUserRole.LEAD;
+  }
+  @Transactional
+  @Override
+  public boolean isUserProjectCreator(String username, UUID projectId) {
+    UUID userId = entityService.getUserEntity(username).getId() ;
+    UUID creator = getUserProjectByUserAndProject(userId, projectId)
+            .getProject().getLeadId();
+
+    return userId.equals(creator);
   }
 }
