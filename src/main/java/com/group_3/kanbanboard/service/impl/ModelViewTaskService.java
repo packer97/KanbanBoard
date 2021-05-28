@@ -58,22 +58,48 @@ public class ModelViewTaskService {
         return taskResponseDtos;
     }
 
-    public TaskResponseDto setDependenciesAndSave(UUID taskId,
-                                       String username,
-                                       UUID projectId,
-                                       UUID releaseId,
-                                       TaskRequestDto taskRequestDto) {
-        TaskEntity taskFromRequest = taskMapper.toEntity(taskRequestDto);
+    public TaskResponseDto setDependenciesAndGet(String username,
+                                                 UUID projectId,
+                                                 UUID releaseId,
+                                                 TaskRequestDto taskRequestDto) {
+        TaskEntity taskFromRequest = setDependencies(username, projectId, releaseId, taskRequestDto);
+        return taskMapper.toResponseDto(taskFromRequest);
 
+    }
+
+    @Transactional
+    public TaskResponseDto setDependenciesAndSave(UUID taskId,
+                                                  String username,
+                                                  UUID projectId,
+                                                  UUID releaseId,
+                                                  TaskRequestDto taskRequestDto) {
+        TaskEntity taskFromRequest = setDependencies(username, projectId, releaseId, taskRequestDto);
         taskFromRequest.setId(taskId);
+
+        TaskEntity savedTask = taskEntityService.saveEntity(taskFromRequest);
+        return taskMapper.toResponseDto(savedTask);
+    }
+
+    @Transactional
+    public TaskResponseDto setDependenciesAndSave(String username,
+                                                  UUID projectId,
+                                                  UUID releaseId,
+                                                  TaskRequestDto taskRequestDto) {
+        TaskEntity taskFromRequest = setDependencies(username, projectId, releaseId, taskRequestDto);
+
+        TaskEntity savedTask = taskEntityService.saveEntity(taskFromRequest);
+        return taskMapper.toResponseDto(savedTask);
+    }
+
+    private TaskEntity setDependencies(String username, UUID projectId, UUID releaseId, TaskRequestDto taskRequestDto) {
+        TaskEntity taskFromRequest = taskMapper.toEntity(taskRequestDto);
 
         taskFromRequest.setPerformer(userEntityService.getEntity(username));
         taskFromRequest.setProject(projectEntityService.getEntity(projectId));
         taskFromRequest.setRelease(releaseEntityService.getEntity(releaseId));
-
-        TaskEntity savedTask = taskEntityService.saveEntity(taskFromRequest);
-        return  taskMapper.toResponseDto(savedTask);
+        return taskFromRequest;
     }
+
 
     @Transactional
     public TaskResponseDto getTaskByIdFromProjectAndRelease(UUID taskId, UUID projectId, UUID releaseId) {

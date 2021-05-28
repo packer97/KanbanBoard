@@ -52,14 +52,14 @@
 
     <p><span>Task status:</span><span th:text="${distinctTask.taskStatus}"></span>
         <label>
-            <select name="taskStatus" form="saveTaskForm">
+            <select name="taskStatus" form="saveTaskForm" th:field="${distinctTask.taskStatus}">
                 <option th:each="status : ${statuses}" th:text="${status}" th:value="${status}"></option>
             </select>
         </label></p>
 
     <p><span>Task category:</span><span th:text="${distinctTask.taskCategory}"></span>
         <label>
-            <select name="taskCategory" form="saveTaskForm">
+            <select name="taskCategory" form="saveTaskForm" th:field="${distinctTask.taskCategory}">
                 <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
             </select>
         </label></p>

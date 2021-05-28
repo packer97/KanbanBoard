@@ -14,7 +14,6 @@ import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
 import com.group_3.kanbanboard.service.impl.ModelViewTaskService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.propertyeditors.CustomDateEditor;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
@@ -63,6 +62,7 @@ public class ModelViewTaskController {
         return "taskList";
     }
 
+
     @GetMapping("/{taskId}")
     public String getDistinctTaskById(@PathVariable UUID projectId,
                                       @PathVariable UUID releaseId,
@@ -108,6 +108,27 @@ public class ModelViewTaskController {
         return "taskDetail";
     }
 
+    @GetMapping("/addTask")
+    public String addTask(@PathVariable UUID projectId,
+                          @PathVariable UUID releaseId,
+                          @ModelAttribute TaskRequestDto taskRequestDto,
+                          Model model) {
+
+        TaskResponseDto distinctTask = modelViewTaskService
+                .setDependenciesAndGet(principalService.getPrincipal().getUsername(), projectId, releaseId, taskRequestDto);
+
+        model.addAttribute("distinctTask", distinctTask);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("formattedEndDate", dateFormat.format(new Date()));
+
+        List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
+        model.addAttribute("projectUsers", projectUsers);
+
+        return "taskDetail";
+    }
+
+
     @ModelAttribute("userAsPrincipal")
     public UserResponseDto getUserAsPrincipal() {
         return principalService.getPrincipal();
@@ -123,7 +144,6 @@ public class ModelViewTaskController {
     public TaskStatus[] getTaskStatuses() {
         return TaskStatus.values();
     }
-
 
 
     @InitBinder

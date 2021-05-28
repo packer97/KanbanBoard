@@ -35,12 +35,26 @@
     </div>
     <hr>
 </header>
-<form th:method="get"
-      id="searchForm"
-      th:action="@{/projects/{projectId}/releases/{releaseId}/tasks( projectId=${projectId}, releaseId=${releaseId})}">
-    <input type="search" name="search" placeholder="Search tasks" value="">
-    <button type="submit">Search</button>
-</form>
+<div>
+    <form th:method="get"
+          id="searchForm"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">
+        <label>
+            <input type="search" name="search" placeholder="Search tasks" value="">
+        </label>
+        <button type="submit">Search</button>
+    </form>
+</div>
+
+<div>
+    <form th:method="get"
+          id="addTaskForm"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/addTask(projectId=${projectId}, releaseId=${releaseId})}"
+          style="display: inline-block">
+        <button type="submit">add new Task</button>
+    </form>
+</div>
+
 <div>
     <table id="owner_table" style=" border: 1px solid black;margin: 3px; padding: 3px; border-collapse: collapse;">
         <caption>Cards of Task by status</caption>
