@@ -3,28 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>project users list</title>
-    <nav>
-        <a th:href="@{/projects/{projectId}/users(projectId=${projectId})}">USERS</a> |
-        <a href="/projects">PROJECTS</a> |
-        <a href="/projects/{projectId}/releases"
-           th:href="@{/projects/{projectId}/releases(projectId=${projectId})}">RELEASES</a> |
-        <a href="/projects/{projectId}/releases/{releaseId}/tasks"
-           th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
-        |
-        <form th:action="@{/logout}" method="post">
-            <button type="submit">Sign Out</button>
-        </form>
-        <form th:action="@{/projects/{projectId}/users/addUser(projectId=${projectId})}">
-            <div style="margin-top: 40px;">
-                <button type="submit" style="margin-top: 10px;">Add User</button>
-            </div>
-        </form>
-    </nav>
-
-
 </head>
 
 <body>
+<header>
+    <nav>
+        <a href="/profile">PROFILE</a> |
+        <a href="/users">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <div style="margin: -1% 0 0 93%; display: block;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign Out</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+    </nav>
+</header>
 <table>
     <thead>
     <tr>

@@ -55,7 +55,7 @@ public class UsersInProjectController {
 
     @GetMapping("/{username}")
     public String UserDetail(@PathVariable UUID projectId, @PathVariable String username, Model model) {
-        boolean isCreator = userProjectService.isUserProjectCreator(username,projectId);
+        boolean isCreator = userProjectService.isUserProjectCreator(username, projectId);
         UserResponseDto user = userService.getUserByUsername(username);
         model.addAttribute("isCreator", isCreator);
         model.addAttribute("user", user);
@@ -82,9 +82,10 @@ public class UsersInProjectController {
 
     @PostMapping
     public String addUser(@PathVariable UUID projectId, String userName, String formStatus, Model model) {
-
-        userProjectServiceImpl.setUserInProject(entityService.getUserEntity(userName).getId(), projectId, formStatus);
-        return "redirect:/projects/{projectId}/users";
+        if (!userName.isEmpty()) {
+            userProjectServiceImpl.setUserInProject(entityService.getUserEntity(userName).getId(), projectId, formStatus);
+            return "redirect:/projects/{projectId}/users";
+        } return "redirect:/projects/{projectId}/users";
     }
 
     @DeleteMapping("/{userName}")
