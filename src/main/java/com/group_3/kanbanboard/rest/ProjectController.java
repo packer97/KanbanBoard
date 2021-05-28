@@ -1,6 +1,5 @@
 package com.group_3.kanbanboard.rest;
 
-import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.rest.dto.ProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.service.impl.ProjectServiceImpl;

@@ -1,68 +1,71 @@
 package com.group_3.kanbanboard.controller;
 
-import com.group_3.kanbanboard.enums.ReleaseStatus;
-import com.group_3.kanbanboard.exception.FormInputException;
-import com.group_3.kanbanboard.rest.dto.*;
+import com.group_3.kanbanboard.entity.ReleaseEntity;
+import com.group_3.kanbanboard.rest.dto.ProjectRequestDto;
+import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
+import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UtilService;
+import com.group_3.kanbanboard.service.impl.ProjectDetailsServiceImpl;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
 @Controller
 @RequestMapping("/projects")
 public class ModelViewProjectController {
-
     private final PrincipalService principalService;
-    private final UserProjectService userProjectService;
     private final ProjectService projectService;
     private final UtilService utilService;
+    private final UserProjectService userProjectService;
+    private final ProjectDetailsServiceImpl projectDetailsService;
 
-    public ModelViewProjectController(PrincipalService principalService, UserProjectService userProjectService,
-                                      ProjectService projectService, UtilService utilService) {
+    public ModelViewProjectController(PrincipalService principalService, ProjectService projectService,
+                                      UtilService utilService, UserProjectService userProjectService,
+                                      ProjectDetailsServiceImpl projectDetailsService) {
         this.principalService = principalService;
-        this.userProjectService = userProjectService;
         this.projectService = projectService;
         this.utilService = utilService;
+        this.userProjectService = userProjectService;
+        this.projectDetailsService = projectDetailsService;
     }
 
     @GetMapping
-    public ModelAndView getUserProjectsPage() {
+    public String getUserProjectsPage(Model model) {
+        List<UserProjectResponseDto> listProject = userProjectService.
+                getUserProjectsFromUser(principalService.getPrincipalId());
+        model.addAttribute("listProject", listProject);
 
-        List<UserProjectResponseDto> userProjectResponseDtos = userProjectService
-                .getUserProjectsFromUser(principalService.getPrincipalId());
-
-        ModelAndView modelAndView = new ModelAndView("projects/projectListPage");
-        modelAndView.addObject("projectList", userProjectResponseDtos);
-
-        return modelAndView;
+        return "projects/projectListPage";
     }
 
     @GetMapping("/{projectId}")
-    public ModelAndView getProjectPage(@PathVariable UUID projectId) {
-        ProjectResponseDto projectResponseDto = projectService.getById(projectId);
+    public String getProjectPage(@PathVariable UUID projectId,
+                                 Model model) {
+        boolean isLead = userProjectService.isUserLeadInProject(principalService.getPrincipalId(), projectId);
+        List<ReleaseEntity> releases = projectService.getById(projectId).getReleases();
+        model.addAttribute("projectDto", projectService.getById(projectId));
+        model.addAttribute("leadName", projectDetailsService.getLeadNameFromProject(projectId));
+        model.addAttribute("isLead", isLead);
+        model.addAttribute("releases", releases);
+        return "projects/projectPage";
+    }
 
-        ModelAndView modelAndView = new ModelAndView("projects/projectPage");
-        modelAndView.addObject("projectDto", projectResponseDto);
-        return modelAndView;
+    @GetMapping("/new")
+    public String newProject(@ModelAttribute("projectDto")
+                                         ProjectResponseDto projectResponseDto) {
+        return "projects/newProjectPage";
     }
 
     @PostMapping
-    public String addProjectToUser(String title, String description) throws ParseException {
-
-        ProjectRequestDto projectRequestDto = new ProjectRequestDto();
+    public String addProjectToUser(@ModelAttribute("projectDto")
+                                               ProjectRequestDto projectRequestDto) {
         projectRequestDto.setLeadId(principalService.getPrincipalId());
-        projectRequestDto.setTitle(title);
-        projectRequestDto.setDescription(description);
-
         projectService.addProject(principalService.getPrincipalId(), projectRequestDto);
 
         return "redirect:/projects";
@@ -77,27 +80,22 @@ public class ModelViewProjectController {
     }
 
     @GetMapping("/{projectId}/edit")
-    public ModelAndView getEditProjectPage(@PathVariable UUID projectId) {
+    public String getEditProjectPage(@PathVariable UUID projectId, Model model) {
         utilService.checkLeadAccess(projectId);
 
         ProjectResponseDto projectDto = projectService.getById(projectId);
-        ModelAndView modelAndView = new ModelAndView("projects/editProjectPage");
-        modelAndView.addObject("projectDto", projectDto);
+        model.addAttribute("projectDto", projectDto);
 
-        return modelAndView;
+        return "projects/editProjectPage";
     }
+
     @PatchMapping("/{projectId}")
-    public String updateRelease(@PathVariable UUID projectId, ProjectRequestDto projectRequestDto,
-                                String title, String description)
-            throws ParseException {
+    public String updateProject(@ModelAttribute("projectDto")
+                                ProjectRequestDto projectRequestDto,
+                                @PathVariable UUID projectId) {
         utilService.checkLeadAccess(projectId);
-
-        projectRequestDto.setTitle(title);
-        projectRequestDto.setDescription(description);
-
         projectService.updateProject(projectId, projectRequestDto);
 
         return "redirect:/projects/{projectId}";
     }
-
 }
