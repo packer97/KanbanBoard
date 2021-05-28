@@ -4,6 +4,7 @@ import com.group_3.kanbanboard.enums.InProjectUserRole;
 import com.group_3.kanbanboard.rest.dto.UserProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
+import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UserService;
 import com.group_3.kanbanboard.service.entity.EntityServiceImpl;
@@ -22,20 +23,20 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/projects/{projectId}/users")
 public class UsersInProjectController {
-    private final ModelViewProjectService modelViewProjectService;
+    private final PrincipalService principalService;
     private final UserProjectService userProjectService;
     private final UserService userService;
     private final UserProjectServiceImpl userProjectServiceImpl;
     private final EntityServiceImpl entityService;
 
 
-    public UsersInProjectController(ModelViewProjectService modelViewProjectService,
+    public UsersInProjectController(PrincipalService principalService,
                                     UserProjectService userProjectService,
                                     UserService userService,
                                     UserProjectServiceImpl userProjectServiceImpl,
                                     EntityServiceImpl entityService) {
 
-        this.modelViewProjectService = modelViewProjectService;
+        this.principalService = principalService;
         this.userProjectService = userProjectService;
         this.userService = userService;
         this.entityService = entityService;
@@ -47,7 +48,9 @@ public class UsersInProjectController {
     @GetMapping
     public ModelAndView getUsers(@PathVariable UUID projectId) {
         List<UserProjectResponseDto> userProjectResponseDto = userProjectServiceImpl.getUserProjectsFromProject(projectId);
+        boolean isCreator = userProjectService.isUserProjectCreator(principalService.getPrincipal().getUsername(), projectId);
         ModelAndView modelAndView = new ModelAndView("userProject/usersInProjectList");
+        modelAndView.addObject("isCreator", isCreator);
         modelAndView.addObject("userProjectResponseDto", userProjectResponseDto);
         return modelAndView;
     }

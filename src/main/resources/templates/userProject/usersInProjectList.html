@@ -17,6 +17,13 @@
                 <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
             </form>
         </div>
+        </form>
+
+        <form th:if="${isCreator}" th:action="@{/projects/{projectId}/users/addUser(projectId=${projectId})}">
+            <div style="margin-top: 10px;">
+                <button type="submit" style="margin-top: 10px;">Add User</button>
+            </div>
+        </form>
     </nav>
 </header>
 <table>
