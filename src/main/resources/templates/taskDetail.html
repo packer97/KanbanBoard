@@ -11,6 +11,9 @@
         <a href="/profile">PROFILE</a> |
         <a href="/users">USERS</a> |
         <a href="/projects">PROJECTS</a> |
+        <a th:href="@{/projects/{projectId}/releases/(projectId=${projectId})}">RELEASES</a> |
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+        |
         <div style="margin: -1% 0 0 93%; display: block;">
             <form th:action="@{/logout}" method="post">
                 <button type="submit">Sign Out</button>
@@ -29,7 +32,7 @@
           placeholder="Enter description of task here ->"
           th:text="${distinctTask.description}"></textarea>
     </label>
-    <form th:method="put"
+    <form th:method="${isAddTask}? 'post' : 'put'"
           id="saveTaskForm"
           th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}">
         <button type="submit">Save changes</button>

@@ -19,6 +19,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -67,7 +68,12 @@ public class ModelViewTaskController {
     public String getDistinctTaskById(@PathVariable UUID projectId,
                                       @PathVariable UUID releaseId,
                                       @PathVariable UUID taskId,
+                                      HttpServletRequest request,
                                       Model model) {
+
+        boolean isAddTask = request.getRequestURI().contains("addTask");
+        model.addAttribute("isAddTask", isAddTask);
+
         TaskResponseDto distinctTask = modelViewTaskService
                 .getTaskByIdFromProjectAndRelease(taskId, projectId, releaseId);
         model.addAttribute("distinctTask", distinctTask);
@@ -109,10 +115,14 @@ public class ModelViewTaskController {
     }
 
     @GetMapping("/addTask")
-    public String addTask(@PathVariable UUID projectId,
-                          @PathVariable UUID releaseId,
-                          @ModelAttribute TaskRequestDto taskRequestDto,
-                          Model model) {
+    public String openAddTask(@PathVariable UUID projectId,
+                              @PathVariable UUID releaseId,
+                              @ModelAttribute TaskRequestDto taskRequestDto,
+                              HttpServletRequest request,
+                              Model model) {
+
+        boolean isAddTask = request.getRequestURI().contains("addTask");
+        model.addAttribute("isAddTask", isAddTask);
 
         TaskResponseDto distinctTask = modelViewTaskService
                 .setDependenciesAndGet(principalService.getPrincipal().getUsername(), projectId, releaseId, taskRequestDto);
@@ -126,6 +136,27 @@ public class ModelViewTaskController {
         model.addAttribute("projectUsers", projectUsers);
 
         return "taskDetail";
+    }
+
+    @PostMapping
+    public String addTask(@PathVariable UUID projectId,
+                          @PathVariable UUID releaseId,
+                          @RequestParam String projectUserSelect,
+                          @ModelAttribute TaskRequestDto taskRequestDto,
+                          Model model){
+        TaskResponseDto distinctTask = modelViewTaskService
+                .setDependenciesAndSave(projectUserSelect, projectId, releaseId, taskRequestDto);
+
+        model.addAttribute("distinctTask", distinctTask);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        model.addAttribute("formattedEndDate", dateFormat.format(new Date()));
+
+        List<UserResponseDto> projectUsers = modelViewProjectService.getUsersForProject(projectId);
+        model.addAttribute("projectUsers", projectUsers);
+
+        return "redirect:/projects/{projectId}/releases/{releaseId}/tasks";
+
     }
 
 
