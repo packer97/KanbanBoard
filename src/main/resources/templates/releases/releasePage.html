@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>KanbanBoard | Release page</title>
+</head>
+
+<body>
+<header>
+  <nav>
+    <a href="/profile">PROFILE</a> |
+    <a href="/users">USERS</a> |
+    <a href="/projects">PROJECTS</a> |
+    <div style="margin: -1% 0 0 93%; display: block;">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Sign Out</button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      </form>
+    </div>
+  </nav>
+</header>
+<h1 style="text-align: center">
+  <a href="/" style="color: blue; ">KanbanBoard</a>
+</h1>
+
+<hr>
+<h2>RELEASE PAGE</h2>
+<hr>
+
+<h3>
+  <a th:href="@{/projects/{projectId}/releases(projectId = ${projectId})}">
+    Back to releases list
+  </a>
+</h3>
+
+<hr>
+
+<h3>
+  <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks(projectId = ${projectId}, releaseId = ${releaseDto.getId()})}">
+    View tasks
+  </a>
+</h3>
+
+<div style="margin-top: 50px;">
+  <b>Version: </b>
+  <b th:text="${releaseDto.version}"></b>
+</div>
+
+<div style="margin-top: 10px;">
+  <b>Start date: </b>
+  <b th:text="${releaseDto.startDate}"></b>
+</div>
+
+<div style="margin-top: 10px;">
+  <b>End date: </b>
+  <b th:text="${releaseDto.endDate}"></b>
+</div>
+
+<div style="margin-top: 10px;">
+  <b>Status: </b>
+  <b th:text="${releaseDto.status}"></b>
+</div>
+
+<div style="margin-top: 10px;">
+  <b>Project: </b>
+  <a th:href="@{/projects/{projectId}(projectId = ${projectId})}" th:text="${releaseDto.project.title}"></a>
+</div>
+
+<div style="margin-top: 10px;">
+  <b>Completed tasks: (FILL!!!)</b>
+  <b><!--Value--></b>
+</div>
+
+<div style="margin-top: 10px;">
+  <b>Uncompleted tasks: (FILL!!!)</b>
+  <b><!--Value--></b>
+</div>
+
+<div style="margin-top: 50px;" th:if="${isLead}">
+  <form th:action="@{/projects/{projectId}/releases/{releaseId}/edit(projectId = ${projectId}, releaseId = ${releaseDto.getId()})}" method="get">
+    <button type="submit">Edit release</button>
+  </form>
+</div>
+
+<div style="margin-top: 50px;" th:if="${isLead}">
+  <form th:action="@{/projects/{projectId}/releases/{releaseId} (projectId = ${projectId}, releaseId = ${releaseDto.getId()})}" th:method="delete">
+    <button type="submit">Delete release</button>
+    <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+  </form>
+</div>
+
+</body>
+</html>
