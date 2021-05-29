@@ -10,6 +10,8 @@
         <a href="/profile">PROFILE</a> |
         <a href="/users">USERS</a> |
         <a href="/projects">PROJECTS</a> |
+        <a th:href="@{/projects/{projectId}/releases/(projectId=${projectId})}">RELEASES</a> |
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a> |
         <div style="margin: -1% 0 0 93%; display: block;">
             <form th:action="@{/logout}" method="post">
                 <button type="submit">Sign Out</button>
@@ -46,7 +48,7 @@
     <input type="search" name="search" placeholder="Search tasks" value="">
     <button type="submit">Search</button>
 </form>
-<form th:method="get" th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/newTask( projectId=${projectId}, releaseId=${releaseId})}">
+<form th:method="get" th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/addTask (projectId=${projectId}, releaseId=${releaseId})}">
     <button type="submit">AddTask</button>
 </form>
 <div>
