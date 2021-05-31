@@ -1,0 +1,9 @@
+{
+  "properties": [
+    {
+      "name": "wikipedia.api-base-url",
+      "type": "java.lang.String",
+      "description": "Connection url for https://en.wikipedia.org/api."
+    }
+  ]
+}
