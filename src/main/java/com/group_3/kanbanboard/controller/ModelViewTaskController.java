@@ -76,7 +76,9 @@ public class ModelViewTaskController {
         List<TaskResponseDto> taskResponseDtoList =
                 modelViewTaskService.getTasksFromProjectAndRelease(projectId, releaseId);
 
-      List<TaskResponseDto> filterList = taskResponseDtoList.stream().filter( task -> task.getTitle().contains(search)).collect(Collectors.toList());
+      List<TaskResponseDto> filterList = taskResponseDtoList.stream()
+              .filter( task -> task.getTitle().contains(search))
+              .collect(Collectors.toList());
         model.addAttribute("tasksList", filterList);
 
         ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);
