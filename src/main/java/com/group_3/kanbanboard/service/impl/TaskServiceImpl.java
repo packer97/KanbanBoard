@@ -67,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTask(UUID id) {
         if (!taskEntityService.exists(id))
-            throw new TaskNotFoundException(String.format("${task.notfound}", id));
+            throw new TaskNotFoundException(String.format(" %s ", id));
         taskEntityService.deleteById(id);
     }
 }
