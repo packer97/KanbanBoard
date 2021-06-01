@@ -94,4 +94,12 @@ public class ReleaseController {
     releaseService.deleteReleaseById(id);
     return ResponseEntity.ok().build();
   }
+
+  @Operation(summary = "Просмотр количества задач, не завершившихся в заданный релиз")
+  @GetMapping("/{id}/unfinished_tasks")
+  public ResponseEntity<Long> unfinishedTasks(@PathVariable UUID id){
+    return ResponseEntity.ok(releaseService.countUnfinishedTasks(id));
+  }
+
+
 }

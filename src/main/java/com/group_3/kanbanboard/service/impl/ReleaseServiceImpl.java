@@ -3,10 +3,10 @@ package com.group_3.kanbanboard.service.impl;
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.enums.ReleaseStatus;
+import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
 import com.group_3.kanbanboard.mappers.ReleaseMapper;
-import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
@@ -91,9 +91,15 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Transactional
   @Override
   public void deleteReleaseById(UUID id) {
-    if (!releaseEntityService.exists(id)){
+    if (!releaseEntityService.exists(id)) {
       throw new ReleaseNotFoundException(String.format("Release with ID = %s was not found", id));
     }
     releaseEntityService.deleteById(id);
+  }
+
+  @Override
+  public long countUnfinishedTasks(UUID id) {
+    return getById(id).getTasks().stream()
+        .filter(task -> !task.getTaskStatus().equals(TaskStatus.DONE)).count();
   }
 }

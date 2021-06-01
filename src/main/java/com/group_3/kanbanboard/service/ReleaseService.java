@@ -17,5 +17,6 @@ public interface ReleaseService {
 
   void deleteReleaseById(UUID id);
 
+  long countUnfinishedTasks(UUID id);
 
 }
