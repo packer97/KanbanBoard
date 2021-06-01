@@ -7,7 +7,6 @@ import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.service.TaskService;
 import com.group_3.kanbanboard.service.entity.EntityNewService;
-import com.group_3.kanbanboard.service.entity.TaskEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -68,7 +67,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTask(UUID id) {
         if (!taskEntityService.exists(id))
-            throw new TaskNotFoundException(String.format("Task with ID = %s not found", id));
+            throw new TaskNotFoundException(String.format("${task.notfound}", id));
         taskEntityService.deleteById(id);
     }
 }

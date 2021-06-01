@@ -1,7 +1,6 @@
 package com.group_3.kanbanboard.service.entity;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface EntityNewService<T, ID> {
 

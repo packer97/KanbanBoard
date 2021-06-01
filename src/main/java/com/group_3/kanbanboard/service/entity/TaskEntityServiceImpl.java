@@ -6,6 +6,7 @@ import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -13,6 +14,10 @@ import java.util.UUID;
 
 @Service
 public class TaskEntityServiceImpl implements TaskEntityService {
+
+    @Value("${task.exception.notFound}")
+    private String taskNotFound;
+
     private final TaskRepository taskRepository;
 
     @Autowired
@@ -28,7 +33,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     @Override
     public TaskEntity getEntity(UUID taskId) {
         return taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(String.format("Task with id = %s not found", taskId)));
+                .orElseThrow(() -> new TaskNotFoundException(String.format(taskNotFound, taskId)));
     }
 
     @Override

@@ -3,9 +3,10 @@ package com.group_3.kanbanboard.service.entity;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.repository.ReleaseRepository;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.UUID;
-import org.springframework.stereotype.Service;
 
 @Service
 public class ReleaseEntityServiceImpl implements ReleaseEntityService {
