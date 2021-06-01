@@ -3,24 +3,33 @@ package com.group_3.kanbanboard.rest.dto;
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.enums.ReleaseStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.sql.Date;
 import java.util.List;
 import java.util.UUID;
 
+@Schema(description = "Релиз")
 public class ReleaseResponseDto {
 
+  @Schema(description = "ID релиза")
   private UUID id;
 
+  @Schema(description = "Версия")
   private String version;
 
+  @Schema(description = "Дата начала")
   private Date startDate;
 
+  @Schema(description = "Дата окончания")
   private Date endDate;
 
+  @Schema(description = "Статус")
   private ReleaseStatus status;
 
+  @Schema(description = "Относящийся проект")
   private ProjectEntity project;
 
+  @Schema(description = "Относящиеся задачи")
   private List<TaskEntity> tasks;
 
   public ReleaseResponseDto(){}

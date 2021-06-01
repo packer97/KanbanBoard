@@ -1,18 +1,26 @@
 package com.group_3.kanbanboard.rest.dto;
 
 import com.group_3.kanbanboard.enums.ReleaseStatus;
+import io.swagger.v3.oas.annotations.media.Schema;
 import java.util.Date;
 import java.util.UUID;
 
+@Schema(description = "Релиз")
 public class ReleaseRequestDto {
 
+  @Schema(description = "ID проекта")
   private UUID projectId;
 
+  @Schema(description = "Версия")
   private String version;
 
+  @Schema(description = "Дата начала")
   private Date startDate;
+
+  @Schema(description = "Дата окончания")
   private Date endDate;
 
+  @Schema(description = "Статус")
   private ReleaseStatus status;
 
   public ReleaseRequestDto() {

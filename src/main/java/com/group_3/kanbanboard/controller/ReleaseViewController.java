@@ -1,6 +1,5 @@
 package com.group_3.kanbanboard.controller;
 
-import com.group_3.kanbanboard.enums.ReleaseStatus;
 import com.group_3.kanbanboard.exception.FormInputException;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
@@ -10,6 +9,7 @@ import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.ReleaseService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UtilService;
+import com.group_3.kanbanboard.util.DateUtil;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -18,10 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
@@ -84,7 +86,8 @@ public class ReleaseViewController {
   }
 
   @PostMapping
-  public String addReleaseToProject(String version, String formStartDate, String formEndDate,
+  public String addReleaseToProject(@RequestParam String version,
+      @RequestParam String formStartDate, @RequestParam String formEndDate,
       @PathVariable UUID projectId) throws ParseException {
     utilService.checkLeadAccess(projectId);
 
@@ -131,8 +134,8 @@ public class ReleaseViewController {
 
   @PatchMapping("/{releaseId}")
   public String updateRelease(@PathVariable UUID projectId, @PathVariable UUID releaseId,
-      ReleaseRequestDto releaseRequestDto, String formStartDate,
-      String formEndDate)
+      @ModelAttribute ReleaseRequestDto releaseRequestDto, @RequestParam String formStartDate,
+      @RequestParam String formEndDate)
       throws ParseException {
     utilService.checkLeadAccess(projectId);
 
@@ -141,9 +144,7 @@ public class ReleaseViewController {
     Date startDate = simpleDateFormat.parse(formStartDate);
     Date endDate = simpleDateFormat.parse(formEndDate);
 
-    if (endDate.compareTo(startDate) < 0) {
-      throw new FormInputException("Start date of release should be earlier than end date");
-    }
+    DateUtil.checkIncorrectDates(startDate, endDate);
 
     releaseRequestDto.setStartDate(startDate);
     releaseRequestDto.setEndDate(endDate);
