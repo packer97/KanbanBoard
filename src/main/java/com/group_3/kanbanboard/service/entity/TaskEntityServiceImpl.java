@@ -6,19 +6,18 @@ import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.UUID;
 
 @Service
 public class TaskEntityServiceImpl implements TaskEntityService {
 
-    @Value("${task.exception.notFound}")
-    private String taskNotFound;
-
     private final TaskRepository taskRepository;
+    private ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
     @Autowired
     public TaskEntityServiceImpl(TaskRepository taskRepository) {
@@ -33,7 +32,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     @Override
     public TaskEntity getEntity(UUID taskId) {
         return taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(String.format(taskNotFound, taskId)));
+                .orElseThrow(() -> new TaskNotFoundException(String.format(res.getString("task.notFound"), taskId)));
     }
 
     @Override
