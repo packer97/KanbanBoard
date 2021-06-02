@@ -1,8 +1,10 @@
 package com.group_3.kanbanboard.service.impl;
 
 import com.group_3.kanbanboard.entity.ProjectEntity;
+import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.entity.UserProjectEntity;
+import com.group_3.kanbanboard.enums.ReleaseStatus;
 import com.group_3.kanbanboard.exception.ProjectNotFoundException;
 import com.group_3.kanbanboard.exception.UserNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
@@ -15,6 +17,7 @@ import com.group_3.kanbanboard.service.ProjectService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 import java.util.UUID;
@@ -82,5 +85,18 @@ public class ProjectServiceImpl implements ProjectService {
             throw new ProjectNotFoundException(String.format("Project with ID = %s was not found", id));
         }
         projectRepository.deleteById(id);
+    }
+
+    @Transactional
+    @Override
+    public ProjectResponseDto setProjectStatusEnd(UUID id) {
+        ProjectEntity projectEntityFromDb = projectRepository.findById(id).orElseThrow(
+                () -> new ProjectNotFoundException(String.format("Project with ID = %s was not found", id)));
+        List<ReleaseEntity> releases = projectEntityFromDb.getReleases();
+        if (releases.stream().allMatch(releaseEntity -> releaseEntity.getStatus() == ReleaseStatus.FINISHED)) {
+            projectEntityFromDb.setStartProject(false);
+            projectRepository.save(projectEntityFromDb);
+        }
+        return projectMapper.toResponseDto(projectEntityFromDb);
     }
 }

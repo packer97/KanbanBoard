@@ -17,4 +17,6 @@ public interface ProjectService {
 
     void deleteProjectById(UUID id);
 
+    ProjectResponseDto setProjectStatusEnd(UUID id);
+
 }

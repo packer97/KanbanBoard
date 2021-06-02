@@ -66,6 +66,7 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     if (project.getReleases() == null) {
       project.setReleases(new ArrayList<>());
+      project.setStartProject(true);
     }
 
     release.setProject(project);

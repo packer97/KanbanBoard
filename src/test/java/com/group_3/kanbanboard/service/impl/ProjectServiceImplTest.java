@@ -75,7 +75,7 @@ public class ProjectServiceImplTest {
     @Before
     public void setUp() {
         project1 = new ProjectEntity(ID_1, PROJECT_TITLE_1, DESCRIPTION_1);
-        projectRequestDto = new ProjectRequestDto(PROJECT_TITLE_1, DESCRIPTION_1, LEAD_ID);
+        projectRequestDto = new ProjectRequestDto(PROJECT_TITLE_1, DESCRIPTION_1, LEAD_ID,true);
         expectedUser = new UserEntity(USER_ID,firstName,secondName,userName,password,mail,role);
     }
 
@@ -159,4 +159,11 @@ public class ProjectServiceImplTest {
             .thenAnswer(invocation -> new ProjectMapperImpl()
                 .toEntity(invocation.<ProjectRequestDto>getArgument(0)));
     }
+
+    @Test(expected = ProjectNotFoundException.class)
+    public void endProject() {
+        projectService.setProjectStatusEnd(ID_1);
+    }
+
+
 }
