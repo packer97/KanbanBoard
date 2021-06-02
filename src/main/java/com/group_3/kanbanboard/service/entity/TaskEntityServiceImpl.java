@@ -60,7 +60,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     public TaskEntity getByIdFromDependencies(UUID taskId, ProjectEntity firstEntity, ReleaseEntity secondEntity) {
         return taskRepository.findByIdAndProjectAndRelease(taskId, firstEntity, secondEntity)
                 .orElseThrow(() -> new TaskNotFoundException(
-                        String.format("Task with id = %s not found from current project and release", taskId)));
+                        String.format(res.getString("task.notFound.fromDependencies"), taskId)));
     }
 }
 
