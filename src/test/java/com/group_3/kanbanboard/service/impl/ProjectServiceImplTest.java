@@ -75,7 +75,7 @@ public class ProjectServiceImplTest {
     @Before
     public void setUp() {
         project1 = new ProjectEntity(ID_1, PROJECT_TITLE_1, DESCRIPTION_1);
-        projectRequestDto = new ProjectRequestDto(PROJECT_TITLE_1, DESCRIPTION_1, LEAD_ID,true);
+        projectRequestDto = new ProjectRequestDto(PROJECT_TITLE_1, DESCRIPTION_1, LEAD_ID);
         expectedUser = new UserEntity(USER_ID,firstName,secondName,userName,password,mail,role);
     }
 

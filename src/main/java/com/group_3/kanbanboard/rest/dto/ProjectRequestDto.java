@@ -14,17 +14,13 @@ public class ProjectRequestDto {
     private String description;
     @Schema(description = "Создатель проекта")
     private UUID leadId;
-    @Schema(description = "Старт проекта")
-    private Boolean startProject;
-
 
     public ProjectRequestDto() {}
 
-    public ProjectRequestDto(String title, String description, UUID leadId, Boolean startProject) {
+    public ProjectRequestDto(String title, String description, UUID leadId) {
         this.title = title;
         this.description = description;
         this.leadId = leadId;
-        this.startProject = startProject;
     }
 
     public String getTitle() {
@@ -51,11 +47,4 @@ public class ProjectRequestDto {
         this.leadId = leadId;
     }
 
-    public Boolean getStartProject() {
-        return startProject;
-    }
-
-    public void setStartProject(Boolean startProject) {
-        this.startProject = startProject;
-    }
 }

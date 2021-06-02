@@ -57,9 +57,8 @@ public class ProjectController {
     }
 
     @Operation(summary = "Завершение проекта")
-    @DeleteMapping("/{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<ProjectResponseDto> endProject(@PathVariable UUID id) {
         return ResponseEntity.ok().body(projectService.setProjectStatusEnd(id));
     }
-
 }
