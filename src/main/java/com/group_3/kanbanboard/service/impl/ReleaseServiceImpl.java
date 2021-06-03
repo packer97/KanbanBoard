@@ -102,7 +102,11 @@ public class ReleaseServiceImpl implements ReleaseService {
 
   @Override
   public UnfinishedTasksDto countUnfinishedTasks(UUID id) {
-    return new UnfinishedTasksDto(getById(id).getTasks().stream()
+    List<TaskEntity> releaseTasks = getById(id).getTasks();
+    if(releaseTasks == null || releaseTasks.isEmpty()){
+      return new UnfinishedTasksDto(0L);
+    }
+    return new UnfinishedTasksDto(releaseTasks.stream()
         .filter(task -> !task.getTaskStatus().equals(TaskStatus.DONE)).count());
 
   }
