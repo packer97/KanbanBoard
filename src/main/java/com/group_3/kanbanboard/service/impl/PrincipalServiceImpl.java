@@ -6,12 +6,15 @@ import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.UserRepository;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
-import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.ResourceBundle;
+import java.util.UUID;
 
 @Service
 public class PrincipalServiceImpl implements PrincipalService {
@@ -19,6 +22,8 @@ public class PrincipalServiceImpl implements PrincipalService {
   private final UserRepository userRepository;
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
+
+  private final ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
   @Autowired
   public PrincipalServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {

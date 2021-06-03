@@ -1,20 +1,29 @@
 package com.group_3.kanbanboard.service.feign;
 
 
+import com.group_3.kanbanboard.feign.WikipediaRestClient;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
 public class WikipediaService {
 
-//    private final WikipediaRestClient wikipediaRestClient;
-//
-//    @Autowired
-//    public WikipediaService(WikipediaRestClient wikipediaRestClient) {
-//        this.wikipediaRestClient = wikipediaRestClient;
-//    }
-//
-//    public void method(String title) {
-//        wikipediaRestClient.getPdfPageByTitle(title);
-//    }
+    private final WikipediaRestClient wikipediaRestClient;
+
+    @Autowired
+    public WikipediaService(WikipediaRestClient wikipediaRestClient) {
+        this.wikipediaRestClient = wikipediaRestClient;
+    }
+
+    public String getHtmlPageByTitle(String title) {
+       ResponseEntity<String> htmlResponse = wikipediaRestClient.getHtmlPageByTitle(title);
+        return htmlResponse.getBody();
+    }
+
+    public String getPdfPageByTitle(String title){
+        ResponseEntity<String> pdfResponse = wikipediaRestClient.getPdfPageByTitle(title);
+        return  pdfResponse.getBody();
+    }
 
 }

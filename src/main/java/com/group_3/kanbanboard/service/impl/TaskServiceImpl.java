@@ -22,7 +22,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final EntityNewService<TaskEntity, UUID> taskEntityService;
     private final TaskMapper taskMapper;
-    private ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
+    private final ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
 
     @Autowired
