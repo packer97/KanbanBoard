@@ -11,6 +11,9 @@
         <a href="/profile">PROFILE</a> |
         <a href="/users">USERS</a> |
         <a href="/projects">PROJECTS</a> |
+        <a th:href="@{/projects/{projectId}/releases/(projectId=${projectId})}">RELEASES</a> |
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+        |
         <div style="margin: -1% 0 0 93%; display: block;">
             <form th:action="@{/logout}" method="post">
                 <button type="submit">Sign Out</button>
@@ -29,7 +32,7 @@
           placeholder="Enter description of task here ->"
           th:text="${distinctTask.description}"></textarea>
     </label>
-    <form th:method="put"
+    <form th:method="${isAddTask}? 'post' : 'put'"
           id="saveTaskForm"
           th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}">
         <button type="submit">Save changes</button>
@@ -41,8 +44,8 @@
             th:text="${distinctTask.performer} ? ${distinctTask.performer.username} : 'not selected'"></span>
         <label>
             <select name="projectUserSelect" form="saveTaskForm">
-                <option th:each="projetcUser : ${projectUsers}" th:text="${projetcUser.username}"
-                        th:value="${projetcUser.username}"></option>
+                <option th:each="projectUser : ${projectUsers}" th:text="${projectUser.username}"
+                        th:value="${projectUser.username}" th:selected="${distinctTask.performer.getUsername().equals(projectUser.getUsername())}"></option>
             </select>
         </label></p>
 
@@ -58,14 +61,14 @@
 
     <p><span>Task status:</span><span th:text="${distinctTask.taskStatus}"></span>
         <label>
-            <select name="taskStatus" form="saveTaskForm">
+            <select name="taskStatus" form="saveTaskForm" th:field="${distinctTask.taskStatus}">
                 <option th:each="status : ${statuses}" th:text="${status}" th:value="${status}"></option>
             </select>
         </label></p>
 
     <p><span>Task category:</span><span th:text="${distinctTask.taskCategory}"></span>
         <label>
-            <select name="taskCategory" form="saveTaskForm">
+            <select name="taskCategory" form="saveTaskForm" th:field="${distinctTask.taskCategory}">
                 <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
             </select>
         </label></p>

@@ -6,6 +6,8 @@ import java.util.UUID;
 
 public interface EntityService {
 
+    //Плохой интерфейс - надо будет перейти на EntityNewService
+
     ReleaseEntity getReleaseEntity(UUID releaseId);
 
     ProjectEntity getProjectEntity(UUID projectId);

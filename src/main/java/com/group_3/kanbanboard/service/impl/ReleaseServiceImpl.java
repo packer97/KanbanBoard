@@ -70,9 +70,9 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     release.setProject(project);
     project.getReleases().add(release);
-    releaseEntityService.saveEntity(release);
+    ReleaseEntity savedEntity = releaseEntityService.saveEntity(release);
 
-    return releaseMapper.toResponseDto(release);
+    return releaseMapper.toResponseDto(savedEntity);
   }
 
   @Transactional
@@ -83,9 +83,9 @@ public class ReleaseServiceImpl implements ReleaseService {
     releaseFromDto.setProject(releaseEntityFromDb.getProject());
     releaseFromDto.setId(releaseEntityFromDb.getId());
 
-    releaseEntityService.saveEntity(releaseFromDto);
+    ReleaseEntity updatedEntity = releaseEntityService.saveEntity(releaseFromDto);
 
-    return releaseMapper.toResponseDto(releaseFromDto);
+    return releaseMapper.toResponseDto(updatedEntity);
   }
 
   @Transactional
