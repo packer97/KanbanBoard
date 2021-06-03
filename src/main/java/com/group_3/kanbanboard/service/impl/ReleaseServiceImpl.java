@@ -2,6 +2,7 @@ package com.group_3.kanbanboard.service.impl;
 
 import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.entity.ReleaseEntity;
+import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.enums.ReleaseStatus;
 import com.group_3.kanbanboard.enums.TaskStatus;
 import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
@@ -10,6 +11,7 @@ import com.group_3.kanbanboard.mappers.ReleaseMapper;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.UnfinishedTasksDto;
 import com.group_3.kanbanboard.service.ReleaseService;
 import com.group_3.kanbanboard.service.entity.ReleaseEntityServiceImpl;
 import java.util.ArrayList;
@@ -66,6 +68,7 @@ public class ReleaseServiceImpl implements ReleaseService {
 
     if (project.getReleases() == null) {
       project.setReleases(new ArrayList<>());
+      project.setStartProject(true);
     }
 
     release.setProject(project);
@@ -98,8 +101,9 @@ public class ReleaseServiceImpl implements ReleaseService {
   }
 
   @Override
-  public long countUnfinishedTasks(UUID id) {
-    return getById(id).getTasks().stream()
-        .filter(task -> !task.getTaskStatus().equals(TaskStatus.DONE)).count();
+  public UnfinishedTasksDto countUnfinishedTasks(UUID id) {
+    return new UnfinishedTasksDto(getById(id).getTasks().stream()
+        .filter(task -> !task.getTaskStatus().equals(TaskStatus.DONE)).count());
+
   }
 }
