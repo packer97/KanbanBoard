@@ -160,10 +160,4 @@ public class ProjectServiceImplTest {
                 .toEntity(invocation.<ProjectRequestDto>getArgument(0)));
     }
 
-    @Test(expected = ProjectNotFoundException.class)
-    public void endProject() {
-        projectService.setProjectStatusEnd(ID_1);
-    }
-
-
 }

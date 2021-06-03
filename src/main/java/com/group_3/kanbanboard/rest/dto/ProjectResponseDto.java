@@ -34,6 +34,10 @@ public class ProjectResponseDto {
         this.releases = releases;
     }
 
+    public Boolean getStartProject() {
+        return startProject;
+    }
+
     public UUID getId() {
         return id;
     }
