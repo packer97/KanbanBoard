@@ -67,22 +67,17 @@
 </div>
 
 <div style="margin-top: 10px;">
-  <b>Completed tasks: (FILL!!!)</b>
-  <b><!--Value--></b>
+  <b>Uncompleted tasks:</b>
+  <b th:text="${unfinishedTasksNumber}"></b>
 </div>
 
-<div style="margin-top: 10px;">
-  <b>Uncompleted tasks: (FILL!!!)</b>
-  <b><!--Value--></b>
-</div>
-
-<div style="margin-top: 50px;" th:if="${isLead}">
+<div style="margin-top: 20px;" th:if="${isLead}">
   <form th:action="@{/projects/{projectId}/releases/{releaseId}/edit(projectId = ${projectId}, releaseId = ${releaseDto.getId()})}" method="get">
     <button type="submit">Edit release</button>
   </form>
 </div>
 
-<div style="margin-top: 50px;" th:if="${isLead}">
+<div style="margin-top: 20px;" th:if="${isLead}">
   <form th:action="@{/projects/{projectId}/releases/{releaseId} (projectId = ${projectId}, releaseId = ${releaseDto.getId()})}" th:method="delete">
     <button type="submit">Delete release</button>
     <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>

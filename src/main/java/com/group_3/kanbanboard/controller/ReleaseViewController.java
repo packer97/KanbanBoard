@@ -4,6 +4,7 @@ import com.group_3.kanbanboard.exception.FormInputException;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.UnfinishedTasksDto;
 import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.ProjectService;
 import com.group_3.kanbanboard.service.ReleaseService;
@@ -69,9 +70,11 @@ public class ReleaseViewController {
     boolean isLead = userProjectService
         .isUserLeadInProject(principalService.getPrincipalId(), projectId);
     ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);
+    UnfinishedTasksDto unfinishedTasksDto = releaseService.countUnfinishedTasks(releaseId);
 
     ModelAndView modelAndView = new ModelAndView("releases/releasePage");
     modelAndView.addObject("releaseDto", releaseResponseDto);
+    modelAndView.addObject("unfinishedTasksNumber", unfinishedTasksDto.getQuantity());
     modelAndView.addObject("isLead", isLead);
     return modelAndView;
   }
