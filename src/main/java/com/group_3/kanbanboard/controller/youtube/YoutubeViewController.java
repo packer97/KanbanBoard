@@ -1,9 +1,6 @@
 package com.group_3.kanbanboard.controller.youtube;
 
-import com.google.api.services.youtube.model.SearchListResponse;
 import com.group_3.kanbanboard.service.YoutubeClientService;
-import java.util.List;
-import javax.naming.directory.SearchResult;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -28,12 +25,13 @@ public class YoutubeViewController {
   }
 
   @GetMapping("/searchPage")
-  public String getSearchPage(){
+  public String getSearchPage() {
     return "youtube/searchPage";
   }
 
   @GetMapping("/search")
-  public ModelAndView getSearchResults(@RequestParam String q, @RequestParam String maxResults) throws ParseException {
+  public ModelAndView getSearchResults(@RequestParam String q, @RequestParam String maxResults)
+      throws ParseException {
     ModelAndView modelAndView = new ModelAndView("youtube/resultsPage");
     String json = youtubeClientService.getSearchResults(q, maxResults);
     JSONObject jsonObject = (JSONObject) new JSONParser().parse(json);

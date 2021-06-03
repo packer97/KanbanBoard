@@ -1,7 +1,6 @@
 package com.group_3.kanbanboard.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.google.api.services.youtube.model.SearchListResponse;
 import com.group_3.kanbanboard.feign.youtube.YoutubeClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
