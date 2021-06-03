@@ -4,6 +4,7 @@ import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.rest.dto.UserRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserSignUpRequest;
 import com.group_3.kanbanboard.service.impl.UserServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,7 +24,7 @@ import java.util.UUID;
 @Controller
 @RequestMapping("/registration")
 public class SignUpController {
-    UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
     @Autowired
     public SignUpController(UserServiceImpl userService) {
@@ -41,7 +42,7 @@ public class SignUpController {
         if (bindingResult.hasErrors()) {
             return "profile/signUp";
         }
-        if (!userSignUpRequest.getPassword().equals(userSignUpRequest.getConfirmPassword())) {
+        if (!StringUtils.equals(userSignUpRequest.getPassword(), userSignUpRequest.getConfirmPassword())) {
             return "profile/signUp";
         }
         userService.addUser(new UserRequestDto(userSignUpRequest.getFirstName(), userSignUpRequest.getLastName(),

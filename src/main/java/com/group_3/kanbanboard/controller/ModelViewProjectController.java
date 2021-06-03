@@ -37,8 +37,8 @@ public class ModelViewProjectController {
 
     @GetMapping
     public String getUserProjectsPage(Model model) {
-        List<UserProjectResponseDto> listProject = userProjectService.
-                getUserProjectsFromUser(principalService.getPrincipalId());
+        List<UserProjectResponseDto> listProject =
+                userProjectService.getUserProjectsFromUser(principalService.getPrincipalId());
         model.addAttribute("listProject", listProject);
 
         return "projects/projectListPage";
@@ -48,7 +48,6 @@ public class ModelViewProjectController {
     public String getProjectPage(@PathVariable UUID projectId,
                                  Model model) {
         boolean isLead = userProjectService.isUserLeadInProject(principalService.getPrincipalId(), projectId);
-        List<ReleaseEntity> releases = projectService.getById(projectId).getReleases();
         model.addAttribute("projectDto", projectService.getById(projectId));
         model.addAttribute("leadName", projectDetailsService.getLeadNameFromProject(projectId));
         model.addAttribute("isLead", isLead);
@@ -64,8 +63,9 @@ public class ModelViewProjectController {
     @PostMapping
     public String addProjectToUser(@ModelAttribute("projectDto")
                                                ProjectRequestDto projectRequestDto) {
-        projectRequestDto.setLeadId(principalService.getPrincipalId());
-        projectService.addProject(principalService.getPrincipalId(), projectRequestDto);
+        UUID principalId = principalService.getPrincipalId();
+        projectRequestDto.setLeadId(principalId);
+        projectService.addProject(principalId, projectRequestDto);
 
         return "redirect:/projects";
     }
