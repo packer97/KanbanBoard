@@ -9,5 +9,10 @@
       "name": "youtube.api.url",
       "type": "java.lang.String",
       "description": "Description for youtube.api.url."
+    },
+    {
+      "name": "wikipedia.api.url",
+      "type": "java.lang.String",
+      "description": "Description for wikipedia.api.url."
     }
   ] }

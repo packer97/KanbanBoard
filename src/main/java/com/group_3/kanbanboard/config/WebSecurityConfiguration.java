@@ -34,7 +34,7 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   //ADD ADMIN - TEMPORARY
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/", "/static/**", "/registration", "/users/addAdmin", "/youtube/**").permitAll()
+    http.authorizeRequests().antMatchers("/", "/static/**", "/registration", "/users/addAdmin", "/youtube/**", "/mediawiki/**").permitAll()
         .anyRequest().authenticated()
         .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/profile", true)
         .and().logout().permitAll().clearAuthentication(true).deleteCookies("JSESSIONID")
