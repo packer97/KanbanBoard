@@ -13,7 +13,7 @@ public class WikipediaDownloadService {
 
     public String downloadHtml(String title, String htmlContent) throws IOException {
 
-        Path downloadedDirPath = Paths.get(".\\src\\main\\resources\\static", "downloaded");
+        Path downloadedDirPath = Paths.get(".\\downloaded");
         if (Files.notExists(downloadedDirPath)) Files.createDirectories(downloadedDirPath);
 
         Path downloadedHtmlFile = Paths.get(downloadedDirPath.toString(), title + ".html");

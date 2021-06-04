@@ -4,11 +4,9 @@ import com.group_3.kanbanboard.entity.ProjectEntity;
 import com.group_3.kanbanboard.exception.ProjectNotFoundException;
 import com.group_3.kanbanboard.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 @Service
@@ -29,7 +27,7 @@ public class ProjectEntityServiceImpl implements ProjectEntityService {
     @Override
     public ProjectEntity getEntity(UUID projectId) {
         return projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException("Project with id = %s not found", projectId));
+                .orElseThrow(() -> new ProjectNotFoundException("project.notFound", projectId));
     }
 
     @Override

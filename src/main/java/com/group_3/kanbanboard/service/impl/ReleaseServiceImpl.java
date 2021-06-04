@@ -6,19 +6,19 @@ import com.group_3.kanbanboard.enums.ReleaseStatus;
 import com.group_3.kanbanboard.exception.ReleaseNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
 import com.group_3.kanbanboard.mappers.ReleaseMapper;
-import com.group_3.kanbanboard.repository.ReleaseRepository;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
 import com.group_3.kanbanboard.service.ReleaseService;
 import com.group_3.kanbanboard.service.entity.ReleaseEntityServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ReleaseServiceImpl implements ReleaseService {
@@ -92,7 +92,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Override
   public void deleteReleaseById(UUID id) {
     if (!releaseEntityService.exists(id)){
-      throw new ReleaseNotFoundException("Release with ID = %s was not found", id);
+      throw new ReleaseNotFoundException("release.notFound", id);
     }
     releaseEntityService.deleteById(id);
   }

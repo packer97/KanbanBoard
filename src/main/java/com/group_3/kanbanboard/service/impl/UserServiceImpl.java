@@ -8,17 +8,16 @@ import com.group_3.kanbanboard.repository.UserRepository;
 import com.group_3.kanbanboard.rest.dto.UserRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.UserService;
-
-import java.util.Collections;
-import java.util.List;
-import java.util.UUID;
-import java.util.stream.Collectors;
-
 import com.group_3.kanbanboard.service.entity.UserEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -50,7 +49,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto getUserByUsername(String username) {
         UserEntity user = userRepository.findByUsername(username).orElseThrow(
-                () -> new UserNotFoundException("User not found"));
+                () -> new UserNotFoundException("user.notFound.username", username));
         return userMapper.toResponseDto(user);
     }
 
@@ -65,7 +64,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto addUser(UserRequestDto userRequestDto) {
         if (userRepository.findByUsername(userRequestDto.getUsername()).isPresent()) {
-            throw new UserNotFoundException("User already exists");
+            throw new UserNotFoundException("user.isExist", userRequestDto.getUsername());
         }
         UserEntity user = userMapper.toEntity(userRequestDto);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
@@ -89,7 +88,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserById(UUID id) {
         if (!userEntityService.exists(id)) {
-            throw new UserNotFoundException("User not found");
+            throw new UserNotFoundException("user.notFound.id", id);
         }
         userEntityService.deleteById(id);
     }

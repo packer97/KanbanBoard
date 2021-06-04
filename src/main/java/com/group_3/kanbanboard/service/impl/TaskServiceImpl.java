@@ -6,15 +6,12 @@ import com.group_3.kanbanboard.mappers.TaskMapper;
 import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.service.TaskService;
-import com.group_3.kanbanboard.service.entity.EntityNewService;
 import com.group_3.kanbanboard.service.entity.TaskEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -23,7 +20,7 @@ public class TaskServiceImpl implements TaskService {
 
     private final TaskEntityServiceImpl taskEntityService;
     private final TaskMapper taskMapper;
-    private final ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
+
 
 
     @Autowired
@@ -71,7 +68,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public void deleteTask(UUID id) {
         if (!taskEntityService.exists(id))
-            throw new TaskNotFoundException("Task with Id = %s was not found", id);
+            throw new TaskNotFoundException("task.notFound", id);
         taskEntityService.deleteById(id);
     }
 }

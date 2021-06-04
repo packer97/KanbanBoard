@@ -26,7 +26,7 @@ public class ReleaseEntityServiceImpl implements ReleaseEntityService {
   @Override
   public ReleaseEntity getEntity(UUID releaseId) {
     return releaseRepository.findById(releaseId).orElseThrow(
-        () -> new ReleaseNotFoundException("Release with ID = %s was not found", releaseId));
+        () -> new ReleaseNotFoundException("release.notFound", releaseId));
   }
 
   @Override

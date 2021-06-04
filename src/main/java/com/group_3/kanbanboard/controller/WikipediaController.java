@@ -31,12 +31,12 @@ public class WikipediaController {
 
     @GetMapping(params = "title")
     public String getWikipediaHtmlByTitle(@RequestParam String title) throws IOException {
-      String document = wikipediaService.getHtmlPageByTitle(title);
+        String document = wikipediaService.getHtmlPageByTitle(title);
 
         if (!title.isEmpty()) {
             String downloadedHtmlPath = wikipediaDownloadService.downloadHtml(title, document);
         }
+        return "wikipedia/wikipedia";
 
-       
     }
 }

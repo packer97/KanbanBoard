@@ -43,7 +43,7 @@ public class UserProjectEntityServiceImpl implements UserProjectEntityService {
     public UserProjectEntity getFromDependencies(UserEntity userEntity, ProjectEntity projectEntity) {
         return userProjectRepository.findByUserAndProject(userEntity, projectEntity)
                 .orElseThrow(() -> new UserProjectNotFoundException(
-                                "Relation entity UserProject with User (id = %s) and Project(id = %s) not found",
+                                "userProject.notFound.dependencies",
                                 userEntity.getId(), projectEntity.getId()));
     }
 
@@ -55,7 +55,7 @@ public class UserProjectEntityServiceImpl implements UserProjectEntityService {
     @Override
     public UserProjectEntity getEntity(UserProjectId userProjectId) {
         return userProjectRepository.findById(userProjectId)
-                .orElseThrow(() -> new TaskNotFoundException("Relation entity with id = %s not found", userProjectId));
+                .orElseThrow(() -> new TaskNotFoundException("userProject.notFound.id", userProjectId));
     }
 
     @Override

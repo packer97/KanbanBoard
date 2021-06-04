@@ -7,13 +7,11 @@ import com.group_3.kanbanboard.repository.UserRepository;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 @Service
@@ -33,7 +31,7 @@ public class PrincipalServiceImpl implements PrincipalService {
 
   public UserEntity getPrincipalEntity(){
     String currentPrincipalUsername = ((UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
-    return userRepository.findByUsername(currentPrincipalUsername).orElseThrow(() -> new UserNotFoundException("Something gone wrong"));
+    return userRepository.findByUsername(currentPrincipalUsername).orElseThrow(() -> new UserNotFoundException("something.goneWrong"));
   }
 
   @Override

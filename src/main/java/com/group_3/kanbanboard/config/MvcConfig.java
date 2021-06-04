@@ -20,8 +20,6 @@ public class MvcConfig implements WebMvcConfigurer {
 
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
-        registry.addResourceHandler("/static");
-        registry.addResourceHandler("/static/downloaded/");
-
+         registry.addResourceHandler("/downloaded").addResourceLocations("file:///C:/Users/Alexandr/IdeaProjects/KanbanBoard");
     }
 }

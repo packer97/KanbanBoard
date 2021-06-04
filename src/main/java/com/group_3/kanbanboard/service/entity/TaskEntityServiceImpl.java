@@ -6,11 +6,9 @@ import com.group_3.kanbanboard.entity.TaskEntity;
 import com.group_3.kanbanboard.exception.TaskNotFoundException;
 import com.group_3.kanbanboard.repository.TaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.UUID;
 
 @Service
@@ -59,7 +57,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     public TaskEntity getByIdFromDependencies(UUID taskId, ProjectEntity firstEntity, ReleaseEntity secondEntity) {
         return taskRepository.findByIdAndProjectAndRelease(taskId, firstEntity, secondEntity)
                 .orElseThrow(() -> new TaskNotFoundException(
-                        "Task with id = %s not found from current project and release.", taskId));
+                        "task.notFound.dependencies", taskId));
     }
 }
 
