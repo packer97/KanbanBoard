@@ -1,6 +1,7 @@
 package com.group_3.kanbanboard.feign.youtube;
 
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -10,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 public interface YoutubeClient {
 
   @GetMapping("/search")
-  String get25SearchResults(@RequestParam String part, @RequestParam String maxResults,
+  ResponseEntity<String> get25SearchResults(@RequestParam String part, @RequestParam(defaultValue = "25") String maxResults,
       @RequestParam String q, @RequestParam String key);
 
 
