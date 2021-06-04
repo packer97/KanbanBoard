@@ -7,17 +7,14 @@ import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import com.group_3.kanbanboard.service.PrincipalService;
 import com.group_3.kanbanboard.service.UserProjectService;
 import com.group_3.kanbanboard.service.UserService;
-import com.group_3.kanbanboard.service.entity.EntityServiceImpl;
-import com.group_3.kanbanboard.service.impl.ModelViewProjectService;
+import com.group_3.kanbanboard.service.entity.UserEntityService;
 import com.group_3.kanbanboard.service.impl.UserProjectServiceImpl;
-import liquibase.pro.packaged.S;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.UUID;
 
 @Controller
@@ -26,20 +23,19 @@ public class UsersInProjectController {
     private final PrincipalService principalService;
     private final UserProjectService userProjectService;
     private final UserService userService;
+    private final UserEntityService userEntityService;
     private final UserProjectServiceImpl userProjectServiceImpl;
-    private final EntityServiceImpl entityService;
 
 
     public UsersInProjectController(PrincipalService principalService,
                                     UserProjectService userProjectService,
                                     UserService userService,
-                                    UserProjectServiceImpl userProjectServiceImpl,
-                                    EntityServiceImpl entityService) {
+                                    UserEntityService userEntityService, UserProjectServiceImpl userProjectServiceImpl) {
 
         this.principalService = principalService;
         this.userProjectService = userProjectService;
         this.userService = userService;
-        this.entityService = entityService;
+        this.userEntityService = userEntityService;
         this.userProjectServiceImpl = userProjectServiceImpl;
 
 
@@ -71,7 +67,7 @@ public class UsersInProjectController {
                                     UserProjectRequestDto userProjectRequestDto,
                                     String formStatus) {
         InProjectUserRole newRole = InProjectUserRole.valueOf(formStatus);
-        userProjectServiceImpl.setUserProjectRole(entityService.getUserEntity(username).getId(), projectId, newRole);
+        userProjectServiceImpl.setUserProjectRole(userEntityService.getEntity(username).getId(), projectId, newRole);
 
         return "redirect:/projects/{projectId}/users";
     }
@@ -86,11 +82,11 @@ public class UsersInProjectController {
     @PostMapping
     public String addUser(@PathVariable UUID projectId, String userName, String formStatus, Model model) {
         if (!userName.isEmpty()) {
-            userProjectServiceImpl.setUserInProject(entityService.getUserEntity(userName).getId(), projectId, formStatus);
+            userProjectServiceImpl.setUserInProject(userEntityService.getEntity(userName).getId(), projectId, formStatus);
             return "redirect:/projects/{projectId}/users";
-        } return "redirect:/projects/{projectId}/users";
+        }
+        return "redirect:/projects/{projectId}/users";
     }
-
     @DeleteMapping("/{userName}")
     public String deleteUser(@PathVariable UUID projectId, @PathVariable String userName) {
         userProjectServiceImpl.deleteUserInProject(projectId, userName);

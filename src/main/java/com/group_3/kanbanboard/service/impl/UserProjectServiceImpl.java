@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserProjectServiceImpl implements UserProjectService {
 
-    
+
     private final ProjectEntityServiceImpl projectEntityService;
     private final UserEntityServiceImpl userEntityService;
     private final UserProjectEntityServiceImpl userProjectEntityService;
