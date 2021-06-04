@@ -31,7 +31,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     @Override
     public TaskEntity getEntity(UUID taskId) {
         return taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException("Task with id = %s not found", taskId));
+                .orElseThrow(() -> new TaskNotFoundException("task.notFound", taskId));
     }
 
     @Override
