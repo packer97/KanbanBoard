@@ -1,28 +1,19 @@
 package com.group_3.kanbanboard.controller;
 
-import com.group_3.kanbanboard.enums.ReleaseStatus;
 import com.group_3.kanbanboard.exception.FormInputException;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
-import com.group_3.kanbanboard.service.PrincipalService;
-import com.group_3.kanbanboard.service.ProjectService;
-import com.group_3.kanbanboard.service.ReleaseService;
-import com.group_3.kanbanboard.service.UserProjectService;
-import com.group_3.kanbanboard.service.UtilService;
+import com.group_3.kanbanboard.service.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 @RequestMapping("/projects/{projectId}/releases")
@@ -98,7 +89,7 @@ public class ReleaseViewController {
     Date endDate = simpleDateFormat.parse(formEndDate);
 
     if (endDate.compareTo(startDate) < 0) {
-      throw new FormInputException("Start date of release should be earlier than end date");
+      throw new FormInputException("form.releaseEarlier");
     }
 
     releaseRequestDto.setStartDate(startDate);
@@ -142,7 +133,7 @@ public class ReleaseViewController {
     Date endDate = simpleDateFormat.parse(formEndDate);
 
     if (endDate.compareTo(startDate) < 0) {
-      throw new FormInputException("Start date of release should be earlier than end date");
+      throw new FormInputException("form.releaseEarlier");
     }
 
     releaseRequestDto.setStartDate(startDate);
