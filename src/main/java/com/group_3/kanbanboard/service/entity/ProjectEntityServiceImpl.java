@@ -15,7 +15,6 @@ import java.util.UUID;
 public class ProjectEntityServiceImpl implements ProjectEntityService {
 
     private final ProjectRepository projectRepository;
-    private ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
     @Autowired
     public ProjectEntityServiceImpl(ProjectRepository projectRepository) {
@@ -30,7 +29,7 @@ public class ProjectEntityServiceImpl implements ProjectEntityService {
     @Override
     public ProjectEntity getEntity(UUID projectId) {
         return projectRepository.findById(projectId)
-                .orElseThrow(() -> new ProjectNotFoundException(String.format(res.getString("project.notFound"), projectId)));
+                .orElseThrow(() -> new ProjectNotFoundException("Project with id = %s not found", projectId));
     }
 
     @Override

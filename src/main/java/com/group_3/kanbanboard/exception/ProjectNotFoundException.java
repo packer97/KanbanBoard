@@ -12,4 +12,8 @@ public class ProjectNotFoundException extends ResourceNotFoundException{
     public ProjectNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public ProjectNotFoundException(String messageKey, Object... params) {
+        super(messageKey, params);
+    }
 }

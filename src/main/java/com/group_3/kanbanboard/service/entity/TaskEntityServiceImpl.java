@@ -17,7 +17,6 @@ import java.util.UUID;
 public class TaskEntityServiceImpl implements TaskEntityService {
 
     private final TaskRepository taskRepository;
-    private ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
     @Autowired
     public TaskEntityServiceImpl(TaskRepository taskRepository) {
@@ -32,7 +31,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     @Override
     public TaskEntity getEntity(UUID taskId) {
         return taskRepository.findById(taskId)
-                .orElseThrow(() -> new TaskNotFoundException(String.format(res.getString("task.notFound"), taskId)));
+                .orElseThrow(() -> new TaskNotFoundException("Task with id = %s not found", taskId));
     }
 
     @Override
@@ -60,7 +59,7 @@ public class TaskEntityServiceImpl implements TaskEntityService {
     public TaskEntity getByIdFromDependencies(UUID taskId, ProjectEntity firstEntity, ReleaseEntity secondEntity) {
         return taskRepository.findByIdAndProjectAndRelease(taskId, firstEntity, secondEntity)
                 .orElseThrow(() -> new TaskNotFoundException(
-                        String.format(res.getString("task.notFound.fromDependencies"), taskId)));
+                        "Task with id = %s not found from current project and release.", taskId));
     }
 }
 

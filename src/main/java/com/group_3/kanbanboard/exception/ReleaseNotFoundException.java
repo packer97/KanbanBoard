@@ -12,4 +12,8 @@ public class ReleaseNotFoundException extends ResourceNotFoundException{
     public ReleaseNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public ReleaseNotFoundException(String messageKey, Object... params) {
+        super(messageKey, params);
+    }
 }

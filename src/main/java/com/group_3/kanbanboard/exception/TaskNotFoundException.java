@@ -12,4 +12,8 @@ public class TaskNotFoundException extends ResourceNotFoundException{
     public TaskNotFoundException(String message, Throwable cause) {
         super(message, cause);
     }
+
+    public TaskNotFoundException(String messageKey, Object... params) {
+        super(messageKey, params);
+    }
 }

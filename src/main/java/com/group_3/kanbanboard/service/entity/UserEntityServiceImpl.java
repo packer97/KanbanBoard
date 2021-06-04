@@ -26,7 +26,7 @@ public class UserEntityServiceImpl implements UserEntityService {
     @Override
     public UserEntity getEntity(UUID userId) {
         return userRepository.findById(userId)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with id = %s not found", userId)));
+                .orElseThrow(() -> new UserNotFoundException("User with id = %s not found", userId));
     }
 
     @Override
@@ -47,7 +47,7 @@ public class UserEntityServiceImpl implements UserEntityService {
     @Override
     public UserEntity getEntity(String username) {
         return userRepository.findByUsername(username)
-                .orElseThrow(() -> new UserNotFoundException(String.format("User with username = %s not found", username)));
+                .orElseThrow(() -> new UserNotFoundException("User with username = %s not found", username));
     }
 }
 
