@@ -23,7 +23,6 @@ public class PrincipalServiceImpl implements PrincipalService {
   private final UserMapper userMapper;
   private final PasswordEncoder passwordEncoder;
 
-  private final ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
   @Autowired
   public PrincipalServiceImpl(UserRepository userRepository, UserMapper userMapper, PasswordEncoder passwordEncoder) {

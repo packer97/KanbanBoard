@@ -52,6 +52,7 @@ public class ModelViewProjectService {
                     .collect(Collectors.toList());
             return users.stream().map(userMapper::toResponseDto).collect(Collectors.toList());
         }
+
         return Collections.emptyList();
     }
 }

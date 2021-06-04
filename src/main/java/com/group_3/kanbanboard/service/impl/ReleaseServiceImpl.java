@@ -92,7 +92,7 @@ public class ReleaseServiceImpl implements ReleaseService {
   @Override
   public void deleteReleaseById(UUID id) {
     if (!releaseEntityService.exists(id)){
-      throw new ReleaseNotFoundException(String.format("Release with ID = %s was not found", id));
+      throw new ReleaseNotFoundException("Release with ID = %s was not found", id);
     }
     releaseEntityService.deleteById(id);
   }
