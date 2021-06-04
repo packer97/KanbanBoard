@@ -9,28 +9,32 @@ import java.util.ResourceBundle;
 public abstract class ResourceNotFoundException extends RuntimeException {
 
     private static final String BUNDLE_BASE_NAME = "messages";
-
     private String localizedMessage;
 
     public ResourceNotFoundException() {
     }
 
-    public ResourceNotFoundException(String message) {
-        super(message);
+    public ResourceNotFoundException(String messageKey) {
+        super(getLocalizedMessageFromBundle(Locale.US, messageKey));
+        localizedMessage = getLocalizedMessageFromBundle(LocaleContextHolder.getLocale(), messageKey);
     }
 
-    public ResourceNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public ResourceNotFoundException(String messageKey, Throwable cause) {
+        super(getLocalizedMessageFromBundle(Locale.US, messageKey), cause);
+        localizedMessage = getLocalizedMessageFromBundle(LocaleContextHolder.getLocale(), messageKey);
     }
 
     public ResourceNotFoundException(String messageKey, Object... params) {
-        super(String.format(ResourceBundle.getBundle(BUNDLE_BASE_NAME, Locale.US).getString(messageKey), params));
-
-        localizedMessage = ResourceBundle.getBundle(BUNDLE_BASE_NAME, LocaleContextHolder.getLocale()).getString(messageKey);
+        super(String.format(getLocalizedMessageFromBundle(Locale.US, messageKey), params));
+        localizedMessage = String.format(getLocalizedMessageFromBundle(LocaleContextHolder.getLocale(), messageKey), params);
     }
 
     @Override
     public String getLocalizedMessage() {
         return localizedMessage;
+    }
+
+    private static String getLocalizedMessageFromBundle(Locale locale, String messageKey){
+       return ResourceBundle.getBundle(BUNDLE_BASE_NAME, locale).getString(messageKey);
     }
 }
