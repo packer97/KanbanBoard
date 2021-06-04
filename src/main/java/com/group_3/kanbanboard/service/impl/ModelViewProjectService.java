@@ -6,8 +6,8 @@ import com.group_3.kanbanboard.entity.UserProjectEntity;
 import com.group_3.kanbanboard.mappers.UserMapper;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
-import com.group_3.kanbanboard.service.entity.EntityService;
 import com.group_3.kanbanboard.service.PrincipalService;
+import com.group_3.kanbanboard.service.entity.ProjectEntityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,20 +21,23 @@ public class ModelViewProjectService {
 
     private final PrincipalService principalService;
     private final UserProjectRepository userProjectRepository;
-    private final EntityService entityService;
+    private final ProjectEntityService projectEntityService;
     private final UserMapper userMapper;
 
     @Autowired
-    public ModelViewProjectService(PrincipalService principalService, UserProjectRepository userProjectRepository, EntityService entityService, UserMapper userMapper) {
+    public ModelViewProjectService(PrincipalService principalService,
+                                   UserProjectRepository userProjectRepository,
+                                   ProjectEntityService projectEntityService,
+                                   UserMapper userMapper) {
         this.principalService = principalService;
         this.userProjectRepository = userProjectRepository;
-        this.entityService = entityService;
+        this.projectEntityService = projectEntityService;
         this.userMapper = userMapper;
     }
 
     public List<UserResponseDto> getUsersForProject(UUID projectId) {
         UserEntity projectOwner = principalService.getPrincipalEntity();
-        ProjectEntity needProject = entityService.getProjectEntity(projectId);
+        ProjectEntity needProject = projectEntityService.getEntity(projectId);
 
         List<UserProjectEntity> UserWithProjects = userProjectRepository.findByUser(projectOwner);
 

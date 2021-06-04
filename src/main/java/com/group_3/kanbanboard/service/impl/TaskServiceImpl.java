@@ -7,6 +7,7 @@ import com.group_3.kanbanboard.rest.dto.TaskRequestDto;
 import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import com.group_3.kanbanboard.service.TaskService;
 import com.group_3.kanbanboard.service.entity.EntityNewService;
+import com.group_3.kanbanboard.service.entity.TaskEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Service;
@@ -20,13 +21,13 @@ import java.util.stream.Collectors;
 @Service
 public class TaskServiceImpl implements TaskService {
 
-    private final EntityNewService<TaskEntity, UUID> taskEntityService;
+    private final TaskEntityServiceImpl taskEntityService;
     private final TaskMapper taskMapper;
     private final ResourceBundle res = ResourceBundle.getBundle("messages", LocaleContextHolder.getLocale());
 
 
     @Autowired
-    public TaskServiceImpl(EntityNewService<TaskEntity, UUID> taskEntityService, TaskMapper taskMapper) {
+    public TaskServiceImpl(TaskEntityServiceImpl taskEntityService, TaskMapper taskMapper) {
         this.taskEntityService = taskEntityService;
         this.taskMapper = taskMapper;
     }
