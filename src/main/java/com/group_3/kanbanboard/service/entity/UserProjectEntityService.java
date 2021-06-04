@@ -1,15 +1,20 @@
 package com.group_3.kanbanboard.service.entity;
 
+import com.group_3.kanbanboard.entity.ProjectEntity;
+import com.group_3.kanbanboard.entity.UserEntity;
+import com.group_3.kanbanboard.entity.UserProjectEntity;
+import com.group_3.kanbanboard.entity.UserProjectId;
+
 import java.util.List;
 
-public interface UserProjectEntityService<T, F, S> {
+public interface UserProjectEntityService extends EntityNewService<UserProjectEntity, UserProjectId> {
 
+    void deleteEntity(UserProjectEntity entity);
 
-    List<T> getFromFirst(F firstEntity);
+    List<UserProjectEntity> getFromFirst(UserEntity firstEntity);
 
-    List<T> getFromSecond(S secondEntity);
+    List<UserProjectEntity> getFromSecond(ProjectEntity secondEntity);
 
-    T getFromDependencies(F firstEntity, S secondEntity);
-
+    UserProjectEntity getFromDependencies(UserEntity firstEntity, ProjectEntity secondEntity);
 
 }
