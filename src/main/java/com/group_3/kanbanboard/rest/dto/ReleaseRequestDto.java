@@ -1,71 +1,78 @@
 package com.group_3.kanbanboard.rest.dto;
 
 import com.group_3.kanbanboard.enums.ReleaseStatus;
-
-import java.sql.Date;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Date;
 import java.util.UUID;
 
+@Schema(description = "Релиз")
 public class ReleaseRequestDto {
 
-    private UUID projectId;
+  @Schema(description = "ID проекта")
+  private UUID projectId;
 
-    private String version;
+  @Schema(description = "Версия")
+  private String version;
 
-    private Date startDate;
-    private Date endDate;
+  @Schema(description = "Дата начала")
+  private Date startDate;
 
-    private ReleaseStatus status;
+  @Schema(description = "Дата окончания")
+  private Date endDate;
 
-    public ReleaseRequestDto() {
-    }
+  @Schema(description = "Статус")
+  private ReleaseStatus status;
 
-    public ReleaseRequestDto(UUID projectId, String version, Date startDate, Date endDate,
-                             ReleaseStatus status) {
-        this.projectId = projectId;
-        this.version = version;
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.status = status;
-    }
+  public ReleaseRequestDto() {
+  }
 
-    public UUID getProjectId() {
-        return projectId;
-    }
+  public ReleaseRequestDto(UUID projectId, String version, Date startDate, Date endDate,
+      ReleaseStatus status) {
+    this.projectId = projectId;
+    this.version = version;
+    this.startDate = startDate;
+    this.endDate = endDate;
+    this.status = status;
+  }
 
-    public void setProjectId(UUID projectId) {
-        this.projectId = projectId;
-    }
+  public UUID getProjectId() {
+    return projectId;
+  }
 
-    public String getVersion() {
-        return version;
-    }
+  public void setProjectId(UUID projectId) {
+    this.projectId = projectId;
+  }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
+  public String getVersion() {
+    return version;
+  }
 
-    public Date getStartDate() {
-        return startDate;
-    }
+  public void setVersion(String version) {
+    this.version = version;
+  }
 
-    public void setStartDate(Date startDate) {
-        this.startDate = startDate;
-    }
+  public Date getStartDate() {
+    return startDate;
+  }
 
-    public Date getEndDate() {
-        return endDate;
-    }
+  public void setStartDate(Date startDate) {
+    this.startDate = startDate;
+  }
 
-    public void setEndDate(Date endDate) {
-        this.endDate = endDate;
-    }
+  public Date getEndDate() {
+    return endDate;
+  }
 
-    public ReleaseStatus getStatus() {
-        return status;
-    }
+  public void setEndDate(Date endDate) {
+    this.endDate = endDate;
+  }
 
-    public void setStatus(ReleaseStatus status) {
-        this.status = status;
-    }
+  public ReleaseStatus getStatus() {
+    return status;
+  }
+
+  public void setStatus(ReleaseStatus status) {
+    this.status = status;
+  }
 
 }

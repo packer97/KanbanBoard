@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Search results | YouTube</title>
+</head>
+<body>
+
+<a href="/youtube/searchPage">
+  Back to search page
+</a>
+
+<div>
+  <b>
+    Results of the query:
+  </b>
+  <b th:text="${query}"></b>
+</div>
+
+<div>
+  <table>
+    <thead>
+    <tr>
+      <th>#  </th>
+      <th>Kind of what found</th>
+      <th>Title</th>
+      <th>Channel</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="searchResult, i : ${resultList}">
+      <td><span th:text="${i.index + 1}"></span></td>
+      <td><span th:text="${searchResult.id.kind}"> </span></td>
+      <td><span th:text="${searchResult.snippet.title}"> </span></td>
+      <td><span th:text="${searchResult.snippet.channelTitle}"> </span></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+
+</body>
+</html>

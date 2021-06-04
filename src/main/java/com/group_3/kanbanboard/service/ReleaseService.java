@@ -2,6 +2,7 @@ package com.group_3.kanbanboard.service;
 
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.UnfinishedTasksDto;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,5 +18,6 @@ public interface ReleaseService {
 
   void deleteReleaseById(UUID id);
 
+  UnfinishedTasksDto countUnfinishedTasks(UUID id);
 
 }

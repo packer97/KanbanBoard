@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>KanbanBoard | Release list</title>
+  <style>
+    table{
+      border: 3px solid;
+      border-collapse: separate;
+      border-spacing: 7px 11px;
+    }
+  </style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="/profile">PROFILE</a> |
+    <a href="/users">USERS</a> |
+    <a href="/projects">PROJECTS</a> |
+    <div style="margin: -1% 0 0 93%; display: block;">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Sign Out</button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      </form>
+    </div>
+  </nav>
+</header>
+<h1 style="text-align: center">
+  <a href="/" style="color: blue; ">KanbanBoard</a>
+</h1>
+
+<hr>
+
+<h2 th:text="${projectDTO.title.toUpperCase()}"></h2>
+<hr>
+
+<h1 style="text-align: center">RELEASES LIST</h1>
+
+<div style="text-align: center" th:if="${isLead}">
+  <form th:action="@{/projects/{projectId}/releases/new (projectId = ${projectId})}" method="get">
+    <button type="submit">Add new release</button>
+  </form>
+</div>
+
+<hr>
+<table style="table-border-color-dark: black;" align="center">
+  <thead>
+  <tr>
+    <th>VERSION</th>
+    <th>START DATE</th>
+    <th>END DATE</th>
+    <th>STATUS</th>
+  </tr>
+  </thead>
+  <tbody th:each="release : ${projectDTO.releases}">
+  <tr>
+    <td>
+      <a th:href="@{/projects/{projectId}/releases/{releaseId}(projectId = ${projectId}, releaseId = ${release.getId()})}"
+         th:text="${release.getVersion()}"></a>
+    </td>
+    <td th:text="${release.getStartDate()}"></td>
+    <td th:text="${release.getEndDate()}"></td>
+    <td th:text="${release.getStatus()}"></td>
+  </tr>
+  </tbody>
+</table>
+
+
+</body>
+</html>

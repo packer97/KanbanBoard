@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>project users list</title>
+</head>
+
+<body>
+<header>
+    <nav>
+        <a href="/profile">PROFILE</a> |
+        <a href="/users">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <div style="margin: -1% 0 0 93%; display: block;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign Out</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+        </form>
+
+        <form th:if="${isCreator}" th:action="@{/projects/{projectId}/users/addUser(projectId=${projectId})}">
+            <div style="margin-top: 10px;">
+                <button type="submit" style="margin-top: 10px;">Add User</button>
+            </div>
+        </form>
+    </nav>
+</header>
+<table>
+    <thead>
+    <tr>
+        <th>Username</th>
+        <th>E-mail</th>
+        <th>Role</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="userPrd : ${userProjectResponseDto}">
+        <td>
+      <span>
+      <a th:href="@{/projects/{projectId}/users/{username}(projectId = ${projectId}, username = ${userPrd.getUser().getUsername()})}"
+         th:text="${userPrd.getUser().getUsername()}">
+      </a>
+      </span>
+        </td>
+        <td><span th:text="${userPrd.getUser().getMail()}"> </span></td>
+        <td><span th:text="${userPrd.getProjectUserRole().toString()}"> </span></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

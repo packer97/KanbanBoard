@@ -3,6 +3,7 @@ package com.group_3.kanbanboard.entity;
 
 import com.group_3.kanbanboard.enums.TaskCategory;
 import com.group_3.kanbanboard.enums.TaskStatus;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -23,6 +24,7 @@ public class TaskEntity {
     @Column
     private String description;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     @Column(name = "end_date")
     @Temporal(TemporalType.DATE)
     private Date endDate;
@@ -35,22 +37,26 @@ public class TaskEntity {
     @Enumerated(EnumType.STRING)
     private TaskStatus taskStatus;
 
-    @ManyToOne
+    @ManyToOne()
     private UserEntity performer;
 
-    @ManyToOne
+    @ManyToOne()
     private ProjectEntity project;
 
-    @ManyToOne
+    @ManyToOne()
     private ReleaseEntity release;
 
     public TaskEntity() {
     }
 
-    public TaskEntity(UUID id, String title, String description, Date endDate,
-                      TaskCategory taskCategory, TaskStatus taskStatus,
-                      UserEntity performer, ProjectEntity project, ReleaseEntity release) {
-        this.id = id;
+    public TaskEntity(String title,
+                      String description,
+                      Date endDate,
+                      TaskCategory taskCategory,
+                      TaskStatus taskStatus,
+                      UserEntity performer,
+                      ProjectEntity project,
+                      ReleaseEntity release) {
         this.title = title;
         this.description = description;
         this.endDate = endDate;
@@ -66,14 +72,13 @@ public class TaskEntity {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         TaskEntity that = (TaskEntity) o;
-        return Objects.equals(title, that.title) &&
-                Objects.equals(description, that.description) &&
-                Objects.equals(endDate, that.endDate);
+        return Objects.equals(id, that.id) &&
+                Objects.equals(title, that.title);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, description, endDate);
+        return Objects.hash(id, title);
     }
 
     public UUID getId() {

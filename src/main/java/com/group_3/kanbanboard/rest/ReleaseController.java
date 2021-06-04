@@ -2,6 +2,7 @@ package com.group_3.kanbanboard.rest;
 
 import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
 import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
+import com.group_3.kanbanboard.rest.dto.UnfinishedTasksDto;
 import com.group_3.kanbanboard.service.ReleaseService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
@@ -94,4 +95,19 @@ public class ReleaseController {
     releaseService.deleteReleaseById(id);
     return ResponseEntity.ok().build();
   }
+
+
+  /**
+   * Get a number of unfinished tasks of a release
+   *
+   * @param id Release id
+   * @return Number of unfinished tasks
+   */
+  @Operation(summary = "Просмотр количества задач, не завершившихся в заданный релиз")
+  @GetMapping("/{id}/unfinished_tasks")
+  public ResponseEntity<UnfinishedTasksDto> unfinishedTasks(@PathVariable UUID id){
+    return ResponseEntity.ok(releaseService.countUnfinishedTasks(id));
+  }
+
+
 }

@@ -34,11 +34,11 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
   //ADD ADMIN - TEMPORARY
   @Override
   protected void configure(HttpSecurity http) throws Exception {
-    http.authorizeRequests().antMatchers("/", "/static/**", "/registration", "/users/addAdmin").permitAll()
+    http.authorizeRequests().antMatchers("/", "/static/**", "/registration", "/users/addAdmin", "/youtube/**", "/mediawiki/**").permitAll()
         .anyRequest().authenticated()
-        .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/users")
+        .and().formLogin().loginPage("/login").permitAll().defaultSuccessUrl("/profile", true)
         .and().logout().permitAll().clearAuthentication(true).deleteCookies("JSESSIONID")
-        .logoutSuccessUrl("/login");
+        .logoutSuccessUrl("/");
 //        .and().csrf().disable();
   }
 
@@ -53,14 +53,14 @@ public class WebSecurityConfiguration extends WebSecurityConfigurerAdapter {
 //    @Bean
 //    @Override
 //    public UserDetailsService userDetailsService() {
-//        UserDetails user =
+//        UserDetails userAsPrincipal =
 //                User.withDefaultPasswordEncoder()
-//                        .username("user")
-//                        .password("user")
+//                        .username("userAsPrincipal")
+//                        .password("userAsPrincipal")
 //                        .roles("USER")
 //                        .build();
 //
-//        return new InMemoryUserDetailsManager(user);
+//        return new InMemoryUserDetailsManager(userAsPrincipal);
 //    }
 
 }
