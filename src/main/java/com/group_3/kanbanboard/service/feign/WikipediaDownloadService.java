@@ -27,7 +27,7 @@ public class WikipediaDownloadService {
 
     }
 
-    public String downloadPDf(String title, String pdfContent) throws IOException {
+    public String downloadPdf(String title, byte[] pdfContent) throws IOException {
         Path downloadedPdfDirPath = Paths.get(".", "downloaded", "pdf");
         if (Files.notExists(downloadedPdfDirPath)) Files.createDirectories(downloadedPdfDirPath);
 
@@ -38,6 +38,6 @@ public class WikipediaDownloadService {
 
         System.out.println(downloadedPdfFile);
 
-        return Files.write(downloadedPdfFile, pdfContent.getBytes(), StandardOpenOption.WRITE).toString();
+        return Files.write(downloadedPdfFile, pdfContent, StandardOpenOption.WRITE).toString();
     }
 }

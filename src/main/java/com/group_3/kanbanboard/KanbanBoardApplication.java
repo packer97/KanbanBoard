@@ -9,7 +9,6 @@ import org.springframework.cloud.openfeign.EnableFeignClients;
 public class KanbanBoardApplication {
 
     public static void main(String[] args) {
-        System.out.println(System.getProperties());
         SpringApplication.run(KanbanBoardApplication.class, args);
     }
 

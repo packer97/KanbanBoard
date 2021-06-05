@@ -21,8 +21,8 @@ public class WikipediaService {
         return htmlResponse.getBody();
     }
 
-    public String getPdfPageByTitle(String title){
-        ResponseEntity<String> pdfResponse = wikipediaRestClient.getPdfPageByTitle(title);
+    public byte[] getPdfPageByTitle(String title){
+        ResponseEntity<byte[]> pdfResponse = wikipediaRestClient.getPdfPageByTitle(title);
         return  pdfResponse.getBody();
     }
 

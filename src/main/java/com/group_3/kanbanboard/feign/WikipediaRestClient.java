@@ -18,7 +18,7 @@ public interface WikipediaRestClient {
     ResponseEntity<String> getHtmlPageByTitle(@PathVariable String title);
 
     @RequestMapping(method = RequestMethod.GET, value = "/page/pdf/{title}")
-    ResponseEntity<String> getPdfPageByTitle(@PathVariable String title);
+    ResponseEntity<byte[]> getPdfPageByTitle(@PathVariable String title);
 
     @RequestMapping(method = RequestMethod.POST, value = "/page//html/{title}")
     String setHtmlPageByTitle(@PathVariable String title, @RequestBody String body);

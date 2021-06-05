@@ -9,14 +9,14 @@
     <form method="get" id="getByTitle">
         <label>Get Wikipedia html page by title:
             <input name="title" th:type="text">
-            <p><input name="contentType" type="radio" value="html">html </p>
-            <p><input name="contentType" type="radio" value="pdf">pdf</p>
+            <p><input name="contentType" type="radio" checked  value="html">html
+            <input name="contentType" type="radio" value="pdf">pdf</p>
             <button type="submit">Get</button>
         </label>
     </form>
 </div>
 <div>
-    <iframe th:src="${downloadedHtmlUrl}"   width="1000" height="420">
+
 </div>
 </body>
 </html>
