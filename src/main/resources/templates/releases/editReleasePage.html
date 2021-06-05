@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>KanbanBoard | Edit release</title>
+</head>
+
+<body>
+<header>
+  <nav>
+    <a href="/profile">PROFILE</a> |
+    <a href="/users">USERS</a> |
+    <a href="/projects">PROJECTS</a> |
+    <div style="margin: -1% 0 0 93%; display: block;">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Sign Out</button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      </form>
+    </div>
+  </nav>
+</header>
+
+<h1 style="text-align: center">
+  <a href="/" style="color: blue; ">KanbanBoard</a>
+</h1>
+
+<hr>
+<h2>UPDATE RELEASE</h2>
+<hr>
+
+<h3>
+  <a th:href="@{/projects/{projectId}/releases/{releaseId}(projectId = ${projectId}, releaseId = ${releaseDto.getId()})}">
+    Back to release page
+  </a>
+</h3>
+<hr>
+
+<form method="post" th:method="patch" th:action="@{/projects/{projectId}/releases/{releaseId}(projectId = ${projectId}, releaseId = ${releaseDto.getId()})}">
+  <div style="margin-top: 50px">
+    <label>Version
+      <input th:value="${releaseDto.version}" name="version" type="text">
+    </label>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label>Start date
+      <input th:value="${releaseDto.startDate}" name="formStartDate" type="date">
+    </label>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label>End date
+      <input th:value="${releaseDto.endDate}" name="formEndDate" type="date">
+    </label>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label>Status
+      <select th:field="*{releaseDto.status}">
+        <option value="BACKLOG">BACKLOG</option>
+        <option value="IN_PROGRESS">IN_PROGRESS</option>
+        <option value="EXPIRED">EXPIRED</option>
+        <option value="FINISHED">FINISHED</option>
+      </select>
+    </label>
+  </div>
+
+  <button type="submit" style="margin-top: 10px;">Update</button>
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+</form>
+
+</body>
+</html>

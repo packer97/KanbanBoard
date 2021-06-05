@@ -33,7 +33,7 @@ public class UserController {
     @PostMapping(value = "/users")
     public ResponseEntity<UserResponseDto> addUser(@RequestBody UserRequestDto requestDto) {
 
-        return ResponseEntity.ok().body(new UserResponseDto(requestDto.getFirstName(), requestDto.getSecondName(), requestDto.getMail(), requestDto.getRoles()));
+        return ResponseEntity.ok().body(new UserResponseDto(requestDto.getFirstName(), requestDto.getSecondName(),requestDto.getUsername(), requestDto.getMail(), requestDto.getRoles()));
     }
 
     @Operation(summary = "Получение пользователя по id")

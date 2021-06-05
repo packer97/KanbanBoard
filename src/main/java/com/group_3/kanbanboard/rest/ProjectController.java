@@ -1,6 +1,5 @@
 package com.group_3.kanbanboard.rest;
 
-import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.rest.dto.ProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.service.impl.ProjectServiceImpl;
@@ -18,18 +17,22 @@ import java.util.UUID;
 @RestController
 public class ProjectController {
 
+    private final ProjectServiceImpl projectService;
+
     @Autowired
-    private ProjectServiceImpl projectService;
+    public ProjectController(ProjectServiceImpl projectService) {
+        this.projectService = projectService;
+    }
 
     @Operation(summary = "Добавить проект")
     @PostMapping
-    public ResponseEntity<ProjectResponseDto> addProject(@PathVariable UUID userId, @RequestBody ProjectRequestDto projectRequestDto)  {
+    public ResponseEntity<ProjectResponseDto> addProject(@PathVariable UUID userId, @RequestBody ProjectRequestDto projectRequestDto) {
         return ResponseEntity.ok(projectService.addProject(userId, projectRequestDto));
     }
 
     @Operation(summary = "Получить список всех проектов")
     @GetMapping
-    public ResponseEntity<List<ProjectResponseDto>> getAllProjects()  {
+    public ResponseEntity<List<ProjectResponseDto>> getAllProjects() {
         return ResponseEntity.ok().body(projectService.getAllProjects());
     }
 
@@ -48,9 +51,14 @@ public class ProjectController {
 
     @Operation(summary = "Удаление проекта")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> deleteProject(@PathVariable UUID id)  {
+    public ResponseEntity<?> deleteProject(@PathVariable UUID id) {
         projectService.deleteProjectById(id);
         return ResponseEntity.ok().build();
     }
 
+    @Operation(summary = "Завершение проекта")
+    @PatchMapping("/{id}")
+    public ResponseEntity<ProjectResponseDto> endProject(@PathVariable UUID id) {
+        return ResponseEntity.ok().body(projectService.setProjectStatusEnd(id));
+    }
 }

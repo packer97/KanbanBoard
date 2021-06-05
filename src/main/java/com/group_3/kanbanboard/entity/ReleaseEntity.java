@@ -49,16 +49,15 @@ public class ReleaseEntity {
   private ProjectEntity project;
 
   @OneToMany(cascade = CascadeType.ALL,
-      orphanRemoval = true,
+      //orphanRemoval=true
       mappedBy = "release")
   private List<TaskEntity> tasks;
 
   public ReleaseEntity() {
   }
 
-  public ReleaseEntity(UUID id, String version, Date startDate, Date endDate, ProjectEntity project,
+  public ReleaseEntity(String version, Date startDate, Date endDate, ProjectEntity project,
       ReleaseStatus status) {
-    this.id = id;
     this.version = version;
     this.startDate = startDate;
     this.endDate = endDate;

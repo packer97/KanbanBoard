@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Project list</title>
+    <style> table {
+        border: 2px solid;
+        border-collapse: separate;
+        border-spacing: 7px 11px;
+        table-border-color-dark: black;
+    }
+    </style>
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/profile">PROFILE</a> |
+        <a href="/users">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <div style="margin: -1% 0 0 93%; display: block;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign Out</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+    </nav>
+</header>
+<h1 style="text-align: center">
+    <a href="/" style="color: blue; ">KanbanBoard</a>
+</h1>
+<h3>
+    <a th:href="@{/profile}">
+        Back to profile
+    </a>
+</h3>
+<div style="text-align: center": >
+<form th:action="@{/projects/new}" method="get">
+    <button type="submit">Add new project</button>
+</form>
+</div>
+</br>
+
+<table style="table-border-color-dark: black;" align="center">
+    <thead>
+    <tr>
+        <th>Title</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody th:each="project : ${listProject}">
+    <tr>
+        <td>
+            <a th:href="@{/projects/{projectId}(projectId = ${project.getProject().getId()})}"
+               th:text="${project.getProject().getTitle()}"></a>
+        </td>
+        <td th:text="${project.getProject().getDescription()}"></td>
+        <td>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>

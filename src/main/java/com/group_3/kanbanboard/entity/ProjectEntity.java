@@ -1,6 +1,7 @@
 package com.group_3.kanbanboard.entity;
 
 import java.util.List;
+import java.util.Objects;
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.UUID;
@@ -20,7 +21,7 @@ public class ProjectEntity {
     @Column(name = "lead_id")
     private UUID leadId;
     @Column(name = "start_project")
-    private Boolean startProject;
+    private Boolean startProject = false;
 
     @OneToMany(
             mappedBy = "project",
@@ -100,4 +101,20 @@ public class ProjectEntity {
         this.releases = releases;
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        ProjectEntity that = (ProjectEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

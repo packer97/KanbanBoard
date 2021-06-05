@@ -1,32 +1,104 @@
 package com.group_3.kanbanboard.rest.dto;
 
 
+import com.group_3.kanbanboard.enums.TaskCategory;
+import com.group_3.kanbanboard.enums.TaskStatus;
 import io.swagger.v3.oas.annotations.media.Schema;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.util.Date;
 import java.util.UUID;
 
-public class  TaskResponseDto {
+@Schema(description = "Задача")
+public class TaskResponseDto {
+    @Schema(description = "Идентификатор задачи")
+    private UUID id;
 
     @Schema(description = "Название задачи")
     private String title;
-    @Schema(description = "Категория задачи")
-    private String category;
+
     @Schema(description = "Описание задачи")
     private String description;
-    @Schema(description = "Статус задачи")
-    private String status;
-    @Schema(description = "Версия релиза")
-    private int releaseId;
 
-    public TaskResponseDto(String title, String category, String description, String status, int releaseId) {
+    @Schema(description = "Дата окончания")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date endDate;
+
+    @Schema(description = "Категория задачи")
+    private TaskCategory taskCategory;
+
+    @Schema(description = "Статус задачи")
+    private TaskStatus taskStatus;
+
+    @Schema(description = "Исполнитель задачи")
+    private UserResponseDto performer;
+
+    @Schema(description = "Проект")
+    private ProjectResponseDto project;
+
+    @Schema(description = "Версия релиза")
+    private ReleaseResponseDto release;
+
+    public TaskResponseDto(UUID id,
+                           String title,
+                           String description,
+                           Date endDate,
+                           TaskCategory taskCategory,
+                           TaskStatus taskStatus,
+                           UserResponseDto performer,
+                           ProjectResponseDto project,
+                           ReleaseResponseDto release) {
         this.title = title;
-        this.category = category;
         this.description = description;
-        this.status = status;
-        this.releaseId = releaseId;
+        this.endDate = endDate;
+        this.taskCategory = taskCategory;
+        this.taskStatus = taskStatus;
+        this.performer = performer;
+        this.project = project;
+        this.release = release;
     }
 
     public TaskResponseDto() {
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public UserResponseDto getPerformer() {
+        return performer;
+    }
+
+    public void setPerformer(UserResponseDto performer) {
+        this.performer = performer;
+    }
+
+    public ProjectResponseDto getProject() {
+        return project;
+    }
+
+    public void setProject(ProjectResponseDto project) {
+        this.project = project;
+    }
+
+    public ReleaseResponseDto getRelease() {
+        return release;
+    }
+
+    public void setRelease(ReleaseResponseDto release) {
+        this.release = release;
     }
 
     public String getTitle() {
@@ -37,14 +109,6 @@ public class  TaskResponseDto {
         this.title = title;
     }
 
-    public String getCategory() {
-        return category;
-    }
-
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -53,19 +117,20 @@ public class  TaskResponseDto {
         this.description = description;
     }
 
-    public String getStatus() {
-        return status;
+    public TaskCategory getTaskCategory() {
+        return taskCategory;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaskCategory(TaskCategory taskCategory) {
+        this.taskCategory = taskCategory;
     }
 
-    public int getReleaseId() {
-        return releaseId;
+    public TaskStatus getTaskStatus() {
+        return taskStatus;
     }
 
-    public void setReleaseId(int releaseId) {
-        this.releaseId = releaseId;
+    public void setTaskStatus(TaskStatus taskStatus) {
+        this.taskStatus = taskStatus;
     }
 }
+
