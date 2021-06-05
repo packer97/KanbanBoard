@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 )
 public interface WikipediaRestClient {
 
+    //Ограничение на передаваемый контент в ResponseBody - 2GB
+
     @RequestMapping(method = RequestMethod.GET, value = "/page/html/{title}")
     ResponseEntity<String> getHtmlPageByTitle(@PathVariable String title);
 
@@ -23,4 +25,6 @@ public interface WikipediaRestClient {
     @RequestMapping(method = RequestMethod.POST, value = "/page//html/{title}")
     String setHtmlPageByTitle(@PathVariable String title, @RequestBody String body);
 
+    @RequestMapping(method = RequestMethod.GET, value ="/page/title/{title}")
+    ResponseEntity<WikipediaRestMetaData> getMetaDataByTitle(@PathVariable String title);
 }

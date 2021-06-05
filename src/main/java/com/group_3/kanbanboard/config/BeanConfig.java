@@ -29,9 +29,7 @@ public class BeanConfig {
         return sessionLocaleResolver;
     }
 
-//    @Bean
-//    public AnnotationMethodHandlerAdapter annotationMethodHandlerAdapter(){
-//
-//    }
+
+
 
 }

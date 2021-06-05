@@ -2,6 +2,7 @@ package com.group_3.kanbanboard.service.feign;
 
 
 import com.group_3.kanbanboard.feign.WikipediaRestClient;
+import com.group_3.kanbanboard.feign.WikipediaRestMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -26,4 +27,8 @@ public class WikipediaService {
         return  pdfResponse.getBody();
     }
 
+    public WikipediaRestMetaData  getMetaDataByTitle(String title){
+        ResponseEntity<WikipediaRestMetaData> metaDataResponse = wikipediaRestClient.getMetaDataByTitle(title);
+        return metaDataResponse.getBody();
+    }
 }
