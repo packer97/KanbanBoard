@@ -1,6 +1,5 @@
 package com.group_3.kanbanboard.controller;
 
-import com.group_3.kanbanboard.feign.WikipediaRestMetaData;
 import com.group_3.kanbanboard.service.feign.WikipediaDownloadService;
 import com.group_3.kanbanboard.service.feign.WikipediaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,10 +34,8 @@ public class WikipediaController {
     public String getWikipediaHtmlByTitle(@RequestParam String title,
                                           @RequestParam String contentType,
                                           Model model) throws IOException {
+    //    WikipediaRestMetaData metaData = wikipediaService.getMetaDataByTitle(title);
 
-        WikipediaRestMetaData metaData = wikipediaService.getMetaDataByTitle(title);
-
-        System.out.println();
 
 
         switch (contentType) {
@@ -46,13 +43,13 @@ public class WikipediaController {
                 String htmlDocument = wikipediaService.getHtmlPageByTitle(title);
                 String downloadedHtmlPath = wikipediaDownloadService.downloadHtml(title, htmlDocument);
 
-                return "redirect:" + downloadedHtmlPath;
+                return "redirect:" +  "/wikipedia/downloaded/html/" + title + ".html";
             }
             case ("pdf"): {
                 byte[] pdfDocument = wikipediaService.getPdfPageByTitle(title);
                 String downloadedPdfPath = wikipediaDownloadService.downloadPdf(title, pdfDocument);
 
-                return "redirect:" + downloadedPdfPath;
+                return "redirect:" +  "/wikipedia/downloaded/pdf/" + title + ".pdf";
             }
             default:
                 throw new RuntimeException("Unknown request parameter \"contentType\"");
