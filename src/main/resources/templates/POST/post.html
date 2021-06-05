@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>POST Request Page</title>
+</head>
+<body>
+<form method="post" action="/ptsv/sendTextPage">
+  <div style="margin-top: 20px">
+    <label>Enter text
+      <input type="text" name="text" >
+    </label>
+  </div>
+  <div style="margin-top: 20px">
+    <button type="submit">Send</button>
+  </div>
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+</form>
+</body>
+</html>

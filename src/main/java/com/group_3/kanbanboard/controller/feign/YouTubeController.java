@@ -1,6 +1,6 @@
-package com.group_3.kanbanboard.controller.youTube;
+package com.group_3.kanbanboard.controller.feign;
 
-import com.group_3.kanbanboard.service.youTubeService.YouTubeService;
+import com.group_3.kanbanboard.service.feign.YouTubeService;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -26,12 +26,13 @@ public class YouTubeController {
 
         @GetMapping("/searchPage")
         public String getSearchPage() {
-            return "youtube/youTubeRequestPage";
+            return "youTube/youTubeRequestPage";
         }
 
         @GetMapping("/channels")
-        public ModelAndView getChannelInfo(@RequestParam String id)
+        public ModelAndView getChannelInfo(@RequestParam String id) //channel id f.e. UC6uFoHcr_EEK6DgCS-LeTNA
                 throws ParseException {
+
             ModelAndView modelAndView = new ModelAndView("youTube/youTubeResponsePage");
             String json = youTubeService.getResult(id);
             JSONObject jsonObject = (JSONObject) new JSONParser().parse(json);
@@ -40,4 +41,5 @@ public class YouTubeController {
             modelAndView.addObject("resultList", resultList);
             return modelAndView;
         }
+
 }
