@@ -13,13 +13,31 @@ public class WikipediaDownloadService {
 
     public String downloadHtml(String title, String htmlContent) throws IOException {
 
-        Path downloadedDirPath = Paths.get(".\\downloaded");
-        if (Files.notExists(downloadedDirPath)) Files.createDirectories(downloadedDirPath);
+        Path downloadedHtmlDirPath = Paths.get(".", "downloaded", "html");
+        if (Files.notExists(downloadedHtmlDirPath)) Files.createDirectories(downloadedHtmlDirPath);
 
-        Path downloadedHtmlFile = Paths.get(downloadedDirPath.toString(), title + ".html");
-        if(Files.notExists(downloadedHtmlFile)) Files.createFile(downloadedHtmlFile);
+        System.out.println(downloadedHtmlDirPath);
 
+        Path downloadedHtmlFile = Paths.get(downloadedHtmlDirPath.toString(), title + ".html");
+        if (Files.notExists(downloadedHtmlFile)) Files.createFile(downloadedHtmlFile);
+
+        System.out.println(downloadedHtmlFile);
 
         return Files.write(downloadedHtmlFile, htmlContent.getBytes(), StandardOpenOption.WRITE).toString();
+
+    }
+
+    public String downloadPDf(String title, String pdfContent) throws IOException {
+        Path downloadedPdfDirPath = Paths.get(".", "downloaded", "pdf");
+        if (Files.notExists(downloadedPdfDirPath)) Files.createDirectories(downloadedPdfDirPath);
+
+        System.out.println(downloadedPdfDirPath);
+
+        Path downloadedPdfFile = Paths.get(downloadedPdfDirPath.toString(), title + ".pdf");
+        if (Files.notExists(downloadedPdfFile)) Files.createFile(downloadedPdfFile);
+
+        System.out.println(downloadedPdfFile);
+
+        return Files.write(downloadedPdfFile, pdfContent.getBytes(), StandardOpenOption.WRITE).toString();
     }
 }
