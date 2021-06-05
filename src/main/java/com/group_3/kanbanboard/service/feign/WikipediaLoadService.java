@@ -9,7 +9,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 
 @Service
-public class WikipediaDownloadService {
+public class WikipediaLoadService {
 
     public String downloadHtml(String title, String htmlContent) throws IOException {
 
@@ -39,5 +39,9 @@ public class WikipediaDownloadService {
         System.out.println(downloadedPdfFile);
 
         return Files.write(downloadedPdfFile, pdfContent, StandardOpenOption.WRITE).toString();
+    }
+
+    public  void uploadPdf(String path){
+        Path currentPath = Path(path)
     }
 }
