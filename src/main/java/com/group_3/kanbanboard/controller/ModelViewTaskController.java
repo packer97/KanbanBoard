@@ -22,7 +22,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("/projects/{projectId}/releases/{releaseId}/tasks")
@@ -34,6 +33,7 @@ public class ModelViewTaskController {
     private final TaskService taskService;
     private final ReleaseService releaseService;
     private final UtilService utilService;
+    private final TaskFilterService taskFilterService;
 
 
     @Autowired
@@ -43,13 +43,14 @@ public class ModelViewTaskController {
                                    TaskService taskService,
                                    ProjectService projectService,
                                    ReleaseService releaseService,
-                                   UtilService utilService) {
+                                   UtilService utilService, TaskFilterService taskFilterService) {
         this.modelViewTaskService = modelViewTaskService;
         this.modelViewProjectService = modelViewProjectService;
         this.principalService = principalService;
         this.taskService = taskService;
         this.releaseService = releaseService;
         this.utilService = utilService;
+        this.taskFilterService = taskFilterService;
     }
 
 
@@ -72,11 +73,7 @@ public class ModelViewTaskController {
                               @PathVariable UUID releaseId,
                               @RequestParam String search,
                               Model model){
-
-        List<TaskResponseDto> taskResponseDtoList =
-                modelViewTaskService.getTasksFromProjectAndRelease(projectId, releaseId);
-
-      List<TaskResponseDto> filterList = taskResponseDtoList.stream().filter( task -> task.getTitle().contains(search)).collect(Collectors.toList());
+      List<TaskResponseDto> filterList = taskFilterService.getAllTasks(search);
         model.addAttribute("tasksList", filterList);
 
         ReleaseResponseDto releaseResponseDto = releaseService.getById(releaseId);

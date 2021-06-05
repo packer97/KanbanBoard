@@ -5,5 +5,5 @@ import com.group_3.kanbanboard.rest.dto.TaskResponseDto;
 import java.util.List;
 
 public interface TaskFilterService {
-    List<TaskResponseDto> findBySearchTerm(String searchTerm);
+    List<TaskResponseDto> getAllTasks(String keyword);
 }
