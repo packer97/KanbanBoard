@@ -16,7 +16,6 @@ public class WikipediaLoadService {
         Path downloadedHtmlDirPath = Paths.get(".", "downloaded", "html");
         if (Files.notExists(downloadedHtmlDirPath)) Files.createDirectories(downloadedHtmlDirPath);
 
-        System.out.println(downloadedHtmlDirPath);
 
         Path downloadedHtmlFile = Paths.get(downloadedHtmlDirPath.toString(), title + ".html");
         if (Files.notExists(downloadedHtmlFile)) Files.createFile(downloadedHtmlFile);
@@ -31,8 +30,6 @@ public class WikipediaLoadService {
         Path downloadedPdfDirPath = Paths.get(".", "downloaded", "pdf");
         if (Files.notExists(downloadedPdfDirPath)) Files.createDirectories(downloadedPdfDirPath);
 
-        System.out.println(downloadedPdfDirPath);
-
         Path downloadedPdfFile = Paths.get(downloadedPdfDirPath.toString(), title + ".pdf");
         if (Files.notExists(downloadedPdfFile)) Files.createFile(downloadedPdfFile);
 
@@ -41,7 +38,9 @@ public class WikipediaLoadService {
         return Files.write(downloadedPdfFile, pdfContent, StandardOpenOption.WRITE).toString();
     }
 
-    public  void uploadPdf(String path){
-        Path currentPath = Path(path)
+    public String uploadPdf(String path) throws IOException {
+        Path actual = Paths.get(path);
+        if (Files.exists(actual)) return new String(Files.readAllBytes(Paths.get(path)));
+        else throw new RuntimeException("Page not found from existing path or not downloaded.Download it");
     }
 }
