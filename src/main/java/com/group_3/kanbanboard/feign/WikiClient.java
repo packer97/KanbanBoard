@@ -2,19 +2,30 @@ package com.group_3.kanbanboard.feign;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 @FeignClient(
-        name = "mediawiki-api",
-        url = "${wikipedia.api.url}"
+        name = "WikiClient",
+        url = "${wiki.url}"
     )
 public interface WikiClient {
 
-    @RequestMapping(method = RequestMethod.GET, value = "")
-    ResponseEntity<String> get();
+    @GetMapping
+    ResponseEntity<String> getPage(@RequestParam("query") String action,
+                                   @RequestParam("search") String list,
+                                   @RequestParam("Craig%20Noone") String srsearch,
+                                   @RequestParam("json") String format);
 
-    @RequestMapping(method = RequestMethod.POST, value = "")
-    String set();
+    @PostMapping
+    ResponseEntity<String> login(@RequestPart String action,
+                                 @RequestPart String userName,
+                                 @RequestPart String password,
+                                 @RequestPart String loginreturnurl,
+                                 @RequestPart String token,
+                                 @RequestPart String format);
+    @GetMapping
+    ResponseEntity<String> getToken(@RequestParam("query") String action, @RequestParam("meta") String meta,
+                                    @RequestParam("type") String type, @RequestParam("format") String format);
+
 }
 
