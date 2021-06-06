@@ -46,8 +46,9 @@ public class WikipediaService {
         logger.info(response.getStatusCode().toString());
     }
 
-    public void  transformHtmlToWikitext(WikiPediaTransformRequestDto request){
+    public String transformHtmlToWikitext(WikiPediaTransformRequestDto request){
         ResponseEntity<String> wikiTextResponse = wikipediaRestClient.transformToWikiText(request);
         logger.info(wikiTextResponse.getStatusCode().toString());
+        return wikiTextResponse.getBody();
     }
 }

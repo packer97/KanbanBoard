@@ -1,5 +1,6 @@
 package com.group_3.kanbanboard.controller;
 
+import com.group_3.kanbanboard.feign.WikiPediaTransformRequestDto;
 import com.group_3.kanbanboard.feign.WikipediaPageRequestDto;
 import com.group_3.kanbanboard.feign.WikipediaRestMetaData;
 import com.group_3.kanbanboard.service.feign.WikipediaLoadService;
@@ -80,4 +81,16 @@ public class WikipediaController {
         wikipediaService.setHtmlPageByTitle(title, wikipediaRequestDto);
         return "wikipedia/wikipedia";
     }
+
+    @GetMapping("/transform")
+    public String transFormToWikitext(@RequestParam String title) throws IOException {
+
+        String html = wikipediaLoadService.uploadHtml(Paths.get(".", "downloaded", "html", title + ".html").toString());
+        WikiPediaTransformRequestDto transformRequestDto = new WikiPediaTransformRequestDto(html);
+
+        String wikiText = wikipediaService.transformHtmlToWikitext(transformRequestDto);
+        System.out.println(wikiText);
+        return "wikipedia/wikipedia";
+    }
 }
+

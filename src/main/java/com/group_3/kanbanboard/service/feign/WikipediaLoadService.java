@@ -14,37 +14,38 @@ public class WikipediaLoadService {
 
     private static final Logger logger = Logger.getLogger(WikipediaLoadService.class.getName());
 
+    private static final String HTML_FILE_TYPE = "html";
+    private static final String PDF_FILE_TYPE = "pdf";
+    private static final String WIKITEXT_FILE_TYPE = "wikitext";
+
     public String downloadHtml(String title, String htmlContent) throws IOException {
-
-        Path downloadedHtmlDirPath = Paths.get(".", "downloaded", "html");
-        if (Files.notExists(downloadedHtmlDirPath)) Files.createDirectories(downloadedHtmlDirPath);
-
-
-        Path downloadedHtmlFile = Paths.get(downloadedHtmlDirPath.toString(), title + ".html");
-        if (Files.notExists(downloadedHtmlFile)) Files.createFile(downloadedHtmlFile);
-
-       logger.info(downloadedHtmlFile.toString());
-
-        return Files.write(downloadedHtmlFile, htmlContent.getBytes(), StandardOpenOption.WRITE).toString();
-
+        return getDownload(title, htmlContent.getBytes(), HTML_FILE_TYPE);
     }
 
     public String downloadPdf(String title, byte[] pdfContent) throws IOException {
+        return getDownload(title, pdfContent, PDF_FILE_TYPE);
+    }
 
-        Path downloadedPdfDirPath = Paths.get(".", "downloaded", "pdf");
-        if (Files.notExists(downloadedPdfDirPath)) Files.createDirectories(downloadedPdfDirPath);
 
-        Path downloadedPdfFile = Paths.get(downloadedPdfDirPath.toString(), title + ".pdf");
-        if (Files.notExists(downloadedPdfFile)) Files.createFile(downloadedPdfFile);
-
-        logger.info(downloadedPdfFile.toString());
-
-        return Files.write(downloadedPdfFile, pdfContent, StandardOpenOption.WRITE).toString();
+    public String downloadWikiText(String title, String wikitextContent) throws IOException {
+        return getDownload(title, wikitextContent.getBytes(), WIKITEXT_FILE_TYPE);
     }
 
     public String uploadHtml(String path) throws IOException {
         Path actual = Paths.get(path);
         if (Files.exists(actual)) return new String(Files.readAllBytes(Paths.get(path)));
         else throw new RuntimeException("Page not found from existing path or not downloaded.Download it");
+    }
+
+    private String getDownload(String title, byte[] content, String fileType) throws IOException {
+        Path downloadedDirPath = Paths.get(".", "downloaded", fileType);
+        if (Files.notExists(downloadedDirPath)) Files.createDirectories(downloadedDirPath);
+
+        Path downloadedFile = Paths.get(downloadedDirPath.toString(), title + "." + fileType);
+        if (Files.notExists(downloadedFile)) Files.createFile(downloadedFile);
+
+        logger.info(downloadedFile.toString());
+
+        return Files.write(downloadedFile, content, StandardOpenOption.WRITE).toString();
     }
 }
