@@ -16,7 +16,7 @@ public class WikipediaLoadService {
 
     private static final String HTML_FILE_TYPE = "html";
     private static final String PDF_FILE_TYPE = "pdf";
-    private static final String WIKITEXT_FILE_TYPE = "wikitext";
+    private static final String WIKITEXT_FILE_TYPE = "wiki";
 
     public String downloadHtml(String title, String htmlContent) throws IOException {
         return getDownload(title, htmlContent.getBytes(), HTML_FILE_TYPE);

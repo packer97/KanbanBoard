@@ -44,13 +44,13 @@ public class WikipediaController {
         switch (contentType) {
             case ("html"): {
                 String html = wikipediaService.getHtmlPageByTitle(title);
-                String downloadedHtmlPath = wikipediaLoadService.downloadHtml(title, html);
+                wikipediaLoadService.downloadHtml(title, html);
 
                 return "redirect:" + "/wikipedia/downloaded/html/" + title + ".html";
             }
             case ("pdf"): {
                 byte[] pdf = wikipediaService.getPdfPageByTitle(title);
-                String downloadedPdfPath = wikipediaLoadService.downloadPdf(title, pdf);
+                wikipediaLoadService.downloadPdf(title, pdf);
 
                 return "redirect:" + "/wikipedia/downloaded/pdf/" + title + ".pdf";
             }
@@ -89,8 +89,10 @@ public class WikipediaController {
         WikiPediaTransformRequestDto transformRequestDto = new WikiPediaTransformRequestDto(html);
 
         String wikiText = wikipediaService.transformHtmlToWikitext(transformRequestDto);
-        System.out.println(wikiText);
-        return "wikipedia/wikipedia";
+
+        wikipediaLoadService.downloadWikiText(title, wikiText);
+
+        return "redirect:" + "/wikipedia/downloaded/wikitext/" + title + ".wikitext";
     }
 }
 
