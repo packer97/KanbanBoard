@@ -1,19 +1,16 @@
 package com.group_3.kanbanboard.service.impl;
 
 import com.group_3.kanbanboard.entity.ProjectEntity;
-import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.entity.UserProjectEntity;
-import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.exception.ProjectNotFoundException;
-import com.group_3.kanbanboard.exception.UserNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
-import com.group_3.kanbanboard.repository.ProjectRepository;
 import com.group_3.kanbanboard.repository.UserProjectRepository;
-import com.group_3.kanbanboard.repository.UserRepository;
 import com.group_3.kanbanboard.rest.dto.ProjectRequestDto;
 import com.group_3.kanbanboard.rest.dto.ProjectResponseDto;
 import com.group_3.kanbanboard.service.ProjectService;
+import com.group_3.kanbanboard.service.entity.ProjectEntityServiceImpl;
+import com.group_3.kanbanboard.service.entity.UserEntityServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -25,43 +22,42 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    private ProjectRepository projectRepository;
-    private ProjectMapper projectMapper;
-    private UserProjectRepository userProjectRepository;
-    private UserRepository userRepository;
+    private final ProjectEntityServiceImpl projectEntityService;
+    private final ProjectMapper projectMapper;
+    private final UserProjectRepository userProjectRepository;
+    private final UserEntityServiceImpl userEntityService;
 
     @Autowired
-    public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper,
-                              UserProjectRepository userProjectRepository, UserRepository userRepository) {
-        this.projectRepository = projectRepository;
+    public ProjectServiceImpl(ProjectEntityServiceImpl projectEntityService, ProjectMapper projectMapper,
+                              UserProjectRepository userProjectRepository, UserEntityServiceImpl userEntityService) {
+        this.projectEntityService = projectEntityService;
         this.projectMapper = projectMapper;
         this.userProjectRepository = userProjectRepository;
-        this.userRepository = userRepository;
+        this.userEntityService = userEntityService;
+
     }
 
     @Transactional
     @Override
     public ProjectResponseDto getById(UUID id) {
-        ProjectEntity project = projectRepository.findById(id).orElseThrow(
-                () -> new ProjectNotFoundException(String.format("Project with ID = %s was not found", id)));
+        ProjectEntity project = projectEntityService.getEntity(id);
         return projectMapper.toResponseDto(project);
     }
 
     @Transactional
     @Override
     public List<ProjectResponseDto> getAllProjects() {
-        List<ProjectEntity> projects = projectRepository.findAll();
+        List<ProjectEntity> projects = projectEntityService.getAllEntity();
         return projects.stream().map(projectMapper::toResponseDto).collect(Collectors.toList());
     }
 
     @Transactional
     @Override
     public ProjectResponseDto addProject(UUID userId, ProjectRequestDto projectRequestDto) {
-        UserEntity userEntity = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException(String.format("User with ID = %s was not found", userId)));
+        UserEntity userEntity = userEntityService.getEntity(userId);
         ProjectEntity project = projectMapper.toEntity(projectRequestDto);
+        projectEntityService.saveEntity(project);
         UserProjectEntity userProjectEntity = new UserProjectEntity(userEntity, project);
-        projectRepository.save(project);
         userProjectRepository.save(userProjectEntity);
         return projectMapper.toResponseDto(project);
     }
@@ -69,20 +65,20 @@ public class ProjectServiceImpl implements ProjectService {
     @Transactional
     @Override
     public ProjectResponseDto updateProject(UUID id, ProjectRequestDto projectRequestDto) {
-        ProjectEntity projectEntityFromDb = projectRepository.findById(id).orElseThrow(
-                () -> new ProjectNotFoundException(String.format("Project with ID = %s was not found", id)));
-        projectEntityFromDb.setTitle(projectRequestDto.getTitle());
-        projectEntityFromDb.setDescription(projectRequestDto.getDescription());
-        projectRepository.save(projectEntityFromDb);
-        return projectMapper.toResponseDto(projectEntityFromDb);
+        ProjectEntity projectEntityFromDb = projectEntityService.getEntity(id);
+        ProjectEntity projectEntityDto = projectMapper.toEntity(projectRequestDto);
+        projectEntityDto.setTitle(projectEntityFromDb.getTitle());
+        projectEntityDto.setDescription(projectEntityFromDb.getDescription());
+        projectEntityService.saveEntity(projectEntityDto);
+        return projectMapper.toResponseDto(projectEntityDto);
     }
 
     @Transactional
     @Override
     public void deleteProjectById(UUID id) {
-        if (!projectRepository.existsById(id)) {
+        if (!projectEntityService.exists(id)) {
             throw new ProjectNotFoundException(String.format("Project with ID = %s was not found", id));
         }
-        projectRepository.deleteById(id);
+        projectEntityService.deleteById(id);
     }
 }

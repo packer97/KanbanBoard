@@ -1,9 +1,6 @@
 package com.group_3.kanbanboard.mappers;
 
-import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
-import com.group_3.kanbanboard.rest.dto.ReleaseRequestDto;
-import com.group_3.kanbanboard.rest.dto.ReleaseResponseDto;
 import com.group_3.kanbanboard.rest.dto.UserRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserResponseDto;
 import org.mapstruct.InheritInverseConfiguration;

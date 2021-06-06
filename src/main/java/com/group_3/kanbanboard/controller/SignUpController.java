@@ -4,6 +4,7 @@ import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.rest.dto.UserRequestDto;
 import com.group_3.kanbanboard.rest.dto.UserSignUpRequest;
 import com.group_3.kanbanboard.service.impl.UserServiceImpl;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,11 +19,12 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.validation.Valid;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/registration")
 public class SignUpController {
-    UserServiceImpl userService;
+    private final UserServiceImpl userService;
 
     @Autowired
     public SignUpController(UserServiceImpl userService) {
@@ -30,30 +32,21 @@ public class SignUpController {
     }
 
     @GetMapping
-    public ModelAndView getSignUpPage() {
-        ModelAndView model = new ModelAndView("signUp");
-        model.addObject("userSignUpRequest", new UserSignUpRequest());
-        return model;
+    public String getSignUpPage(@ModelAttribute("user") UserSignUpRequest userSignUpRequest) {
+        return "profile/signUp";
     }
 
     @PostMapping
-    public ModelAndView saveUser(@Valid @ModelAttribute UserSignUpRequest userSignUpRequest,
-                                 BindingResult bindingResult, ModelAndView model) {
+    public String saveUser(@ModelAttribute("user") @Valid UserSignUpRequest userSignUpRequest,
+                                 BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            model.setViewName("signUp");
-            bindingResult.addError(Objects.requireNonNull(validatePassword(userSignUpRequest)));
-            return model;
+            return "profile/signUp";
+        }
+        if (!StringUtils.equals(userSignUpRequest.getPassword(), userSignUpRequest.getConfirmPassword())) {
+            return "profile/signUp";
         }
         userService.addUser(new UserRequestDto(userSignUpRequest.getFirstName(), userSignUpRequest.getLastName(),
                 userSignUpRequest.getPassword(), userSignUpRequest.getUserName(), userSignUpRequest.getEmail(), Collections.singleton(UserRole.USER)));
-        model.setViewName("login");
-        return model;
-    }
-
-    private ObjectError validatePassword(UserSignUpRequest request) {
-        if (!request.getPassword().equals(request.getConfirmPassword())) {
-            return new ObjectError("UserSignUpRequest", "Confirm password doesn't match");
-        }
-        return null;
+        return "profile/login";
     }
 }

@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>KanbanBoard | Edit profile</title>
+  <style>
+      a:hover {
+          text-decoration: none;
+      }
+  </style>
+</head>
+<body>
+<header>
+  <nav>
+    <a href="/profile">PROFILE</a> |
+    <a href="/users">USERS</a> |
+    <a href="/projects">PROJECTS</a> |
+    <div style="margin: -1% 0 0 93%; display: block;">
+      <form th:action="@{/logout}" method="post">
+        <button type="submit">Sign Out</button>
+        <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+      </form>
+    </div>
+  </nav>
+</header>
+<h1 style="text-align: center">
+  <a href="/" style="color: blue; ">KanbanBoard</a>
+</h1>
+<hr>
+<h2>EDIT PROFILE</h2>
+<hr>
+
+<h3>
+  <a href="/profile">
+    Back to profile
+  </a>
+</h3>
+<hr>
+
+<form method="post" action="/profile/edit">
+  <div style="margin-top: 50px">
+    <label>First name
+      <input th:value="${principalDto.firstName}" name="firstName" type="text">
+    </label>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label>Last name
+      <input th:value="${principalDto.secondName}" name="secondName" type="text">
+    </label>
+  </div>
+
+  <div style="margin-top: 10px;">
+    <label>E-mail
+      <input th:value="${principalDto.mail}" name="mail" type="text">
+    </label>
+  </div>
+
+  <button type="submit" style="margin-top: 10px;">Change personal data</button>
+  <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+
+</form>
+
+</body>
+</html>
