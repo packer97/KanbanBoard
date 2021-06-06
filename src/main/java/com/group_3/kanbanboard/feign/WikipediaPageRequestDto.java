@@ -1,29 +1,28 @@
 package com.group_3.kanbanboard.feign;
 
-public class WikipediaRequestDto {
+import java.io.Serializable;
+
+
+public class WikipediaPageRequestDto implements Serializable{
 
     private String base_etag;
     private String html;
     private String csrf_token;
     private String comment;
-    private boolean minor;
-    private boolean bot;
+    private final boolean is_minor = true;
+    private final boolean is_bot = true;
 
-    public WikipediaRequestDto() {
+    public WikipediaPageRequestDto() {
     }
 
-    public WikipediaRequestDto(String base_etag,
-                               String html,
-                               String csrf_token,
-                               String comment,
-                               boolean minor,
-                               boolean bot) {
+    public WikipediaPageRequestDto(String base_etag,
+                                   String html,
+                                   String csrf_token,
+                                   String comment)                                {
         this.base_etag = base_etag;
         this.html = html;
         this.csrf_token = csrf_token;
         this.comment = comment;
-        this.minor = minor;
-        this.bot = bot;
     }
 
     public String getBase_etag() {
@@ -59,18 +58,11 @@ public class WikipediaRequestDto {
     }
 
     public boolean isMinor() {
-        return minor;
-    }
-
-    public void setMinor(boolean minor) {
-        this.minor = minor;
+        return is_minor;
     }
 
     public boolean isBot() {
-        return bot;
+        return is_bot;
     }
 
-    public void setBot(boolean bot) {
-        this.bot = bot;
-    }
 }

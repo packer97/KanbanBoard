@@ -1,7 +1,8 @@
 package com.group_3.kanbanboard.service.feign;
 
 
-import com.group_3.kanbanboard.feign.WikipediaRequestDto;
+import com.group_3.kanbanboard.feign.WikiPediaTransformRequestDto;
+import com.group_3.kanbanboard.feign.WikipediaPageRequestDto;
 import com.group_3.kanbanboard.feign.WikipediaRestClient;
 import com.group_3.kanbanboard.feign.WikipediaRestMetaData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,24 +24,30 @@ public class WikipediaService {
 
     public String getHtmlPageByTitle(String title) {
         ResponseEntity<String> htmlResponse = wikipediaRestClient.getHtmlPageByTitle(title);
-        logger.info(htmlResponse.getStatusCode().toString() + htmlResponse.getStatusCode().getReasonPhrase());
+        logger.info(htmlResponse.getStatusCode().toString());
         return htmlResponse.getBody();
     }
 
     public byte[] getPdfPageByTitle(String title) {
         ResponseEntity<byte[]> pdfResponse = wikipediaRestClient.getPdfPageByTitle(title);
-        logger.info(pdfResponse.getStatusCode().toString() + pdfResponse.getStatusCode().getReasonPhrase());
+        logger.info(pdfResponse.getStatusCode().toString());
         return pdfResponse.getBody();
     }
 
     public WikipediaRestMetaData getMetaDataByTitle(String title) {
         ResponseEntity<WikipediaRestMetaData> metaDataResponse = wikipediaRestClient.getMetaDataByTitle(title);
-        logger.info(metaDataResponse.getStatusCode().toString() + metaDataResponse.getStatusCode().getReasonPhrase());
+        logger.info(metaDataResponse.getStatusCode().toString());
         return metaDataResponse.getBody();
     }
 
-    public void setHtmlPageByTitle(String title, WikipediaRequestDto request) {
-       ResponseEntity<?> response = wikipediaRestClient.setHtmlPageByTitle(title, request);
-        logger.info(response.getStatusCode().toString() + response.getStatusCode().getReasonPhrase());
+    public void setHtmlPageByTitle(String title, WikipediaPageRequestDto request) {
+
+        ResponseEntity<?> response = wikipediaRestClient.setHtmlPageByTitle(title, request);
+        logger.info(response.getStatusCode().toString());
+    }
+
+    public void  transformHtmlToWikitext(WikiPediaTransformRequestDto request){
+        ResponseEntity<String> wikiTextResponse = wikipediaRestClient.transformToWikiText(request);
+        logger.info(wikiTextResponse.getStatusCode().toString());
     }
 }

@@ -22,9 +22,14 @@ public interface WikipediaRestClient {
     @RequestMapping(method = RequestMethod.GET, value = "/page/pdf/{title}")
     ResponseEntity<byte[]> getPdfPageByTitle(@PathVariable String title);
 
-    @RequestMapping(method = RequestMethod.POST, value = "/page//html/{title}")
-    ResponseEntity<?> setHtmlPageByTitle(@PathVariable String title, @RequestBody WikipediaRequestDto body);
-
     @RequestMapping(method = RequestMethod.GET, value ="/page/title/{title}")
     ResponseEntity<WikipediaRestMetaData> getMetaDataByTitle(@PathVariable String title);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/page//html/{title}")
+    ResponseEntity<?> setHtmlPageByTitle(@PathVariable String title, @RequestBody WikipediaPageRequestDto body);
+
+    @RequestMapping(method = RequestMethod.POST, value = "/transform/html/to/wikitext")
+    ResponseEntity<String> transformToWikiText(@RequestBody WikiPediaTransformRequestDto body);
+
+
 }

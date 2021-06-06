@@ -8,15 +8,21 @@
 <div>
     <form method="get" id="getByTitle">
         <label>Get Wikipedia page by title:
-            <input name="title" th:type="text">
-            <p><input name="contentType" type="radio" checked  value="html">html
-            <input name="contentType" type="radio" value="pdf">pdf</p>
-            <button type="submit">Get</button>
+            <input name="title" type="text">
+            <p><input name="contentType" type="radio" checked value="html">html
+                <input name="contentType"  type="radio" value="pdf">pdf</p>
+            <button type="submit">Get and download page</button>
         </label>
     </form>
 </div>
+<P> </P>
 <div>
-
+    <form method="get" id="postHtmlByTitle" action="/wikipedia/save">
+        <label>Post Wikipedia page by title:
+            <input name="title" type="text">
+        </label>
+            <button type="submit">Post new revision of page</button>
+    </form>
 </div>
 </body>
 </html>
