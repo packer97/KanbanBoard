@@ -22,6 +22,8 @@ import java.util.Map;
 @RequestMapping("/wikipedia")
 public class WikipediaController {
 
+  
+
     private final WikipediaService wikipediaService;
     private final WikipediaLoadService wikipediaLoadService;
 
@@ -46,13 +48,17 @@ public class WikipediaController {
                 String html = wikipediaService.getHtmlPageByTitle(title);
                 wikipediaLoadService.downloadHtml(title, html);
 
-                return "redirect:" + "/wikipedia/downloaded/html/" + title + ".html";
+                String url = "/wikipedia/downloaded/html/" + title + ".html";
+
+                return "redirect:" + url;
             }
             case ("pdf"): {
                 byte[] pdf = wikipediaService.getPdfPageByTitle(title);
                 wikipediaLoadService.downloadPdf(title, pdf);
 
-                return "redirect:" + "/wikipedia/downloaded/pdf/" + title + ".pdf";
+                String url = "/wikipedia/downloaded/pdf/" + title + ".pdf";
+
+                return "redirect:" + url;
             }
             default:
                 throw new RuntimeException("Unknown value of request parameter \"contentType\"");
@@ -75,7 +81,9 @@ public class WikipediaController {
         WikipediaPageRequestDto wikipediaRequestDto = new WikipediaPageRequestDto();
         wikipediaRequestDto.setBase_etag(etag);
         wikipediaRequestDto.setHtml(
-                wikipediaLoadService.uploadHtml(Paths.get(".", "downloaded", "html", title + ".html").toString()));
+                wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
+                        WikipediaLoadService.HTML_FILE_TYPE,
+                        title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString()));
         wikipediaRequestDto.setComment("testing wikipedia rest API post mapping");
 
         wikipediaService.setHtmlPageByTitle(title, wikipediaRequestDto);
@@ -85,14 +93,17 @@ public class WikipediaController {
     @GetMapping("/transform")
     public String transFormToWikitext(@RequestParam String title) throws IOException {
 
-        String html = wikipediaLoadService.uploadHtml(Paths.get(".", "downloaded", "html", title + ".html").toString());
+        String html = wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
+                WikipediaLoadService.HTML_FILE_TYPE,
+                title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString());
         WikiPediaTransformRequestDto transformRequestDto = new WikiPediaTransformRequestDto(html);
 
         String wikiText = wikipediaService.transformHtmlToWikitext(transformRequestDto);
-
         wikipediaLoadService.downloadWikiText(title, wikiText);
 
-        return "redirect:" + "/wikipedia/downloaded/wikitext/" + title + ".wikitext";
+        String url = "/wikipedia/downloaded/wikitext/" + title + ".wiki";
+
+        return "redirect:" + url;
     }
 }
 
