@@ -4,7 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-public class WikipediaRestMetaData implements Serializable {
+/**
+ * Class of accepted by response json of metadata wikipedia restAPI
+ *
+ *
+ */
+
+public class WikipediaResponseMetaData implements Serializable {
 
     private List<Map<String, Object>> items;
 
@@ -16,10 +22,10 @@ public class WikipediaRestMetaData implements Serializable {
         this.items = items;
     }
 
-    public WikipediaRestMetaData() {
+    public WikipediaResponseMetaData() {
     }
 
-    public WikipediaRestMetaData(List<Map<String, Object>> items) {
+    public WikipediaResponseMetaData(List<Map<String, Object>> items) {
         this.items = items;
     }
 }

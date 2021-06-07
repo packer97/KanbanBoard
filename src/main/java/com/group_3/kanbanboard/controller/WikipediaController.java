@@ -2,10 +2,10 @@ package com.group_3.kanbanboard.controller;
 
 import com.group_3.kanbanboard.feign.WikiPediaTransformRequestDto;
 import com.group_3.kanbanboard.feign.WikipediaPageRequestDto;
-import com.group_3.kanbanboard.feign.WikipediaRestMetaData;
+import com.group_3.kanbanboard.feign.WikipediaResponseMetaData;
+import com.group_3.kanbanboard.service.feign.WikipediaLoadServiceImpl;
 import com.group_3.kanbanboard.service.feign.WikipediaLoadService;
-import com.group_3.kanbanboard.service.feign.WikipediaService;
-import nonapi.io.github.classgraph.json.JSONUtils;
+import com.group_3.kanbanboard.service.feign.WikipediaServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,11 +25,11 @@ public class WikipediaController {
 
 
 
-    private final WikipediaService wikipediaService;
+    private final WikipediaServiceImpl wikipediaService;
     private final WikipediaLoadService wikipediaLoadService;
 
     @Autowired()
-    public WikipediaController(WikipediaService wikipediaService, WikipediaLoadService wikipediaLoadService) {
+    public WikipediaController(WikipediaServiceImpl wikipediaService, WikipediaLoadService wikipediaLoadService) {
         this.wikipediaService = wikipediaService;
         this.wikipediaLoadService = wikipediaLoadService;
     }
@@ -69,7 +69,7 @@ public class WikipediaController {
     @GetMapping("/save")
     public String setNewRevisionHtmlByTitle(@RequestParam String title) throws IOException {
 
-        WikipediaRestMetaData metaData = wikipediaService.getMetaDataByTitle(title);
+        WikipediaResponseMetaData metaData = wikipediaService.getMetaDataByTitle(title);
 
         List<Map<String, Object>> items = metaData.getItems();
         Map<String, Object> properties = items.get(0);
@@ -82,9 +82,9 @@ public class WikipediaController {
         WikipediaPageRequestDto wikipediaRequestDto = new WikipediaPageRequestDto();
         wikipediaRequestDto.setBase_etag(etag);
         wikipediaRequestDto.setHtml(
-                wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
-                        WikipediaLoadService.HTML_FILE_TYPE,
-                        title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString()));
+                wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadServiceImpl.ROOT_DOWNLOAD_PATH,
+                        WikipediaLoadServiceImpl.HTML_FILE_TYPE,
+                        title + "." + WikipediaLoadServiceImpl.HTML_FILE_TYPE).toString()));
         wikipediaRequestDto.setComment("testing wikipedia rest API post mapping");
 
         wikipediaService.setHtmlPageByTitle(title, wikipediaRequestDto);
@@ -94,22 +94,17 @@ public class WikipediaController {
     @GetMapping("/transform")
     public String transFormToWikitext(@RequestParam String title) throws IOException {
 
-//        System.out.println(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
-//                WikipediaLoadService.HTML_FILE_TYPE,
-//                title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString());
-
-        String html = wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
-                WikipediaLoadService.HTML_FILE_TYPE,
-
-                title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString());
+        String html = wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadServiceImpl.ROOT_DOWNLOAD_PATH,
+                WikipediaLoadServiceImpl.HTML_FILE_TYPE,
+                title + "." + WikipediaLoadServiceImpl.HTML_FILE_TYPE).toString());
         WikiPediaTransformRequestDto transformRequestDto = new WikiPediaTransformRequestDto(html);
 
         String wikiText = wikipediaService.transformHtmlToWikitext(transformRequestDto);
         wikipediaLoadService.downloadWikiText(title, wikiText);
 
-        String url = "/wikipedia/downloaded/wikitext/" + title + ".wiki";
+        System.out.println(wikiText);
 
-        return "redirect:" + url;
+        return "wikipedia/wikipedia";
     }
 }
 

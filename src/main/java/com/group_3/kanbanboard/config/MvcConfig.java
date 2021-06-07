@@ -32,8 +32,8 @@ public class MvcConfig implements WebMvcConfigurer {
                 .addResourceLocations(Paths.get("downloaded/html").toUri().toString());
         registry.addResourceHandler("wikipedia/downloaded/pdf/**")
                 .addResourceLocations(Paths.get("downloaded/pdf").toUri().toString());
-        registry.addResourceHandler("wikipedia/downloaded/wikitext/**")
-                .addResourceLocations(Paths.get("downloaded/wikitext").toUri().toString());
+        registry.addResourceHandler("wikipedia/downloaded/wiki/**")
+                .addResourceLocations(Paths.get("downloaded/wiki").toUri().toString());
 
     }
 
