@@ -10,28 +10,30 @@ import java.util.ResourceBundle;
 @ResponseStatus(HttpStatus.FORBIDDEN)
 public class ForbiddenException extends RuntimeException {
 
-    private static final String BUNDLE_BASE_NAME = "messages";
-    private String localizedMessage;
+    String messageKey;
+
+    Locale locale;
 
     public ForbiddenException() {
     }
 
     public ForbiddenException(String messageKey) {
-        super(getLocalizedMessageFromBundle(Locale.US, messageKey));
-        localizedMessage = getLocalizedMessageFromBundle(LocaleContextHolder.getLocale(), messageKey);
+        this(messageKey,  LocaleContextHolder.getLocale());
     }
 
-    public ForbiddenException(String messageKey, Throwable cause) {
-        super(getLocalizedMessageFromBundle(Locale.US, messageKey), cause);
-        localizedMessage = getLocalizedMessageFromBundle(LocaleContextHolder.getLocale(), messageKey);
+    public ForbiddenException(String messageKey, Locale locale) {
+        super(messageKey);
+        this.messageKey = messageKey;
+        this.locale = locale;
+    }
+
+    public ForbiddenException(String messageKey, Locale locale, Throwable cause) {
+        this(messageKey, locale);
     }
 
     @Override
     public String getLocalizedMessage() {
-        return localizedMessage;
+        return ExceptionMessages.getMessageForLocale(messageKey, locale);
     }
 
-    private static String getLocalizedMessageFromBundle(Locale locale, String messageKey) {
-        return ResourceBundle.getBundle(BUNDLE_BASE_NAME, locale).getString(messageKey);
-    }
 }

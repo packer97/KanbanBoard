@@ -1,6 +1,8 @@
 package com.group_3.kanbanboard.exception;
 
-public class ReleaseNotFoundException extends ResourceNotFoundException{
+import java.util.Locale;
+
+public class ReleaseNotFoundException extends ResourceNotFoundException {
 
     public ReleaseNotFoundException() {
     }
@@ -9,8 +11,16 @@ public class ReleaseNotFoundException extends ResourceNotFoundException{
         super(message);
     }
 
-    public ReleaseNotFoundException(String message, Throwable cause) {
-        super(message, cause);
+    public ReleaseNotFoundException(String message, Locale locale) {
+        super(message, locale);
+    }
+
+    public ReleaseNotFoundException(String message, Locale locale, Throwable cause) {
+        super(message, locale, cause);
+    }
+
+    public ReleaseNotFoundException(String messageKey, Locale locale, Object... params) {
+        super(messageKey, locale, params);
     }
 
     public ReleaseNotFoundException(String messageKey, Object... params) {
