@@ -5,6 +5,7 @@ import com.group_3.kanbanboard.feign.WikipediaPageRequestDto;
 import com.group_3.kanbanboard.feign.WikipediaRestMetaData;
 import com.group_3.kanbanboard.service.feign.WikipediaLoadService;
 import com.group_3.kanbanboard.service.feign.WikipediaService;
+import nonapi.io.github.classgraph.json.JSONUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +23,7 @@ import java.util.Map;
 @RequestMapping("/wikipedia")
 public class WikipediaController {
 
-  
+
 
     private final WikipediaService wikipediaService;
     private final WikipediaLoadService wikipediaLoadService;
@@ -93,8 +94,13 @@ public class WikipediaController {
     @GetMapping("/transform")
     public String transFormToWikitext(@RequestParam String title) throws IOException {
 
+//        System.out.println(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
+//                WikipediaLoadService.HTML_FILE_TYPE,
+//                title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString());
+
         String html = wikipediaLoadService.uploadHtml(Paths.get(WikipediaLoadService.ROOT_DOWNLOAD_PATH,
                 WikipediaLoadService.HTML_FILE_TYPE,
+
                 title + "." + WikipediaLoadService.HTML_FILE_TYPE).toString());
         WikiPediaTransformRequestDto transformRequestDto = new WikiPediaTransformRequestDto(html);
 

@@ -26,6 +26,8 @@ public class MvcConfig implements WebMvcConfigurer {
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
 
+
+
         registry.addResourceHandler("wikipedia/downloaded/html/**")
                 .addResourceLocations(Paths.get("downloaded/html").toUri().toString());
         registry.addResourceHandler("wikipedia/downloaded/pdf/**")
