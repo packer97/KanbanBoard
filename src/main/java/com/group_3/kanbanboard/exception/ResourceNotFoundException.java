@@ -13,7 +13,7 @@ public abstract class ResourceNotFoundException extends RuntimeException {
 
 
     public ResourceNotFoundException() {
-        this.params = new Object[0];
+      this("", LocaleContextHolder.getLocale());
     }
 
     public ResourceNotFoundException(String messageKey) {
