@@ -2,6 +2,8 @@ package com.group_3.kanbanboard.rest.dto;
 
 import com.group_3.kanbanboard.enums.UserRole;
 import io.swagger.v3.oas.annotations.media.Schema;
+
+import javax.persistence.Column;
 import java.util.Set;
 
 @Schema(description = "Пользователь")
@@ -10,6 +12,8 @@ public class UserResponseDto {
     private String firstName;
     @Schema(description = "Фамилия пользователя")
     private String secondName;
+    @Schema(description = "username")
+    private String username;
     @Schema(description = "E-mail")
     private String mail;
     @Schema(description = "Роль")
@@ -18,10 +22,10 @@ public class UserResponseDto {
     public UserResponseDto() {
     }
 
-    public UserResponseDto(String firstName, String secondName, String mail,
-        Set<UserRole> roles) {
+    public UserResponseDto(String firstName, String secondName, String username, String mail, Set<UserRole> roles) {
         this.firstName = firstName;
         this.secondName = secondName;
+        this.username = username;
         this.mail = mail;
         this.roles = roles;
     }
@@ -40,6 +44,14 @@ public class UserResponseDto {
 
     public void setSecondName(String secondName) {
         this.secondName = secondName;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public String getMail() {

@@ -11,14 +11,15 @@ public class ExceptionResponse {
     private String message;
 
     public ExceptionResponse(Date occurrenceTime, String message) {
-
         this.occurrenceTime = occurrenceTime;
         this.message = message;
+
     }
 
     public Date getOccurrenceTime() {
         return occurrenceTime;
     }
+
 
     public void setOccurrenceTime(Date occurrenceTime) {
         this.occurrenceTime = occurrenceTime;

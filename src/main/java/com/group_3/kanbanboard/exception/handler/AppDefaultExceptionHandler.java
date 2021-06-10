@@ -32,7 +32,7 @@ public class AppDefaultExceptionHandler {
     @ResponseStatus(HttpStatus.NOT_FOUND)
     public ResponseEntity<ExceptionResponse> exceptionHandler(ResourceNotFoundException e) {
         // лог
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new ResponseEntity<>(response, HttpStatus.NOT_FOUND);
     }
 
@@ -47,7 +47,7 @@ public class AppDefaultExceptionHandler {
     @ExceptionHandler(AuthenticationException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ExceptionResponse> exceptionHandler(AuthenticationException e) {
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
     }
 
@@ -62,7 +62,7 @@ public class AppDefaultExceptionHandler {
     @ExceptionHandler(AccessDeniedException.class)
     @ResponseStatus(HttpStatus.UNAUTHORIZED)
     public ResponseEntity<ExceptionResponse> exceptionHandler(AccessDeniedException e) {
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new ResponseEntity<>(response, HttpStatus.UNAUTHORIZED);
 
     }
@@ -78,7 +78,7 @@ public class AppDefaultExceptionHandler {
     @ExceptionHandler(IllegalArgumentException.class)
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     public ResponseEntity<ExceptionResponse> exceptionHandler(IllegalArgumentException e) {
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new  ResponseEntity<>(response, HttpStatus.METHOD_NOT_ALLOWED);
     }
 
@@ -93,7 +93,7 @@ public class AppDefaultExceptionHandler {
     @ExceptionHandler(IOException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> exceptionHandler(IOException e) {
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -108,7 +108,7 @@ public class AppDefaultExceptionHandler {
     @ExceptionHandler(RuntimeException.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> exceptionHandler(RuntimeException e) {
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 
@@ -123,7 +123,7 @@ public class AppDefaultExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     public ResponseEntity<ExceptionResponse> exceptionHandler(Exception e) {
-        ExceptionResponse response = new ExceptionResponse(new Date(), e.getMessage());
+        ExceptionResponse response = new ExceptionResponse(new Date(), e.getLocalizedMessage());
         return new ResponseEntity<>(response, HttpStatus.BAD_REQUEST);
     }
 }

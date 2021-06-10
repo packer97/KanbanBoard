@@ -2,28 +2,29 @@ package com.group_3.kanbanboard.rest.dto;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 import java.util.Objects;
 
 public class UserSignUpRequest {
 
-    @NotBlank
-    @Size(min = 3, max = 15, message = "Invalid first name")
+    @NotEmpty(message = "First name should not be empty")
+    @Size(min = 2, max = 15, message = "Name should be between 2 and 15 characters")
     private String firstName;
 
-    @NotBlank
-    @Size(min = 5, max = 25, message = "Invalid last name")
+    @NotEmpty(message = "Last name should not be empty")
+    @Size(min = 2, max = 20, message = "Last name should be between 2 and 20 characters")
     private String lastName;
 
-    @NotBlank
-    @Size(min = 5, max = 25, message = "Invalid last name")
+    @NotEmpty(message = "User name should not be empty")
+    @Size(min = 5, max = 30, message = "User name should be between 5 and 30 characters")
     private String userName;
 
-    @NotBlank
-    @Email
+    @NotEmpty(message = "Email should not be empty")
+    @Email(message = "Email should be valid")
     private String email;
 
-    @NotBlank
+    @NotEmpty(message = "Password should not be empty")
     @Size(max = 50, min = 8, message = "Invalid password")
     private String password;
 

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta content="text/html; charset=utf-8">
+    <title>Title</title>
+
+</head>
+<body>
+<header>
+    <nav>
+        <a href="/profile">PROFILE</a> |
+        <a href="/users">USERS</a> |
+        <a href="/projects">PROJECTS</a> |
+        <a th:href="@{/projects/{projectId}/releases/(projectId=${projectId})}">RELEASES</a> |
+        <a th:href="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId})}">TASKS</a>
+        |
+        <div style="margin: -1% 0 0 93%; display: block;">
+            <form th:action="@{/logout}" method="post">
+                <button type="submit">Sign Out</button>
+                <input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}"/>
+            </form>
+        </div>
+    </nav>
+</header>
+<hr>
+<h2 style="margin-left: 200px; display: inline-block;">Task title:</h2>
+<h2 th:text="${distinctTask.title}" style="display: inline-block;">distinctTask.title</h2>
+<hr>
+<div id="textareaDiv" style="display: inline-block;">
+    <label>
+<textarea form="saveTaskForm" name="description" cols="100" rows="10" style="resize: none;"
+          placeholder="Enter description of task here ->"
+          th:text="${distinctTask.description}"></textarea>
+    </label>
+    <form th:method="${isAddTask}? 'post' : 'put'"
+          id="saveTaskForm"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}">
+        <button type="submit">Save changes</button>
+    </form>
+</div>
+<div id="informDiv" style="display: inline-block;">
+
+    <p><span>Task performer:</span><span
+            th:text="${distinctTask.performer} ? ${distinctTask.performer.username} : 'not selected'"></span>
+        <label>
+            <select name="projectUserSelect" form="saveTaskForm">
+                <option th:each="projectUser : ${projectUsers}" th:text="${projectUser.username}"
+                        th:value="${projectUser.username}" th:selected="${distinctTask.performer.getUsername().equals(projectUser.getUsername())}"></option>
+            </select>
+        </label></p>
+
+    <p><span>Title:</span><span th:text="${distinctTask.title}"></span>
+        <label>
+            <input name="title" form="saveTaskForm" type="text" th:value="${distinctTask.title}">
+        </label></p>
+
+    <p><span>Task end date:</span><span th:text="${formattedEndDate}"></span>
+        <label>
+            <input name="endDate" form="saveTaskForm" type="date" th:value="${formattedEndDate}">
+        </label></p>
+
+    <p><span>Task status:</span><span th:text="${distinctTask.taskStatus}"></span>
+        <label>
+            <select name="taskStatus" form="saveTaskForm" th:field="${distinctTask.taskStatus}">
+                <option th:each="status : ${statuses}" th:text="${status}" th:value="${status}"></option>
+            </select>
+        </label></p>
+
+    <p><span>Task category:</span><span th:text="${distinctTask.taskCategory}"></span>
+        <label>
+            <select name="taskCategory" form="saveTaskForm" th:field="${distinctTask.taskCategory}">
+                <option th:each="category : ${categories}" th:text="${category}" th:value="${category}"></option>
+            </select>
+        </label></p>
+
+    <p><span>Task project title:</span><span th:text="${distinctTask.project.title}"></span></p>
+
+    <p><span>Task release version:</span><span th:text="${distinctTask.release.version}"></span></p>
+
+    <form th:method="delete"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/{taskId}(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}"
+          style="display: inline-block">
+        <button type="submit">Delete task</button>
+    </form>
+
+    <form method="get"
+          th:action="@{/projects/{projectId}/releases/{releaseId}/tasks/(projectId=${projectId}, releaseId=${releaseId}, taskId=${taskId})}"
+          style="display: inline-block">
+        <button type="submit">Cancel</button>
+    </form>
+</div>
+<!--<p><span th:text="${distinctTask}"></span></p>-->
+</body>
+</html>

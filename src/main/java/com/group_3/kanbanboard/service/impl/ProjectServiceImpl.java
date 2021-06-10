@@ -1,10 +1,8 @@
 package com.group_3.kanbanboard.service.impl;
 
 import com.group_3.kanbanboard.entity.ProjectEntity;
-import com.group_3.kanbanboard.entity.ReleaseEntity;
 import com.group_3.kanbanboard.entity.UserEntity;
 import com.group_3.kanbanboard.entity.UserProjectEntity;
-import com.group_3.kanbanboard.enums.UserRole;
 import com.group_3.kanbanboard.exception.ProjectNotFoundException;
 import com.group_3.kanbanboard.exception.UserNotFoundException;
 import com.group_3.kanbanboard.mappers.ProjectMapper;
@@ -25,10 +23,10 @@ import java.util.stream.Collectors;
 @Service
 public class ProjectServiceImpl implements ProjectService {
 
-    private ProjectRepository projectRepository;
-    private ProjectMapper projectMapper;
-    private UserProjectRepository userProjectRepository;
-    private UserRepository userRepository;
+    private final ProjectRepository projectRepository;
+    private final ProjectMapper projectMapper;
+    private final UserProjectRepository userProjectRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     public ProjectServiceImpl(ProjectRepository projectRepository, ProjectMapper projectMapper,
@@ -43,7 +41,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponseDto getById(UUID id) {
         ProjectEntity project = projectRepository.findById(id).orElseThrow(
-                () -> new ProjectNotFoundException(String.format("Project with ID = %s was not found", id)));
+                () -> new ProjectNotFoundException("project.notFound", id));
         return projectMapper.toResponseDto(project);
     }
 
@@ -58,10 +56,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponseDto addProject(UUID userId, ProjectRequestDto projectRequestDto) {
         UserEntity userEntity = userRepository.findById(userId).orElseThrow(
-                () -> new UserNotFoundException(String.format("User with ID = %s was not found", userId)));
+                () -> new UserNotFoundException("user.notFound.id", userId));
         ProjectEntity project = projectMapper.toEntity(projectRequestDto);
-        UserProjectEntity userProjectEntity = new UserProjectEntity(userEntity, project);
         projectRepository.save(project);
+        UserProjectEntity userProjectEntity = new UserProjectEntity(userEntity, project);
         userProjectRepository.save(userProjectEntity);
         return projectMapper.toResponseDto(project);
     }
@@ -70,7 +68,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public ProjectResponseDto updateProject(UUID id, ProjectRequestDto projectRequestDto) {
         ProjectEntity projectEntityFromDb = projectRepository.findById(id).orElseThrow(
-                () -> new ProjectNotFoundException(String.format("Project with ID = %s was not found", id)));
+                () -> new ProjectNotFoundException("project.notFound", id));
         projectEntityFromDb.setTitle(projectRequestDto.getTitle());
         projectEntityFromDb.setDescription(projectRequestDto.getDescription());
         projectRepository.save(projectEntityFromDb);
@@ -81,7 +79,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public void deleteProjectById(UUID id) {
         if (!projectRepository.existsById(id)) {
-            throw new ProjectNotFoundException(String.format("Project with ID = %s was not found", id));
+            throw new ProjectNotFoundException("project.notFound", id);
         }
         projectRepository.deleteById(id);
     }

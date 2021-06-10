@@ -24,7 +24,7 @@ public class UserProjectEntity {
 
     @Column (name = "user_role", nullable = false)
     @Enumerated(value = EnumType.STRING)
-    private InProjectUserRole projectUserRole = InProjectUserRole.NOT_ALLOWED;
+    private InProjectUserRole projectUserRole = InProjectUserRole.LEAD;
 
     public UserProjectEntity(UserEntity user, ProjectEntity project ) {
         this.user = user;
